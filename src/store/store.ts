@@ -2,13 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import saleApi from "../api/sale/sale.api";
 import { counterReducer } from "./slices/Counter/counter.slice";
+import paymentApi from "@/api/payment";
 
-const middlewares = [saleApi.middleware];
+const middlewares = [saleApi.middleware, paymentApi.middleware];
 
 export const store = configureStore({
     reducer: {
         counter: counterReducer,
         [saleApi.reducerPath]: saleApi.reducer,
+        [paymentApi.reducerPath]: paymentApi.reducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middlewares),
 });

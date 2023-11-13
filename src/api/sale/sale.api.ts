@@ -49,3 +49,4 @@ const saleApi = createApi({
 
 export const { useGetAllSalesQuery, useGetSaleByIdQuery, useNewSaleMutation, useUpdateSaleMutation, useRemoveSaleMutation } = saleApi;
 export default saleApi;
+

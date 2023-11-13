@@ -5,8 +5,8 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { useGetAllSalesQuery, useGetSaleByIdQuery, useRemoveSaleMutation } from "../../../api/sale/sale.api";
 import { ISale } from "../../../types";
-import FormSale from "./component/FormSale";
 import { toast } from "react-toastify";
+import FormSale from "./component/FormSale";
 
 type DataType = {
     key: string;

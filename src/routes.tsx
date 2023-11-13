@@ -1,11 +1,26 @@
 import { createBrowserRouter } from "react-router-dom";
-import { AdminLayout, ClientLayout } from "./layout";
-import SaleAdminPage from "./pages/Admin/SaleAdminPage";
+import { AdminLayout, ClientLayout } from "./pages/layout";
 import HomePage from "./pages/Main/HomePage";
 import ProductDetailPage from "./pages/Main/ProductDetailPage";
+import AddProduct from "./components/admin/Product/AddProduct";
+import Product from "./components/admin/Product/Product";
+import { default as UpdateProduct, default as UpdateSize } from "./components/admin/Product/UpdateProduct";
+import RecycleBin from "./components/admin/Product/recycle-bin";
+import AdminCustomerAdd from "./components/admin/customer/add";
+import AdminCustomer from "./components/admin/customer/customer";
+import AdminCustomerEdit from "./components/admin/customer/edit";
+import AddImageProduct from "./components/admin/imageProduct/AddImage";
+import AdminRoleAdd from "./components/admin/role/add";
+import AdminRole from "./components/admin/role/role";
+import AddSize from "./components/admin/size/AddSize";
+import Size from "./components/admin/size/size";
+import AdminUserAdd from "./components/admin/user/add";
+import AdminEditUser from "./components/admin/user/edit";
+import AdminUser from "./components/admin/user/user";
+import SaleAdminPage from "./components/admin/SaleAdminPage";
+import PaymentAdmin from "./components/admin/PaymentAdmin";
 
 export const routers = createBrowserRouter([
-<<<<<<< HEAD
     {
         path: "/",
         element: <ClientLayout />,
@@ -20,41 +35,23 @@ export const routers = createBrowserRouter([
             },
         ],
     },
-    {
-        path: "/admin",
-        element: <AdminLayout />,
-        children: [
-            {
-                index: true,
-                element: "Page admin here",
-            },
-            {
-                path: "sale",
-                element: <SaleAdminPage />,
-            },
-        ],
-    },
-    {
-        path: "*",
-        element: "NotFound Page nhé",
-    },
-=======
-
-  {
-    path: "/",
-    element: <ClientLayout />,
-    children: [
-      {
-        // index: true,
-        // element: <MyComponent />,
-      },
-    ],
-  },
 
   {
     path: "/admin",
     element: <AdminLayout />,
     children: [
+      {
+        index: true,
+        element: "Page admin here",
+    },
+    {
+        path: "sale",
+        element: <SaleAdminPage />,
+    },
+    {
+        path: "payment",
+        element: <PaymentAdmin />,
+    },
       {
         path: "product",
         element: <Product products={[]}/>,
@@ -91,8 +88,7 @@ export const routers = createBrowserRouter([
       {
         path: "role/add",
         element: <AdminRoleAdd />,
-      },
-
+      },{
         path: "product/add",
         element: <AddProduct/>,
   
@@ -117,13 +113,13 @@ export const routers = createBrowserRouter([
         path: "size/update/:id",
         element: <UpdateSize/>,
       },
-      {
-        path: "imageProduct",
-        element: <ImageProduct/>,
-      },
+      // {
+      //   path: "imageProduct",
+      //   element: <ImageProduct/>,
+      // },
       {
         path: "imageProduct/add",
-        element: <AddImage/>,
+        element: <AddImageProduct/>,
       },
       // {
       //   path: "size/update/:id",
@@ -142,5 +138,4 @@ export const routers = createBrowserRouter([
   },
  
   
->>>>>>> 9a450812c4defd8df925bccd59f4d7d8a94d4b48
 ]);

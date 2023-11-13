@@ -6,3 +6,8 @@ export interface ISale {
     expirationDate: string;
     createdAt: string;
 }
+export interface IPayment {
+    _id?: string;
+   
+    createdAt: string;
+}
