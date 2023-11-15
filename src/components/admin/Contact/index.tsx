@@ -8,6 +8,8 @@ import { useGetContactsQuery, useRemoveContactMutation } from '../../../api/cont
 
 const AdminContact = () => {
     const { data: contactData, error, isLoading } = useGetContactsQuery();
+    console.log(contactData);
+    
     const [removeContact, { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess }] =
         useRemoveContactMutation();
 

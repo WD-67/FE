@@ -62,7 +62,7 @@ const Image = (props: Props) => {
         return (
             <>
                 <Button>
-                    <Link to={`/admin/imageProduct/${id}/update`}><EditOutlined /></Link>
+                    <Link to={`/admin/imageProduct/update/${id}`}><EditOutlined /></Link>
                 </Button>
                 <Button onClick={() => handleSoftDelete(id.toString())} type="text" danger className="ml-2">
                     <DeleteTwoTone />

@@ -1,14 +1,13 @@
 //add tintuc
-import { useDispatch, useSelector } from 'react-redux';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Itintuc } from '../../../interfaces/tintuc';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import Message from '../../action/Message/Message'
 import { useAddTintucMutation } from '@/api/tintuc';
+import Loading from '../../action/Loading/Loading'
 const ThemTinTuc = () => {
+  const [addtintuc, { isLoading }] = useAddTintucMutation();
   const navigate = useNavigate()
-  const [addtintuc] = useAddTintucMutation();
   const { handleSubmit, register, formState: { errors }, watch } = useForm<any>()
   const onSubmit: SubmitHandler<Itintuc> = async (inputAdd: Itintuc) => {
     try {
@@ -48,7 +47,7 @@ const ThemTinTuc = () => {
                 Trạng Thái
               </label>
               <select {...register("trang_thai", { required: true })} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option >Choose a category</option>
+                <option >Chọn trạng thái</option>
                 <option>active</option>
                 <option>deactive</option>
               </select>

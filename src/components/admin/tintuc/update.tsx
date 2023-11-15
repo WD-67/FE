@@ -1,16 +1,24 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useGetTintucByIdQuery, useUpdateTintucMutation } from '@/api/tintuc';
-import { Button, Form, Input, notification, Select } from 'antd';
-import React, { useEffect } from 'react';
+import { Itintuc } from "@/interfaces/tintuc";
+import { useGetTintucByIdQuery, useUpdateTintucMutation } from "../../../api/tintuc"
+import { Button, Form, Input, Skeleton, Select, notification } from "antd";
+import { useEffect } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from 'react-hook-form';
+type FieldType = {
+  tieude: string;
+  noidung: string;
+  trang_thai: string;
+
+};
 const SuaTinTuc = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [updateTintuc] = useUpdateTintucMutation();
-  const { data, isLoading, refetch } = useGetTintucByIdQuery(String(id));
+  const [updateTintucs] = useUpdateTintucMutation();
+  const { data, isLoading, refetch } = useGetTintucByIdQuery(id || "")
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
-      _id: data?._id,
       tieude: data?.tieude,
       noidung: data?.noidung,
       trang_thai: data?.trang_thai
@@ -18,59 +26,85 @@ const SuaTinTuc = () => {
   }, [data, form]);
   const onFinish = async (values: any) => {
     try {
-      const updatetintuc = await updateTintuc({ ...values,id }).unwrap();
+      const updateTintuc = await updateTintucs({ ...values, _id: id }).unwrap();
       navigate('/admin/tintuc');
       notification.success({
         message: 'Cập nhật thành công',
-        description: `Thông tin tin tức ${updatetintuc.tieude}.`,
+        description: `The Role ${updateTintuc.tieude} has been updated.`,
         duration: 2,
       });
       refetch();
     } catch (error) {
-      console.error('Error updating :', error);
+      console.error('Error updating Role:', error);
       notification.error({
         message: 'Cập nhập thất bại',
-        description: 'Đã xảy ra lỗi.',
+        description: 'Đã xảy ra lỗi khi cập nhật Vai trò.',
         duration: 2,
       });
     }
   };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
-      <Form
-        form={form}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 500, margin: '0 auto' }}
-        onFinish={onFinish}
-      >
-        <Form.Item label="Tiêu đề" name="tieude" rules={[
-          { required: true, message: 'Vui lòng nhập tên tiêu đề!' },
-          { min: 5, message: 'Tiêu đề tối thiểu 5 ký tự.' },
-        ]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Nội dung" name="noidung" rules={[
-          { required: true, message: 'Vui lòng nhập nội dung!' },
-        ]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Trạng Thái" name="trang_thai" rules={[
-        ]}>
-          <Select>
-            <Select.Option value="active">active</Select.Option>
-            <Select.Option value="deactive">deactive</Select.Option>
-          </Select>
-        </Form.Item>
+      <header className="mb-4">
+        <h2 className="font-bold text-2xl">Sửa danh mục {data?.tieude}</h2>
+      </header>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <Form
+          form={form}
+          initialValues={data}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={{ maxWidth: 500, margin: '0 auto' }}
+          onFinish={onFinish}
+        >
+          <Form.Item<FieldType>
+            label="Tiêu đề"
+            name="tieude"
+            rules={[
+              { required: true, message: "Vui lòng nhập tiêu đề !" },
+              { min: 3, message: "Tiêu đề ít nhất 3 ký tự" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item<FieldType> label="Nội dung" name="noidung"
+            rules={[
+              { required: true, message: "Vui lòng nhập nội dung!" },
+              { min: 10, message: "Nội dung ít nhất 10 ký tự" },
+            ]}>
+            <Input />
+          </Form.Item>
+          <Form.Item label="Trạng thái" name="trang_thai">
+            <Select>
+              <Select.Option value="active">active</Select.Option>
+              <Select.Option value="deactive">deactive</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Button htmlType="submit" className="mx-4">
+              {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Sửa"
+              )}
+            </Button>
+            <Button
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button htmlType="submit">
-            Update Tin Tức
-          </Button>
-        </Form.Item>
-      </Form>
+              className="ml-2 text-blue-500"
+              onClick={() => navigate("/admin/tintuc")}
+            >
+              Quay lại
+            </Button>
+          </Form.Item>
+        </Form>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default SuaTinTuc;

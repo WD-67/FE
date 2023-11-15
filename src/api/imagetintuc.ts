@@ -1,36 +1,42 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Iimagetintuc } from '@/interfaces/imagetintuc';
 const imagetintucApi = createApi({
-    reducerPath: "imagetintuc",
+    reducerPath: 'imagetintuc',
+    tagTypes: ['Imagetintuc'],
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_API
+        baseUrl: 'http://localhost:8080/api'
     }),
     endpoints: (builder) => ({
-        getImagetintuc: builder.query<Iimagetintuc, void>({
-            query: () => `/imagetintuc`
+        getImagetintuc: builder.query<Iimagetintuc[], void>({
+            query: () => `/imagetintuc`,
+            providesTags: ['Imagetintuc']
         }),
         getImagetintucById: builder.query<Iimagetintuc, number | string>({
-            query: (id) => `/imagetintuc/${id}`
+            query: (id) => `/imagetintuc/${id}`,
+            providesTags: ['Imagetintuc']
         }),
         addImagetintuc: builder.mutation<Iimagetintuc, Iimagetintuc>({
-            query: (product) => ({
+            query: (imagetintuc) => ({
                 url: `/imagetintuc`,
                 method: "POST",
-                body: product
-            })
+                body: imagetintuc
+            }),
+            invalidatesTags: ['Imagetintuc']
         }),
-        updateImagetintuc: builder.mutation<any, any>({
+        updateImagetintuc: builder.mutation<Iimagetintuc,Iimagetintuc>({
             query: (imagetintuc) => ({
-                url: `/imagetintuc/${imagetintuc.id}`,
+                url: `/imagetintuc/${imagetintuc._id}`,
                 method: "PUT",
                 body: imagetintuc
-            })
+            }),
+            invalidatesTags: ['Imagetintuc']
         }),
         removeImagetintuc: builder.mutation<Iimagetintuc, number | string>({
             query: (id) => ({
                 url: `/imagetintuc/${id}`,
                 method: "DELETE"
-            })
+            }),
+            invalidatesTags: ['Imagetintuc']
         }),
     })
 });

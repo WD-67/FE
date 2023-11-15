@@ -19,6 +19,9 @@ import ImageTinTuc from "./components/admin/imagetintuc/list";
 import ThemTinTuc from "./components/admin/tintuc/add";
 import DanhSachTinTuc from "./components/admin/tintuc/list";
 import SuaTinTuc from "./components/admin/tintuc/update";
+import UpdateImage from "./components/admin/imageProduct/UpdateImage";
+
+
 import AdminCategory from "./components/admin/Category";
 import CategoryAdd from "./components/admin/Category/add";
 import CategoryEdit from "./components/admin/Category/edit";
@@ -28,6 +31,8 @@ import ContactEdit from "./components/admin/Contact/edit";
 import AdminInformation from "./components/admin/Inpormation";
 import InformationAdd from "./components/admin/Inpormation/add";
 import InformationEdit from "./components/admin/Inpormation/edit";
+
+
 import AdminUser from "./components/admin/user/user";
 import AdminUserAdd from "./components/admin/user/add";
 import AdminEditUser from "./components/admin/user/edit";
@@ -37,8 +42,10 @@ import AdminCustomerEdit from "./components/admin/customer/edit";
 import AdminRole from "./components/admin/role/role";
 import AdminRoleAdd from "./components/admin/role/add";
 import AdminRoleEdit from "./components/admin/role/edit";
+
 import SaleAdminPage from "./components/SaleAdminPage";
 import PaymentAdmin from "./components/PaymentAdmin";
+
 
 
 export const routers = createBrowserRouter([
@@ -93,10 +100,10 @@ export const routers = createBrowserRouter([
         path: "imageProduct/add",
         element: <AddImage />,
       },
-      // {
-      //   path: "size/update/:id",
-      //   element: <UpdateSize/>,
-      // },
+      {
+        path: "imageProduct/update/:id",
+        element: <UpdateImage/>,
+      },
       {
         path: "/admin",
         element: <HomeAdmin />,

@@ -1,37 +1,43 @@
-
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Itintuc } from '../interfaces/tintuc';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 const tintucApi = createApi({
-    reducerPath: "tintuc",
+    reducerPath: 'tintuc',
+    tagTypes: ['Tintuc'],
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_API
+        baseUrl: 'http://localhost:8080/api'
     }),
     endpoints: (builder) => ({
-       getTintuc: builder.query<Itintuc, void>({
-            query: () => `/tintuc`
+       getTintuc: builder.query<Itintuc[], void>({
+            query: () => `/tintuc`,
+            providesTags: ['Tintuc']
         }),
         getTintucById: builder.query<Itintuc, number | string>({
-            query: (id) => `/tintuc/${id}`
+            query: (id) => `/tintuc/${id}`,
+            providesTags: ['Tintuc']
         }),
         addTintuc: builder.mutation<Itintuc, Itintuc>({
             query: (tintuc) => ({
                 url: `/tintuc`,
                 method: "POST",
                 body: tintuc
-            })
+            }),
+            invalidatesTags: ['Tintuc']
         }),
         updateTintuc: builder.mutation<Itintuc, Itintuc>({
             query: (tintuc) => ({
                 url: `/tintuc/${tintuc._id}`,
                 method: "PUT",
-                body: {tieude:tintuc.tieude,noidung:tintuc.noidung,trang_thai:tintuc.trang_thai}
-            })
+                body: tintuc
+            }),
+            invalidatesTags: ['Tintuc']
         }),
         removeTintuc: builder.mutation<Itintuc, number | string>({
             query: (id) => ({
                 url: `/tintuc/${id}`,
                 method: "DELETE"
-            })
+            }), 
+             invalidatesTags: ['Tintuc']
         }),
 
     })

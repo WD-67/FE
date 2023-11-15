@@ -3,31 +3,34 @@ import { EditOutlined } from "@ant-design/icons"
 import { Switch, Popconfirm, Button } from "antd"
 import { BsFillTrash3Fill } from "react-icons/bs"
 import { Link } from "react-router-dom"
-import { RootState } from "../../../store/store";
-import { useEffect } from "react";
-import Message from "../../action/Message/Message";
 import ImagePriview from '../../Image/ImagePriview'
 import { useGetImagetintucQuery, useRemoveImagetintucMutation } from '@/api/imagetintuc'
+import Loading from '@/components/action/Loading/Loading'
 const ImageTinTuc = () => {
-    const { data: imagetintucData ,refetch} = useGetImagetintucQuery();
+    const { data: imagetintucData, error, isLoading } = useGetImagetintucQuery();
+
     const [removeImageTintuc] = useRemoveImagetintucMutation();
     const handleSoftDelete = async (id: string) => {
         try {
             await removeImageTintuc(id);
             notification.success({
                 message: 'Success',
-                description: 'size soft deleted successfully!',
+                description: 'Xóa ảnh tin tức thành công',
             });
-            refetch();
         } catch (error) {
             notification.error({
                 message: 'Error',
-                description: 'size to soft delete size',
+                description: 'Xóa ảnh tin tức thất bại',
             });
         }
     };
     return (<>
-        <div>
+         {isLoading ? (
+            <Loading />
+        ) : error ? (
+            "Error"
+        ) : (
+            <div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2">
                     <h2 className="font-bold text-xl mt-5">Ảnh Tin Tức </h2>
                     <div className="ml-auto mb-5">
@@ -37,6 +40,7 @@ const ImageTinTuc = () => {
                             type="search"
                             placeholder="Search website..."
                         />
+                        <Link to={'/admin/imagetintuc/add'} className="my-2 border rounded p-2 bg-blue-500 hover:bg-red-700 font-bold py-2 px-4 text-white w-full lg:w-40 ">Add Ảnh Tin Tức </Link>
                     </div>
                 </div>
                 <div >
@@ -68,9 +72,9 @@ const ImageTinTuc = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200 ">
-                            {imagetintucData ?.length ? (
-                               imagetintucData .map((imagetintuc) => (
-                                    <tr>
+                            {imagetintucData?.length ? (
+                               imagetintucData.map((imagetintuc, index) => (
+                                    <tr key={index}>
                                         <td className="whitespace-nowrap font-medium text-gray-900 flex text-left my-5 mx-2 ">
                                             <div className="flex items-center">
                                                 <p className="text-xs lg:text-base md:text-xl  mx-2">{imagetintuc.Id_news}</p>
@@ -102,7 +106,7 @@ const ImageTinTuc = () => {
                                                     <Popconfirm
                                                         placement="topRight"
                                                         title={`Delete the image "${imagetintuc._id}"?`}
-                                                         onConfirm={() =>handleSoftDelete(imagetintuc._id as string)}
+                                                        onConfirm={() => handleSoftDelete(imagetintuc._id as string)}
                                                         cancelText="No"
                                                         okButtonProps={{ style: { background: "red" } }}
                                                     >
@@ -127,6 +131,7 @@ const ImageTinTuc = () => {
                     <Pagination defaultCurrent={1} total={100} />
                 </div>
             </div>
+        )}
     </>
     )
 }

@@ -40,7 +40,7 @@ const items: MenuItem[] = [
     getItem(<Link to="/admin/user/add">Add</Link>, '4'),
   ]),
   getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
+
   getItem(<Link to="/admin/product">Product</Link>, '10', <UnorderedListOutlined />,
     [
       getItem(<Link to="/admin/product">List</Link>, '11',),
@@ -52,13 +52,13 @@ const items: MenuItem[] = [
     [
       getItem(<Link to="/admin/size">List</Link>, '15',),
       getItem(<Link to="/admin/size/add">Add</Link>, '16'),
-      getItem(<Link to="/admin/size/update/:id">update</Link>, '70')
+   
     ]),
   getItem(<Link to="/admin/imageProduct">ImgProduct</Link>, '18', <FileImageOutlined/>,
     [
       getItem(<Link to="/admin/imageProduct">List</Link>, '19',),
       getItem(<Link to="/admin/imageProduct/add">Add</Link>, '20'),
-      getItem(<Link to="/admin/imageProduct/update/:id">update</Link>, '21'),
+  
     ]),
   getItem(<Link to="/admin/imagetintuc">Image Tin tức</Link>, '22', <FileImageOutlined />,
     [

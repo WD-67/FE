@@ -53,7 +53,8 @@ const UpdateSize = () => {
             >     
                 <Form.Item label="Size Name" name="name" rules={[
                     { required: true, message: 'Please input your Name Size!' },
-                    { min: 5, message: 'Size Name must be at least 5 characters.' },
+                    { min: 1, message: 'Size Name must be at least 5 characters.' },
+                 
                 ]}>
                     <Input />
                 </Form.Item>

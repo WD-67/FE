@@ -4,6 +4,12 @@ import { Button, Checkbox, Form, Input, notification, Select } from 'antd';
 import { InputNumber } from 'antd'
 import { useAddProductMutation } from '@/api/product';
 import { useGetSizesQuery } from '@/api/sizes';
+import { useGetImageProductsQuery } from '@/api/imageProduct';
+import { useGetCategorysQuery } from '@/api/category';
+import { ISize } from '@/interfaces/size';
+import { ICategory } from '@/interfaces/category';
+import { ImageProduct } from '@/interfaces/imageProduct';
+
   
 
 const { Option } = Select;
@@ -12,6 +18,11 @@ const AddProduct: React.FC = () => {
     const navigate = useNavigate();
     const [addproduct] = useAddProductMutation();
     const { data: size } = useGetSizesQuery();
+    const {data: image} = useGetImageProductsQuery();
+    const {data: category} = useGetCategorysQuery();
+
+    console.log(category);
+    
     const onFinish = (products: any) => {
         console.log(products);
         addproduct(products);
@@ -65,8 +76,8 @@ const AddProduct: React.FC = () => {
 >
     
     <Select mode="multiple" placeholder="Select a size">
-                        {size?.map((sizes:any) => (
-                            <Option key={sizes.id} value={sizes.id}>
+                        {size?.map((sizes:ISize) => (
+                            <Option key={sizes._id} value={sizes._id}>
                                 {sizes.name}
                             </Option>
                         ))}
@@ -75,16 +86,17 @@ const AddProduct: React.FC = () => {
 </Form.Item>
 
 <Form.Item
-    label="image"
+    label="Image"
     name="image"
-    rules={[{ required: true, message: 'Please select a image!' }]}
+    rules={[{ required: true, message: 'Please input your image!' }]}
+  
 >
-    <Select mode="multiple" placeholder="Select a image">
-         {/* You should use the IDs of the categories, not their status */}
-         <Select.Option value="60c72b2f4f7d5c001f647e0a">Category 1</Select.Option>
-        <Select.Option value="60c72b2f4f7d5c001f647e0b">Category 2</Select.Option>
-        {/* Add
-        {/* Add more options as needed */}
+    <Select mode="multiple" style={{width: 200, height: 100}}  placeholder="Select a size" >
+        {image?.data.map((images: ImageProduct) => (
+            <Option key={images._id} value={images._id}>
+                <img src={images.image} alt="" style={{width: '100%', height: 'auto'}} />
+            </Option>
+        ))}
     </Select>
 </Form.Item>
         
@@ -96,17 +108,18 @@ const AddProduct: React.FC = () => {
                     <Input />
                 </Form.Item>
                 <Form.Item
-    label="Category"
-    name="categoryId"
-    rules={[{ required: true, message: 'Please select a category!' }]}
->
-    <Select placeholder="Select a category">
-        {/* You should use the IDs of the categories, not their status */}
-        <Select.Option value="60c72b2f4f7d5c001f647e0a">Category 1</Select.Option>
-        <Select.Option value="60c72b2f4f7d5c001f647e0b">Category 2</Select.Option>
-        {/* Add more options as needed */}
+                    label="category"
+                    name="categoryId"
+                    // rules={[{ required: true, message: 'Please input your description!' }]}
+                >
+                      <Select  placeholder="Select a size">
+        {category?.data.map((categoryId: ICategory) => (
+            <Option key={categoryId._id} value={categoryId._id}>
+                {categoryId.name}
+            </Option>
+        ))}
     </Select>
-</Form.Item>
+                </Form.Item>
                 <Form.Item
                     label="sale"
                     name="sale"

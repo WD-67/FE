@@ -1,14 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+
 import Message from '../../action/Message/Message';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Iimagetintuc } from '../../../interfaces/imagetintuc';
 import { Itintuc } from '../../../interfaces/tintuc';
 import UpLoand from '../../Image/UploadImageTintuc';
 import { useAddImagetintucMutation } from '@/api/imagetintuc';
-import { Button, Checkbox, Form, Input, notification, Select, Upload } from 'antd';
 import { useGetTintucQuery } from '@/api/tintuc';
 const ThemImageTinTuc = () => {
   const navigate = useNavigate()
