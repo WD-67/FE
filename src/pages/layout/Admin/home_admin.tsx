@@ -68,50 +68,6 @@ const HomeAdmin = (props: Props) => {
                     </div>
                 </div>
             </div>
-
-
-            <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-                <header>
-                    <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-                        Thông Tin
-                    </h2>
-                    <p className="max-w-md mt-4 text-gray-500">
-                        Trang web của chúng tôi cung cấp một bộ sưu tập đa dạng và phong phú về quần áo thời trang cho cả nam và nữ. Bạn có thể dễ dàng tìm thấy những bộ trang phục từ những thương hiệu nổi tiếng đến những thiết kế độc quyền của chúng tôi.
-                    </p>
-                </header>
-                <ul className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3">
-                    <li>
-                        <a href="" className="block overflow-hidden group">
-                            <img
-                                src="https://pos.nvncdn.net/f4d87e-8901/art/20190512_mah5T0JT0D3ffyTqHAWoVi33.jpg"
-                                alt=""
-                                className="w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
-                            />
-                        </a> 
-                    </li>
-                    <li>
-                        <a href="" className="block overflow-hidden group">
-                            <img
-                                src="https://pos.nvncdn.net/f4d87e-8901/art/20190512_NmfGpLHFwbWikyuqAOokS7bv.jpg"
-                                alt=""
-                                className="w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
-                            />
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="" className="block overflow-hidden group">
-                            <img
-                                src="https://pos.nvncdn.net/f4d87e-8901/art/20190511_ZRdvRSoetvMUdgBBrcgQ6ji8.jpg"
-                                alt=""
-                                className="w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
-                            />
-                        </a>
-                    </li>
-                </ul>
-            </div>
-             
-
         </section>
 
 

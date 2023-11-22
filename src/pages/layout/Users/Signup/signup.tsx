@@ -21,7 +21,7 @@ const Signup = () => {
   const onFinish = (values: IUser) => {
     signup(values)
       .unwrap()
-      .then(() => navigate("/"));
+      .then(() => navigate("/signin"));
   };
   return (
     <>
@@ -40,8 +40,8 @@ const Signup = () => {
           <div className="md:flex w-full">
             <div className="hidden md:block w-1/2 bg-black py-10 px-10">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVaf_e7v-FyOfDVswXesJXpy8HkKXAgpG8yQ&usqp=CAU"
-                className="w-full"
+                src="https://i.pinimg.com/736x/8c/ed/48/8ced48495b416bb0211b67b2c0ff00d7.jpg"
+                className="w-full rounded-xl"
                 alt=""
               />
             </div>

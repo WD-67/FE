@@ -65,8 +65,8 @@ const Signin: React.FC = () => {
           <div className="md:flex w-full">
             <div className="hidden md:block w-1/2 bg-black py-10 px-10 d-flex justify-content-center">
               <img
-                src="https://bouncin.net/storage/posts/1345/YFyAqfIwqKJ1SVW9M11UqRRZjpnIdYLJQgYTzDpf.jpeg"
-                className=""
+                src="https://vn-live-01.slatic.net/p/4f3476a6e866908fe2a8f2d43bec8f8e.jpg"
+                className=" rounded-xl"
                 alt=""
               />
             </div>
