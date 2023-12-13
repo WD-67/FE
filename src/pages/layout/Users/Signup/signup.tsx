@@ -69,6 +69,7 @@ const Signup = () => {
                           placeholder="Nhập họ và tên"
                           id="fullname"
                           {...register("fullname")}
+                          required
                         />
                       </div>
                     </div>
@@ -86,6 +87,7 @@ const Signup = () => {
                           placeholder="Nhập tên tài khoản"
                           id="name"
                           {...register("name")}
+                          required
                         />
                       </div>
                     </div>
@@ -105,6 +107,7 @@ const Signup = () => {
                           placeholder="Nhập địa chỉ"
                           id="ngaysinh"
                           {...register("ngaysinh")}
+                          required
                         />
                       </div>
                     </div>
@@ -124,6 +127,7 @@ const Signup = () => {
                           placeholder="Nhập email có dạng johnsmith@example.com"
                           id="email"
                           {...register("email")}
+                          required
                         />
                       </div>
                     </div>
@@ -143,6 +147,7 @@ const Signup = () => {
                           placeholder="Nhập mật khẩu"
                           id="password"
                           {...register("password")}
+                          required
                         />
                       </div>
                     </div>
@@ -162,6 +167,7 @@ const Signup = () => {
                           placeholder="Nhập lại mật khẩu"
                           id="confirmPassword"
                           {...register("confirmPassword")}
+                          required
                         />
                       </div>
                     </div>

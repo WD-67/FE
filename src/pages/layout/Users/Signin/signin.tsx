@@ -7,11 +7,6 @@ import { useSigninUserMutation } from "@/api/user";
 import { IUser } from "@/interfaces/user";
 import { useForm } from "react-hook-form";
 import { ISignin } from "@/interfaces/signin";
-type FieldType = {
-  email?: string;
-  password?: string;
-};
-
 const Signin: React.FC = () => {
   const { handleSubmit, register } = useForm<ISignin>();
   const [signin, { isLoading }] = useSigninUserMutation();
@@ -21,15 +16,21 @@ const Signin: React.FC = () => {
     signin(data)
       .unwrap()
       .then((res) => {
-        if (res && res.user && res.user.role) {
+        if (res && res.user && res.user.role.role_name) {
           const user = res.user;
           localStorage.setItem("user", JSON.stringify(user));
           if (res.user?.role?.role_name === "user") {
             message.success("Đăng nhập thành công");
             navigate("/");
           } else if (res.user?.role?.role_name === "admin") {
-            message.success("Đăng nhập thành công với vai trò quản trị");
-            navigate("/");
+            message.success("Đăng nhập thành công với vai trò " + res.user.role.role_name);
+            navigate("/admin");
+          } else if (res.user?.role?.role_name === "nhân viên") {
+            message.success("Đăng nhập thành công với vai trò " + res.user.role.role_name);
+            navigate("/admin");
+          } else if (res.user?.role?.role_name === "quản lý") {
+            message.success("Đăng nhập thành công với vai trò " + res.user.role.role_name);
+            navigate("/admin");
           } else {
             message.error("Bạn không có quyền truy cập trang này");
             console.log(res.user.role.role_name);
@@ -42,17 +43,6 @@ const Signin: React.FC = () => {
       });
   };
 
-  useEffect(() => {
-    // Load lại trang chủ sau khi đăng nhập thành công và chuyển hướng đến trang chủ
-    const reloadHome = () => {
-      history.go(0);
-    };
-
-    const user = localStorage.getItem("user");
-    if (user) {
-      reloadHome();
-    }
-  }, []);
 
   return (
     <>
@@ -122,7 +112,9 @@ const Signin: React.FC = () => {
                         className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
                         type="email"
                         placeholder="Email"
+                        autoComplete="email"
                         {...register("email")}
+                        required 
                       />
                     </div>
                     <label htmlFor="" className="text-xs font-semibold px-1">
@@ -137,6 +129,7 @@ const Signin: React.FC = () => {
                         type="password"
                         placeholder="Passworld"
                         {...register("password")}
+                        required
                       />
                     </div>
                     <div className="flex -mx-3 mt-5">
