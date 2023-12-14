@@ -71,10 +71,14 @@ import Detail_category from "./pages/layout/Users/List-Category/detail-category"
 const isAuthenticated = (): boolean => {
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : {};
-  return user && user?.role?.role_name === "admin";
+  const allowedRoles = ["admin", "nhân viên", "quản lý"]; // Danh sách các vai trò được phép truy cập
+  return user && allowedRoles.includes(user?.role?.role_name);
 };
 
-// console.log(localStorage);
+const PrivateRoute = ({ element }: { element: JSX.Element }) => {
+  return isAuthenticated() ? element : <Navigate to="/" />;
+};
+
 
 export const routers = createBrowserRouter([
   {
@@ -142,7 +146,7 @@ export const routers = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: isAuthenticated() ? <AdminLayout /> : <Navigate to="/" />,
+    element: <PrivateRoute element={<AdminLayout />} />,
     children: [
       {
         path: "product",

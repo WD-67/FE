@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, Dropdown, Popover, Button, message } from "antd";
 import { SettingOutlined, LogoutOutlined } from "@ant-design/icons";
 import ChangePassword from "./changePassword";
+import UserProfile from "./userProfile";
 const { Item, Divider } = Menu;
 
 const UserInformation: React.FC = () => {
@@ -122,7 +123,9 @@ const UserInformation: React.FC = () => {
                 className="h-10 w-10 rounded-full object-cover"
               />
               <p className="ms-2 hidden text-left text-xs sm:block ">
-                <strong className="block font-medium text-sm">{user.name}</strong>
+                <strong className="block font-medium text-sm">
+                  {user.name}
+                </strong>
                 {/* <span className="text-gray-500">{user.email}</span> */}
               </p>
             </button>
@@ -141,14 +144,26 @@ const UserInformation: React.FC = () => {
             ></Popover>
           )}
 
-          <Popover
+          {/* <Popover
             visible={showProfile}
             content={profileContent}
             title="Thông tin người dùng"
             trigger="click"
             onVisibleChange={handleProfileClose}
             placement="bottom"
-          ></Popover>
+          ></Popover> */}
+          {showProfile && (
+            <Popover
+              visible={showProfile}
+              content={
+                <UserProfile
+                  handleHideUserProfile={() => setShowProfile(false)}
+                />
+              }
+              trigger="click"
+              placement="bottom"
+            ></Popover>
+          )}
         </div>
       ) : (
         <div>
