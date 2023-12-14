@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Radio, Spin } from 'antd';
 import { useGetCommentQuery, useRemoveCommentMutation } from "../../../api/comment"
 import { Pagination, notification } from 'antd'
 import { Switch, Popconfirm, Button } from "antd"
@@ -56,7 +56,7 @@ const ProductDetail = () => {
                     <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
                         <div className=" py-[2px] bg-pink-600 my-1">
                             <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
-                                {product?.product.sale} %
+                                {product?.product.hot_sale} %
                             </span>
                         </div>
                         <div className="prd-sale py-[2px] bg-blue-300">
@@ -70,11 +70,11 @@ const ProductDetail = () => {
                 <div className="text-content flex-1">
                     <div className="info-price flex flex-col md:flex-row gap-5 items-center">
                         <>
-                            <h1 className="text-4xl font-normal">{product?.product.price - (product?.product.price * (product?.product.sale / 100))}.vnđ</h1>
+                            <h1 className="text-4xl font-normal">{product?.product.price - (product?.product.price * (product?.product.hot_sale / 100))}.vnđ</h1>
                             <div className="price-old">
                                 <h2 className="text-lg line-through">{product?.product.price}.vnđ</h2>
                                 <p className="text-sm font-medium text-[#fb317d]">
-                                    You Save: {product?.product.sale} %
+                                    You Save: {product?.product.hot_sale} %
                                 </p>
                             </div>
                         </>
@@ -93,11 +93,11 @@ const ProductDetail = () => {
                             <h2 className="text-lg font-medium">Màu Sắc:</h2>
                             <ul className=" grid grid-cols-3 md:flex items-center gap-5">
                                 <li>
-                                    <select name="color" id="color">
-                                        {product?.product.colorSizes.map((colorSize) =>
-                                            <option key={colorSize._id} value={colorSize.color}>{colorSize.color}</option>
-                                        )}
-                                    </select>
+                                <Radio.Group name="color" id="color">
+        {product?.product.colorSizes.map((colorSize) =>
+            <Radio key={colorSize._id} value={colorSize.color}>{colorSize.color}</Radio>
+        )}
+    </Radio.Group>
                                 </li>
                             </ul>
                         </div>

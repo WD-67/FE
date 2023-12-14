@@ -56,7 +56,7 @@ const productApi = createApi({
             }),
         }),
         searchProducts: builder.query<IProduct[], string>({
-            query: (name) => `/products/${name}`,
+            query: (name) => `/products/search/${name}`,
           }),
 
     })

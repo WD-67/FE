@@ -26,7 +26,7 @@ const UpdateProduct: React.FC = () => {
 
 
 
-    const [currentImage, setCurrentImage] = useState<string[]>(data?.product.image || []);
+    const [currentImage, setCurrentImage] = useState<Array[]>(data?.product.image || []);
 
     const handleImage = (imageUrl: string) => {
         setCurrentImage([...currentImage, imageUrl]);
@@ -47,7 +47,7 @@ const UpdateProduct: React.FC = () => {
             image: currentImage,
             description: data?.product.description,
             quantity: data?.product.quantity,
-            sale: data?.product.sale,
+            hot_sale: data?.product.hot_sale,
             categoryId: data?.product.categoryId ,
             trang_thai: data?.product.trang_thai,
             colorSizes: data?.product.colorSizes?.map((colorSize: any) => ({
@@ -61,9 +61,7 @@ const UpdateProduct: React.FC = () => {
 
     const onFinish = async (values: any) => {
         try {
-        if (!isValidObjectId(values.categoryId)) {
-            throw new Error("Invalid categoryId");
-        }
+
             const updateProducts = await updateProduct({  ...values ,_id:id, image: [currentImage] ,
                 colorSizes: values.colorSizes.map((colorSize: any) => ({
                     color: colorSize.color,
@@ -75,6 +73,7 @@ const UpdateProduct: React.FC = () => {
                 description: `The Size ${updateProducts.name} has been updated.`,
                 duration: 2,
             });
+            navigate('/admin/product');
         } catch (error) {
             console.error('Error updating product:', error);
             notification.error({
@@ -120,11 +119,6 @@ const UpdateProduct: React.FC = () => {
                     <Input />
                 </Form.Item>
 
-                <Form.Item label="Trạng thái" name="trang_thai">
-                    <Select>
-                        <Select.Option value="active">active</Select.Option>
-                    </Select>
-                </Form.Item>
 
                 <Form.Item
                     label="category"
@@ -139,7 +133,7 @@ const UpdateProduct: React.FC = () => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item label="Sale" name="sale">
+                <Form.Item label="Sale" name="hot_sale">
                     <InputNumber />
                 </Form.Item>
                 <Form.List name="colorSizes">

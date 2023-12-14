@@ -49,8 +49,8 @@ const Product = (props: Props) => {
         name: product.name,
         image: product.image,
         price: product.price,
-        description: product.description,
-        trang_thai: product.trang_thai,
+        categoryId: product.categoryId,
+        inventoryStatus: product.inventoryStatus,
     }));
     console.log(dataSource);
     
@@ -93,14 +93,14 @@ const columns = [
   },
 
   {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description',
+    title: 'Danh mục',
+    dataIndex: 'categoryId',
+    key: 'categoryId',
   },
   {
     title: 'Status',
-    dataIndex: 'trang_thai',
-    key: 'trang_thai',
+    dataIndex: 'inventoryStatus',
+    key: 'inventoryStatus',
   },
 
   {
