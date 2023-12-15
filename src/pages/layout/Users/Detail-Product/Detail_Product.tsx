@@ -92,30 +92,33 @@ const Detail_Product = () => {
                             {/* Status */}
                             {/* Options */}
                             <div className="options">
-                                {/* color */}
-                                <div className="color flex items-center gap-10">
-                                    <h2 className="text-lg font-medium">Màu Sắc:</h2>
-                                    <ul className=" grid grid-cols-3 md:flex items-center gap-5">
-                                        <li>
-                                        <Radio.Group name="color" id="color">
-        {product?.product.colorSizes.map((colorSize) =>
-            <Radio key={colorSize._id} value={colorSize.color}>{colorSize.color}</Radio>
-        )}
-    </Radio.Group>
-                                        </li>
-                                    </ul>
-                                </div>
+                         {/* color */}
+                       <div className="color flex items-center gap-10">
+                        <h4 className="text-sm font-medium text-gray-900">Color</h4>
+                        <fieldset className="mt-4">
+                            <legend className="sr-only">Choose a color</legend>
+                            <span className="flex items-center space-x-3">
+                            {product?.product.colorSizes.map((colorSize, index) =>
+                                <label key={colorSize._id} className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">
+                                <input type="radio" name="color-choice" value={colorSize.color} className="sr-only" aria-labelledby={`color-choice-${index}-label`}/>
+                                <span id={`color-choice-${index}-label`} className="sr-only">{colorSize.color}</span>
+                                <span aria-hidden="true" className="h-8 w-8 rounded-full border border-black border-opacity-10" style={{backgroundColor: colorSize.color}}></span>
+                                </label>
+                            )}
+                            </span>
+                        </fieldset>
+                        </div>
                                 {/* size */}
                                 <div className="size flex items-center gap-10 mt-5">
                                     <h2 className="text-lg font-medium">Size:</h2>
                                     <ul className="flex items-center gap-2">
-                                        <select name="size" id="size">
+                                        <Radio.Button name="size" id="size">
                                             {product?.product.colorSizes.map((colorSize) =>
                                                 colorSize.sizes.map((sizeObj) =>
                                                     <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
                                                 )
                                             )}
-                                        </select>
+                                        </Radio.Button>
                                     </ul>
                                 </div>
                                 {/* quantity by size */}
@@ -137,6 +140,7 @@ const Detail_Product = () => {
 
                                     </ul>
                                 </div>
+                                
                                 {/* action-button số lượng yêu thích */}
                                 <div className="action-addtocart mt-5">
                                     {/* button */}

@@ -34,10 +34,14 @@ const Header = () => {
   }, [searchTerm, refetch]);
 
   const handleSearch = (e: React.FormEvent) => {
+    
     e.preventDefault();
     setSearchTerm(e.target.value);
   };
-  
+  const handleSelectProduct = (productName: string) => {
+    setSearchTerm(productName);
+    // Hide search results here
+  };
   const  handleClear = 
     () => {
       setSearchTerm("");
@@ -91,14 +95,14 @@ const Header = () => {
           ref={inputRef}
                   onFocus={() => setOpen(true)}
                 />
-                {
-                  <span
-                    onClick={handleClear}
-                    className="absolute clears cursor-pointer right-[50px] top-1/2 translate-y-[-50%]"
-                  >
-                    <TiDelete className="text-xl text-black" />
-                  </span>
-                }
+         {searchTerm && (
+  <span
+    onClick={handleClear}
+    className="absolute clears cursor-pointer right-[50px] top-1/2 translate-y-[-50%]"
+  >
+    <TiDelete className="text-xl text-black" />
+  </span>
+)}
                 
                 <button className="mx-1">
                   <SearchOutlined />
@@ -121,7 +125,7 @@ const Header = () => {
           <ul style={{ listStyle: "none", padding: 0 }}>
             {searchResults.products.map((product) => (
               <li key={product._id} style={{ marginBottom: "10px" }}>
-                <Link to={`/products/${product._id}`} style={{ color: "black", textDecoration: "none" }}>
+                <Link to={`/products/${product._id}`} style={{ color: "black", textDecoration: "none" }}   onClick={() => handleSelectProduct(product.name)}>
                   {product.name}
                 </Link>
               </li>
