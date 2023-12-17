@@ -1,9 +1,10 @@
-import { Button, Col, Form, Input, InputNumber, Modal, Row } from "antd";
+import { Button, Col, Form, Input, InputNumber, Modal, Row, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import React, { useEffect } from "react";
 import { ISale } from "../../../types/index";
 import { useNewSaleMutation, useUpdateSaleMutation } from "../../../api/sale/sale.api";
 import { toast } from "react-toastify";
+import { Option } from "antd/es/mentions";
 
 type FormSaleProps = {
     isModalOpen: boolean;
@@ -84,13 +85,28 @@ const FormSale = ({ isModalOpen, setIsModalOpen, mode, defaultValues }: FormSale
                             <Form.Item
                                 labelCol={{ span: 24 }}
                                 wrapperCol={{ span: 24 }}
+                                name="type"
+                                label="Loại giảm giá"
+                                rules={[{ required: true }, { whitespace: true }]}
+                            >
+                                <Select placeholder="Select a option and change input text above" allowClear>
+                                    <Option value="cash">Giảm tiền mặt</Option>
+                                    <Option value="percent">Giảm theo phần trăn</Option>
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
                                 name="sale"
                                 label="Giảm giá (20% hoặc 200.000 vnđ)"
                                 rules={[{ required: true }, { whitespace: true }]}
                             >
-                                <Input size="large" placeholder="Giảm giá..." />
+                                <Input type="number" size="large" placeholder="Giảm giá..." />
                             </Form.Item>
                         </Col>
+
                         <Col span={12}>
                             <Form.Item
                                 labelCol={{ span: 24 }}

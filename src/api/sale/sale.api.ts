@@ -37,6 +37,15 @@ const saleApi = createApi({
             },
             invalidatesTags: ["Sales"],
         }),
+        decreaseSale: builder.mutation<{ data: ISale; message: string }, string>({
+            query: (id) => {
+                return {
+                    url: "/api/sales/decrease-sale/" + id,
+                    method: "PATCH",
+                };
+            },
+            invalidatesTags: ["Sales"],
+        }),
         removeSale: builder.mutation<{ data: ISale; message: string }, string>({
             query: (id) => ({
                 url: "/api/sales/" + id,
@@ -47,6 +56,6 @@ const saleApi = createApi({
     }),
 });
 
-export const { useGetAllSalesQuery, useGetSaleByIdQuery, useNewSaleMutation, useUpdateSaleMutation, useRemoveSaleMutation } = saleApi;
+export const { useGetAllSalesQuery, useGetSaleByIdQuery, useDecreaseSaleMutation, useNewSaleMutation, useUpdateSaleMutation, useRemoveSaleMutation } =
+    saleApi;
 export default saleApi;
-

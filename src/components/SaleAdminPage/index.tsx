@@ -27,9 +27,12 @@ const SaleAdminPage = () => {
         },
         {
             title: "Thông tỉn giảm giá",
-            dataIndex: "sale",
             key: "sale",
-            render: (sale) => <div className="text-center"> - {sale} </div>,
+            render: (sale) => (
+                <div className="text-center">
+                    - {sale.sale} {sale.type === "cash" ? "Vnd" : "%"}{" "}
+                </div>
+            ),
         },
         {
             title: "Số lần dùng",
