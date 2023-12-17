@@ -79,6 +79,12 @@ const UserInformation: React.FC = () => {
         </Item>
       )}
 
+      <Item key="history">
+        <Link to="/order-history">
+          Lịch sử mua hàng
+        </Link>
+      </Item>
+
       <Item key="changePassword" onClick={handleShowChangePassword}>
         <span>Đổi mật khẩu</span>
       </Item>

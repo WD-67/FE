@@ -66,9 +66,11 @@ import ForgotPassword from "./pages/layout/Users/ForgotPassword/forgotPassword";
 import Detailtintuc from "./components/admin/tintuc/detail-tintuc";
 import NotFound from "./pages/layout/Client/NotFound";
 import Detail_category from "./pages/layout/Users/List-Category/detail-category";
+import OrderHistory from "./pages/layout/Users/OrderHistory";
 
 
 const isAuthenticated = (): boolean => {
+  return true
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : {};
   const allowedRoles = ["admin", "nhân viên", "quản lý"]; // Danh sách các vai trò được phép truy cập
@@ -123,9 +125,13 @@ export const routers = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: "/orderr",
+        path: "/order",
         element: <Orderr />,
-      },
+    },
+    {
+        path: "/order-history",
+        element: <OrderHistory />,
+    },
       {
         path: "/category",
         element: <ListCategory />,
