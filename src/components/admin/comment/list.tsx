@@ -13,13 +13,13 @@ const ListComment = () => {
             await removeComment(id);
             notification.success({
                 message: 'Success',
-                description: 'size soft deleted successfully!',
+                description: 'Xóa bình luận thành công',
             });
             refetch();
         } catch (error) {
             notification.error({
                 message: 'Error',
-                description: 'size to soft delete size',
+                description: 'Xóa bình luận không thành công',
             });
         }
     };

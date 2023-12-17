@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Radio, Spin } from 'antd';
 import { useGetCommentQuery, useRemoveCommentMutation } from "../../../api/comment"
 import { Pagination, notification } from 'antd'
 import { Switch, Popconfirm, Button } from "antd"
@@ -16,152 +16,157 @@ const ProductDetail = () => {
             await removeComment(id);
             notification.success({
                 message: 'Success',
-                description: 'size soft deleted successfully!',
+                description: 'Xóa bình luận thành công!',
             });
             refetch();
         } catch (error) {
             notification.error({
                 message: 'Error',
-                description: 'size to soft delete size',
+                description: 'Xóa bình luận không thành công',
             });
         }
     };
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <div>
-            <div  className="block rounded-lg p-4 shadow-sm shadow-indigo-100 ">
-              <div className="flex">  <ImagePriview width={40} listImage={product?.product.image}/></div>
-                <div className="mt-2">
-                    <dl>
-                        <div>
-                            <dt className="sr-only">Giá</dt>
 
-                            <dd className="text-sm text-gray-500">{product?.product.price}.vnđ</dd>
-                        </div>
 
-                        <div>
-                            <dt className="sr-only">Tên SP</dt>
-
-                            <dd className="font-medium"> {product?.product.name}</dd>
-                        </div>
-                    </dl>
-
-                    <div className="mt-6 flex items-center gap-8 text-xs">
-                        <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-                            <svg
-                                className="h-4 w-4 text-indigo-700"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
-                                />
-                            </svg>
-
-                            <div className="mt-1.5 sm:mt-0">
-                                <p className="text-gray-500">Màu </p>
-
-                                <select name="color" id="color">
-                                                {product?.product.colorSizes.map((colorSize) =>
-                                                    <option key={colorSize._id} value={colorSize.color}>{colorSize.color}</option>
-                                                )}
-                                            </select>
-                            </div>
-                        </div>
-
-                        <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-                            <svg
-                                className="h-4 w-4 text-indigo-700"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                                />
-                            </svg>
-
-                            <div className="mt-1.5 sm:mt-0">
-                                <p className="text-gray-500">Size</p>
-
-                                <select name="size" id="size">
-                                            {product?.product.colorSizes.map((colorSize) =>
-                                                colorSize.sizes.map((sizeObj) =>
-                                                    <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
-                                                )
-                                            )}
-                                        </select>
-                            </div>
-                        </div>
-
-                        <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-                            <svg
-                                className="h-4 w-4 text-indigo-700"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                                />
-                            </svg>
-
-                            <div className="mt-1.5 sm:mt-0">
-                                <p className="text-gray-500">danh mục</p>
-
-                                <p className="font-medium">{product?.product.categoryId}</p>
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div className="mt-10">
-                        <p>   {product?.product.description}</p>
-                    </div>
+        <div className="big-content w-full md:w-4/5 mx-auto">
+            {/* name và rating */}
+            <div className="name-rating mt-8 md:mt-10">
+                <div className="name-product mt-3">
+                    <h1 className="title-name uppercase font-medium text-[#282828] text-2xl">
+                        {product?.product.name}
+                    </h1>
                 </div>
             </div>
+            {/* Slide và content */}
+            <div className="slider-text-content min-w-full  flex flex-col gap-5 mt-8 md:mt-10 md:flex-row justify-between  ">
+                {/* slider */}
+                <div className="slider w-full md:w-2/5 relative overflow-hidden ">
+                    <td className="whitespace-nowrap  text-gray-700 py-4 ">
+                        <div className="items-center ">
+                            <p className="text-xs lg:text-base md:text-xl flex ">
+                                <ImagePriview width={1000} listImage={product?.product.image} />
+                            </p>
+                        </div>
+                    </td>
 
+                    {/* sale */}
+                    <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
+                        <div className=" py-[2px] bg-pink-600 my-1">
+                            <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+                                {product?.product.hot_sale} %
+                            </span>
+                        </div>
+                        <div className="prd-sale py-[2px] bg-blue-300">
+                            <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+                                Mới
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {/* content */}
+                <div className="text-content flex-1">
+                    <div className="info-price flex flex-col md:flex-row gap-5 items-center">
+                        <>
+                            <h1 className="text-4xl font-normal">{product?.product.price - (product?.product.price * (product?.product.hot_sale / 100))}.vnđ</h1>
+                            <div className="price-old">
+                                <h2 className="text-lg line-through">{product?.product.price}.vnđ</h2>
+                                <p className="text-sm font-medium text-[#fb317d]">
+                                    You Save: {product?.product.hot_sale} %
+                                </p>
+                            </div>
+                        </>
+                    </div>
+                    <div className="info-desc mt-5">
+                        <h2 className="text-lg font-medium">Thông tin sản phẩm</h2>
+                        <p className="break-words mt-3 text-base text-[#282828]">
+                            {product?.product.description}
 
+                        </p>
+                    </div>
+                    <hr className="bg-gray-300 h-1 mx-auto my-20" />
+                    <div className="options">
+                        {/* color */}
+                        <div className="color flex items-center gap-10">
+                        <h4 className="text-sm font-medium text-gray-900">Color</h4>
+                        <fieldset className="mt-4">
+                            <legend className="sr-only">Choose a color</legend>
+                            <span className="flex items-center space-x-3">
+                            {product?.product.colorSizes.map((colorSize, index) =>
+                                <label key={colorSize._id} className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">
+                                <input type="radio" name="color-choice" value={colorSize.color} className="sr-only" aria-labelledby={`color-choice-${index}-label`}/>
+                                <span id={`color-choice-${index}-label`} className="sr-only">{colorSize.color}</span>
+                                <span aria-hidden="true" className="h-8 w-8 rounded-full border border-black border-opacity-10" style={{backgroundColor: colorSize.color}}></span>
+                                </label>
+                            )}
+                            </span>
+                        </fieldset>
+                        </div>
+                        {/* size */}
+                        <div className="size flex items-center gap-10 mt-5">
+                            <h2 className="text-lg font-medium">Size:</h2>
+                            <ul className="flex items-center gap-2">
+                                <Radio.Button name="size" id="size">
+                                    {product?.product.colorSizes.map((colorSize) =>
+                                        colorSize.sizes.map((sizeObj) =>
+                                            <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
+                                        )
+                                    )}
+                                </Radio.Button>
+                            </ul>
+                        </div>
+                        {/* quantity by size */}
+                        <div className="size flex items-center gap-10 mt-5">
+
+                            <ul className="flex items-center gap-2">
+
+                                <div className="quantity flex items-center gap-5">
+                                    <h2 className="text-lg font-medium">Số Lượng:</h2>
+                                    <div className="input-number flex items-center  border-2 ">
+
+                                        <input
+                                            type="text"
+                                            className="w-12 text-center border-x-2" defaultValue={product?.product.quantity} />
+
+                                    </div>
+
+                                </div>
+
+                            </ul>
+                        </div>
+                        {/* action-button số lượng yêu thích */}
+                    </div>
+
+                </div>
+            </div>
             {commentData?.length ? (
                 commentData.map((comment, index) => (
                     (comment.productId === id) && (
                         <div key={index} className="user-image mt-5">
-                        <div className="comment-container flex">
-                            <div className="comment-text-user relative p-3 rounded-lg min-h-[70px] mt-2 ml-8 flex-grow">
-                                <span className="font-semibold text-base pb-5">{comment.fullname}</span>
-                                <p className="text-sm text-gray-800">{comment.content}</p>
-                            </div>
-                            <div className="trash-icon-container ml-auto">
-                                <Popconfirm
-                                    placement="topRight"
-                                    title={`Xóa bình luận "${comment.content}"?`}
-                                    onConfirm={() => handleSoftDelete(comment._id as string)}
-                                    okText="Yes"
-                                    cancelText="No"
-                                    okButtonProps={{ style: { background: "red" } }}
-                                >
-                                    <Button>
-                                        <BsFillTrash3Fill />
-                                    </Button>
-                                </Popconfirm>
+                            <div className="comment-container flex">
+                                <div className="comment-text-user relative p-3 rounded-lg min-h-[70px] mt-2 ml-8 flex-grow">
+                                    <span className="font-semibold text-base pb-5">{comment.fullname}</span>
+                                    <p className="text-sm text-gray-800">{comment.content}</p>
+                                </div>
+                                <div className="trash-icon-container ml-auto">
+                                    <Popconfirm
+                                        placement="topRight"
+                                        title={`Xóa bình luận "${comment.content}"?`}
+                                        onConfirm={() => handleSoftDelete(comment._id as string)}
+                                        okText="Yes"
+                                        cancelText="No"
+                                        okButtonProps={{ style: { background: "red" } }}
+                                    >
+                                        <Button>
+                                            <BsFillTrash3Fill />
+                                        </Button>
+                                    </Popconfirm>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
+
                     )
                 ))
             ) : (
@@ -169,7 +174,10 @@ const ProductDetail = () => {
                     <td className="text-sm text-gray-800" colSpan={2}>Chưa có bình luận nào được thêm</td>
                 </div>
             )}
-        </div>
+        </div >
+
+
+
     );
 };
 

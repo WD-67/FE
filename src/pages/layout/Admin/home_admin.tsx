@@ -1,121 +1,164 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-
-type Props = object
+import React, { useEffect, useState } from 'react';
+import { useGetProductsQuery } from '../../../api/product';
+import { useGetCategorysQuery } from '../../../api/category';
+import { useGetUserQuery } from '../../../api/user';
+import { IProduct } from '../../../interfaces/product';
+import { IUser } from '../../../interfaces/user';
+import { Chart, Interval, Tooltip, Axis, Legend } from 'bizcharts';
+import { Link } from 'react-router-dom';
+import { useGetTintucQuery } from '@/api/tintuc';
+import { useGetContactsQuery } from '@/api/contact';
+import { AiFillPhone ,AiOutlineDesktop} from "react-icons/ai";
+type Props = {
+  products: IProduct[];
+};
 
 const HomeAdmin = (props: Props) => {
-    return (
-        <section>
-            <div className="max-w-screen-xl px-4 py-8 mx-auto sm:py-12 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-stretch">
-                    <div className="grid p-6 bg-gray-100 rounded place-content-center sm:p-8">
-                        <div className="max-w-md mx-auto text-center lg:text-left">
-                            <header>
-                                <h2 className="text-xl font-bold text-gray-900 sm:text-3xl ">Giới Thiệu</h2>
+  const { data: productData, refetch: refetchProducts } = useGetProductsQuery();
+  const { data: tintucData, refetch: refetchTintuc } = useGetTintucQuery();
+  const { data: contactData, refetch: refetchContact } = useGetContactsQuery();
+  const { data: categoryData, error, isLoading, refetch: refetchCategories, } = useGetCategorysQuery();
+  const { data: userData, refetch: refetchUser } = useGetUserQuery();
+  const [userCount, setUserCount] = useState<number>(0);
+  const [adminCount, setAdminCount] = useState<number>(0);
+  const [employeeCount, setEmployeeCount] = useState<number>(0);
+  const [managerCount, setManagerCount] = useState<number>(0);
+  const [totalCategories, setTotalCategories] = useState(0);
+  const totalProducts = productData?.products ? productData.products.length : 0;
+  const [totalSales, setTotalSales] = useState<number>(0);
+  const [totalTintuc, setTotalTintuc] = useState<number>(0);
+  useEffect(() => {
+    if (tintucData) {
+      setTotalTintuc(tintucData.length);
+    }
+  }, [tintucData]);
+  // const [totalContact, setTotalContact] = useState<number>(0);
+  // useEffect(() => {
+  //   if (contactData) {
+  //     setTotalContact(contactData.length);
+  //   }
+  // }, [contactData]);
+  const totalContacts = contactData?.data?.length || 0;
+  useEffect(() => {
+    if (categoryData) {
+      setTotalCategories(categoryData.data.length);
+    }
+  }, [categoryData]);
+  useEffect(() => {
+    if (userData?.users) {
+      const userCountWithRole = userData.users.filter(
+        (user: IUser) => user.role.role_name === 'user'
+      ).length;
+      setUserCount(userCountWithRole);
 
-                                <p className="mt-4 text-gray-500">
-                                Chào mừng bạn đến với trang web bán giày thời trang - nơi bạn có thể khám phá những mẫu giày mới nhất và có những sự lựa chọn phù hợp với cá tính của riêng bạn. Chúng tôi tự hào là điểm đến tin cậy của các tín đồ thời trang giày dép, mang đến cho bạn những sản phẩm chất lượng cao, kiểu dáng đa dạng và sự phục vụ tận tình.
-                                </p>
-                            </header>
-                            <Link to={'/'}
-                                className="inline-block px-12 py-3 mt-8 text-sm font-medium text-white transition bg-gray-900 border border-gray-900 rounded hover:shadow focus:outline-none focus:ring"
-                            >
-                                Shop All
-                            </Link>
-                        </div>
-                    </div>
+      const adminCountWithRole = userData.users.filter(
+        (user: IUser) => user.role.role_name === 'admin'
+      ).length;
+      setAdminCount(adminCountWithRole);
 
-                    <div className="lg:col-span-2 lg:py-8">
-                        <ul className="grid grid-cols-2 gap-4">
-                            <li>
-                                <a href="" className="block group">
-                                    <img
-                                        src="https://images.pexels.com/photos/1884584/pexels-photo-1884584.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                        alt=""
-                                        className="object-cover w-full rounded aspect-square"
-                                    />
+      const employeeCountWithRole = userData.users.filter(
+        (user: IUser) => user.role.role_name === 'nhân viên'
+      ).length;
+      setEmployeeCount(employeeCountWithRole);
 
-                                    <div className="mt-3">
-                                        <h3
-                                            className="font-medium text-gray-900 group-hover:underline-offset-4"
-                                        >
-                                            Sản Phẩm Đa Dạng
-                                        </h3>
+      const managerCountWithRole = userData.users.filter(
+        (user: IUser) => user.role.role_name === 'quản lý'
+      ).length;
+      setManagerCount(managerCountWithRole);
+    }
+  }, [userData]);
 
-                                    </div>
-                                </a>
-                            </li>
+  const data = [
+    { role: 'User', count: userCount },
+    { role: 'Admin', count: adminCount },
+    { role: 'Nhân Viên', count: employeeCount },
+    { role: 'Quản lý', count: managerCount },
+  ];
+  const handleResetTotalSales = () => {
+    setTotalSales(0);
+  };
 
-                            <li>
-                                <a href="#" className="block group">
-                                    <img
-                                        src="https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                        alt=""
-                                        className="object-cover w-full rounded aspect-square"
-                                    />
-
-                                    <div className="mt-3">
-                                        <h3
-                                            className="font-medium text-gray-900 group-hover:underline-offset-4"
-                                        >
-                                            Chất Lượng Uy Tín
-                                        </h3>
-
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+  const handleCalculateTotalSales = () => {
+    // Tính toán tổng số tiền từ các nguồn dữ liệu khác nhau và cập nhật state
+    const calculatedTotalSales = 86; // Thay bằng công thức tính tổng số tiền
+    setTotalSales(calculatedTotalSales);
+  };
+  return (
+    <section className="bg-white">
+      <h2 className="text-lg	font-bold">Thống kê</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
+        {/* Bên trái */}
+        <div className="mt-8 sm:mt-12">
+          <dl className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:divide-x sm:divide-gray-100">
+            <div className="flex flex-col px-4 py-8 text-center">
+              <dt className="order-last text-lg font-medium text-gray-500">Sản Phẩm</dt>
+              <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">{totalProducts}</dd>
             </div>
 
-
-            <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-                <header>
-                    <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-                        Thông Tin
-                    </h2>
-                    <p className="max-w-md mt-4 text-gray-500">
-                        Trang web của chúng tôi cung cấp một bộ sưu tập đa dạng và phong phú về quần áo thời trang cho cả nam và nữ. Bạn có thể dễ dàng tìm thấy những bộ trang phục từ những thương hiệu nổi tiếng đến những thiết kế độc quyền của chúng tôi.
-                    </p>
-                </header>
-                <ul className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3">
-                    <li>
-                        <a href="" className="block overflow-hidden group">
-                            <img
-                                src="https://pos.nvncdn.net/f4d87e-8901/art/20190512_mah5T0JT0D3ffyTqHAWoVi33.jpg"
-                                alt=""
-                                className="w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
-                            />
-                        </a> 
-                    </li>
-                    <li>
-                        <a href="" className="block overflow-hidden group">
-                            <img
-                                src="https://pos.nvncdn.net/f4d87e-8901/art/20190512_NmfGpLHFwbWikyuqAOokS7bv.jpg"
-                                alt=""
-                                className="w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
-                            />
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="" className="block overflow-hidden group">
-                            <img
-                                src="https://pos.nvncdn.net/f4d87e-8901/art/20190511_ZRdvRSoetvMUdgBBrcgQ6ji8.jpg"
-                                alt=""
-                                className="w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
-                            />
-                        </a>
-                    </li>
-                </ul>
+            <div className="flex flex-col px-4 py-8 text-center">
+              <dt className="order-last text-lg font-medium text-gray-500">Danh mục</dt>
+              <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">{totalCategories}</dd>
             </div>
-             
 
-        </section>
+            <div className="flex flex-col px-4 py-8 text-center">
+              <dt className="order-last text-lg font-medium text-gray-500">Đã Bán</dt>
+              <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">86</dd>
+            </div>
+            <div className="flex flex-col px-4 py-8 text-center">
+              <button
+                className="text-blue-600 hover:underline"
+                onClick={handleCalculateTotalSales}
+              >
+                Tính tổng số tiền
+              </button>
+              <button
+                className="text-red-600 hover:underline ml-4"
+                onClick={handleResetTotalSales}
+              >
+                Reset
+              </button>
+            </div>
+            <div className="flex flex-col px-4 py-8 text-center">
+              <Link title="Cart" className="" to={"tintuc"}>
+                <i className="relative">
+                  <AiOutlineDesktop className="heart-icon text-black text-3xl" />Tin Tức
+                  <div className="quatity-producst  -top-2 ml-6 absolute">
+                    <span className="bg-red-500 text-white rounded-full text-xs px-1 py-[2px]">
+                      {totalTintuc}+
+                    </span>
+                  </div>
+                </i>
+              </Link>
+            </div>
+            <div className="flex flex-col px-4 py-8 text-center">
+              <Link title="Cart" className="" to={"contact"}>
+                <i className="relative">
+                  <AiFillPhone  className="heart-icon text-black text-3xl" />Liên hệ
+                  <div className="quatity-producst  -top-2 ml-6 absolute">
+                    <span className="bg-red-500 text-white rounded-full text-xs px-1 py-[2px]">
+                      {totalContacts}+
+                    </span>
+                  </div>
+                </i>
+              </Link>
+            </div>
+
+          </dl>
+        </div>
+        {/* Bên phải */}
+        <div className="mt-8">
+          <Chart height={300} data={data} autoFit>
+            <Axis name="Chức vụ" title />
+            <Tooltip shared />
+            <Interval position="role*count" color="role" adjust={['dodge']} />
+            {/* <Legend position="top-center" /> */}
+          </Chart>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HomeAdmin;
 
 
-    )
-}
-
-export default HomeAdmin

@@ -49,9 +49,8 @@ const AddProduct: React.FC = () => {
             image: img,
             description: products.description,
             quantity: products.quantity,
-            sale: products.sale,
+            hot_sale:  products.hot_sale,
             categoryId: products.categoryId,
-            trang_thai: "active",
             colorSizes: products.colorSizes.map((colorSize: any) => ({
                 color: colorSize.color,
                 sizes: colorSize.size.map((size: string) => ({ size }))
@@ -72,49 +71,50 @@ const AddProduct: React.FC = () => {
    
 
     return (
-        <div>
+        <div style={{ maxWidth: 800, margin: '0 auto' }}>
         <Form
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 800, margin: '0 auto' }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"
         >
-            <Row gutter={20}>
-                <Col span={12}>
+        
+                <Col span={15}>
                     <Form.Item
-                        label="Tên sản phẩm"
+                        label="Name"
                         name="name"
-                        rules={[{ required: true, message: 'Vui lòng nhập tên sản phẩm!' }, { min: 5, message: 'Tên sản phẩm phải có ít nhất 5 ký tự.' }]}
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập tên sản phẩm!' },
+                            { min: 5, message: 'Tên sản phẩm phải có ít nhất 5 ký tự.' },
+                        ]}
                     >
                         <Input />
                     </Form.Item>
     
                     <Form.Item
-                        label="Giá"
+                        label="Price"
                         name="price"
-                        rules={[{ required: true, message: 'Vui lòng nhập giá sản phẩm!' }, { validator: (_, value) => (!value || !isNaN(Number(value))) ? Promise.resolve() : Promise.reject('Giá phải là một số') }]}
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập giá sản phẩm!' },
+                            {
+                                validator: (_, value) =>
+                                    !value || !isNaN(Number(value))
+                                        ? Promise.resolve()
+                                        : Promise.reject('Giá phải là một số'),
+                            },
+                        ]}
                     >
                         <Input />
                     </Form.Item>
     
-                    <Form.Item label="Trạng thái" name="trang_thai"
-                    rules=
-                    {[{ required: true, message: 'Vui lòng nhập trạng thái sản phẩm!' }]}
-                    >
-                        <Select>
-                            <Select.Option value="active">Hoạt động</Select.Option>
-                        </Select>
-                    </Form.Item>
-    
                     <Form.Item
-                        label="Danh mục"
+                        label="Category"
                         name="categoryId"
                         rules={[{ required: true, message: 'Vui lòng chọn danh mục!' }]}
                     >
-                        <Select placeholder="Chọn kích cỡ">
+                        <Select placeholder="Chọn danh mục">
                             {category?.data?.map((categoryId: ICategory) => (
                                 <Option key={categoryId._id} value={categoryId._id}>
                                     {categoryId.name}
@@ -122,13 +122,44 @@ const AddProduct: React.FC = () => {
                             ))}
                         </Select>
                     </Form.Item>
-    
-                    <Form.Item label="Khuyến mãi" name="sale"
-                 rules={[{ required: true, message: 'Vui lòng nhập khuyến mại sản phẩm!' }, { validator: (_, value) => (!value || !isNaN(Number(value))) ? Promise.resolve() : Promise.reject('Giá phải là một số') }]}
-                    >
+                    <Row gutter={20} style={{ marginLeft: '90px' }}>
+                    <Col span={12}>
+                        <Form.Item
+                        label="Sale"
+                        name="hot_sale"
+                        rules={[
+                            // { required: true, message: 'Vui lòng nhập khuyến mại sản phẩm!' },
+                            {
+                            validator: (_, value) =>
+                                !value || !isNaN(Number(value))
+                                ? Promise.resolve()
+                                : Promise.reject('Giá phải là một số'),
+                            },
+                        ]}
+                        >
                         <InputNumber />
-                    </Form.Item>
-                    <Form.List name="colorSizes">
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                        label="Quanity"
+                        name="quantity"
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập số lượng sản phẩm!' },
+                            {
+                            validator: (_, value) =>
+                                !value || !isNaN(Number(value))
+                                ? Promise.resolve()
+                                : Promise.reject('Giá phải là một số'),
+                            },
+                        ]}
+                        >
+                        <InputNumber />
+                        </Form.Item>
+                    </Col>
+                    </Row>
+                    <Col style={{ marginLeft: '150px' }}>
+                    <Form.List name="colorSizes" >
                         {(fields, { add, remove }) => (
                             <>
                                 {fields.map(({ key, name, ...restField }) => (
@@ -138,7 +169,7 @@ const AddProduct: React.FC = () => {
                                             name={[name, 'color']}
                                             rules={[{ required: true, message: 'Thiếu màu' }]}
                                         >
-                                            <Select placeholder="Màu" style={{width: 120}}>
+                                            <Select placeholder="Màu" style={{ width: 120 }}>
                                                 {color?.color?.map((color: IColor) => (
                                                     <Option key={color._id} value={color._id}>
                                                         {color.name}
@@ -151,7 +182,7 @@ const AddProduct: React.FC = () => {
                                             name={[name, 'size']}
                                             rules={[{ required: true, message: 'Thiếu kích cỡ' }]}
                                         >
-                                            <Select mode='multiple' placeholder="Kích cỡ" style={{width: 80}}>
+                                            <Select mode="multiple" placeholder="Kích cỡ" style={{ width: 80 }}>
                                                 {size?.map((size: ISize) => (
                                                     <Option key={size._id} value={size._id}>
                                                         {size.name}
@@ -170,39 +201,38 @@ const AddProduct: React.FC = () => {
                             </>
                         )}
                     </Form.List>
-                    <Form.Item label="Số lượng" name="quantity"
-                    rules={[{ required: true, message: 'Vui lòng nhập số lượng sản phẩm!' }, { validator: (_, value) => (!value || !isNaN(Number(value))) ? Promise.resolve() : Promise.reject('Giá phải là một số') }]}
-                    >
-                        <InputNumber />
-                    </Form.Item>
-                   
+                    </Col>
                 </Col>
-                <Col span={12}>
-                    <Form.Item
-                        label="Hình ảnh"
-                        name="image"
-                        // rules={[{ required: true, message: 'Vui lòng nhập hình ảnh sản phẩm!' }]}
-                    >
-                      <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />
-                    </Form.Item>
-                    
-                    <Form.Item label="Mô tả" name="description"
-                    rules={[{ required: true, message: 'Vui lòng nhập mô tả sản phẩm!' }, 
-                    { min: 5, message: 'Mô tả sản phẩm phải có ít nhất 5 ký tự.' }]}
-                    >
-                        <TextArea rows={4} />
-                    </Form.Item>
-                        
-                </Col>
+    
+                <Row gutter={1} style={{ marginLeft: '26px' }}>
+            <Col span={12} >
+                <Form.Item label="IMG" name="image">
+                    <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />
+                </Form.Item>
+            </Col>
+            <Col span={12}  style={{ marginRight: '10px' }}>
+                <Form.Item
+                    label="Mô tả"
+                    name="description"
+                    rules={[
+                        { required: true, message: 'Vui lòng nhập mô tả sản phẩm!' },
+                        { min: 5, message: 'Mô tả sản phẩm phải có ít nhất 5 ký tự.' },
+                    ]}
+                >
+                    <TextArea rows={4} />
+                </Form.Item>
+            </Col>
+    
             </Row>
     
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button  htmlType="submit">
+                <Button type="primary" htmlType="submit">
                     Thêm sản phẩm mới
                 </Button>
             </Form.Item>
         </Form>
     </div>
+    
     );
 };
 

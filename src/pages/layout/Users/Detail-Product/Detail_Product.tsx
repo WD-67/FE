@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/store/hook";
 import { addProductToCart } from "@/store/cart/cart.slice";
 import { toast } from "react-toastify";
+import { Radio } from "antd";
 
 const Detail_Product = () => {
     const [quantity, setQuantity] = useState<number>(1);
@@ -53,7 +54,7 @@ const Detail_Product = () => {
     return (
         <>
             <div className="w-screen min-h-[300px] mt-10">
-                <div className="big-content w-full px-2 md:w-4/5  mx-auto">
+                <div className="big-content w-full px-2 md:w-4/5 mx-auto">
                     {/* menu */}
                     <div className="breadcrumbs">
                         <ul className="flex items-center gap-2">
@@ -100,7 +101,7 @@ const Detail_Product = () => {
                                         <p className="text-sm font-medium text-[#fb317d]">You Save: %</p>
                                     </div>
                                 </>
-                            </div>
+                            </div >
                             <div className="info-desc mt-5">
                                 <h2 className="text-lg font-medium">Thông tin sản phẩm</h2>
                                 <p className="break-words mt-3 text-base text-[#282828]">{product?.product.description}</p>
@@ -128,7 +129,7 @@ const Detail_Product = () => {
                                 <div className="size flex items-center gap-10 mt-5">
                                     <h2 className="text-lg font-medium">Size:</h2>
                                     <ul className="flex items-center gap-2">
-                                        <select name="size" id="size">
+                                        <Radio.Button name="size" id="size">
                                             {product?.product.colorSizes.map((colorSize) =>
                                                 colorSize.sizes.map((sizeObj: any) => (
                                                     <option key={sizeObj._id} value={sizeObj.size}>
@@ -136,7 +137,7 @@ const Detail_Product = () => {
                                                     </option>
                                                 ))
                                             )}
-                                        </select>
+                                        </Radio.Button>
                                         <li className="rounded-md cursor-pointer  py-1 ">
                                             <span className="active-bg-size hover:bg-black px-1 py-2 hover:text-white  rounded-md">Size</span>
                                         </li>
@@ -159,6 +160,7 @@ const Detail_Product = () => {
                                         </div>
                                     </ul>
                                 </div>
+
                                 {/* action-button số lượng yêu thích */}
                                 <div className="action-addtocart mt-5">
                                     {/* button */}
@@ -172,12 +174,12 @@ const Detail_Product = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div >
+                    </div >
 
                     {/* mô tả và support */}
-                    <div className="desc-support">
-                        <div className="info-support flex flex-col gap-10 md:flex-row justify-between items-center bg-gray-100 py-2 px-1 mt-8 md:mt-20">
+                    < div className="desc-support" >
+                        <div className="info-support flex flex-col gap-10 md:flex-row justify-between items-center bg-white  py-2 px-1 mt-8 md:mt-20">
                             <div className="item flex items-center ">
                                 <i className="text-4xl">
                                     <FcConferenceCall />
@@ -208,7 +210,7 @@ const Detail_Product = () => {
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </div >
                     {/* Đánh giá */}
                     {/* <div className="rating-user">
                         <h1 className="my-5 text-xl font-medium">Đánh giá và Nhận xét </h1>
@@ -275,6 +277,7 @@ const Detail_Product = () => {
                     </div>
                 </div>
             </div>
+
         </>
     );
 };

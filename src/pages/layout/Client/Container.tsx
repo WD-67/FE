@@ -18,7 +18,7 @@ const Container = (props: Props) => {
     return (
         <div>
 
-            <BannerHome />
+ <BannerHome />
             <BannerCategory />
             <ListProducts />
             <BannerCaption />

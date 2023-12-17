@@ -34,6 +34,39 @@ const Shop_Products = () => {
         autoplaySpeed: 3000,    // Đặt thời gian chờ giữa các slide (tính bằng mili giây)
         arrows: false,         // Ẩn thanh lên xuống trái phải
     };
+    //filter 
+    const [dataSourceToRender, setDataSourceToRender] = useState<IProduct[]>([]);
+    const [searchResult, setSearchResult] = useState<IProduct[]>([]);
+    useEffect(() => {
+        if (productData) {
+            const updatedDataSource = productData?.products.map(({ ...IProduct }) => ({
+                ...IProduct,
+            }));
+            setDataSourceToRender(updatedDataSource);
+            setSearchResult(updatedDataSource);
+        }
+    }, [productData]);
+    // console.log(productData);
+
+    let filteredData = dataSourceToRender
+
+
+    const onHandleClick = ({ target: { value } }: any) => {
+        console.log(value);
+        // console.log("Initial dataSourceToRender:", dataSourceToRender);
+
+        if (Array.isArray(filteredData)) {
+            filteredData = filteredData.filter(
+                (itemm) => String(itemm.categoryId) === String(value)
+            );
+            // console.log("Filtered data:", filteredData);
+            if (filteredData.length > 0) {
+                setDataSourceToRender(filteredData);
+            } else {
+                setDataSourceToRender([...searchResult]);
+            }
+        };
+    }
     return (
         <>
             <div className="box-container"
@@ -51,7 +84,7 @@ const Shop_Products = () => {
                                 </Link>
                                 <li>/</li>
                                 <li className=" hover:text-[#17c6aa] ">
-                                  Sản phẩm 
+                                    Sản phẩm
                                 </li>
                             </ul>
                         </div>
@@ -77,30 +110,17 @@ const Shop_Products = () => {
                                 <div className="sort-products-list">
                                     <h1 className="font-semibold text-lg text-[#4a4a4a]  my-3">Lọc sản phẩm theo:</h1>
                                     <div className="list-sort flex flex-col md:flex-row gap-2">
-                                        <Tooltip placement="bottom" trigger={"click"} color="white"
-                                            title={
-                                                <div className="list-size-option">
-                                                    <ul className="grid grid-cols-3  p-1">
-                                                        {categoryData?.data?.map((category: ICategory) => (
-                                                            <Link to={`/category/${category._id}`}>
-                                                                <li key={category._id} className="cursor-pointer flex items-center justify-center gap-1 bg-blue-gray-50  m-[1px] px-2 py-1 rounded-lg border-gray-300 border text-black">
-                                                                    {category.name}
-                                                                </li>
-                                                            </Link>
-                                                        ))}
-
-
-                                                    </ul>
-                                                </div>
-                                            }
+                                        <select
+                                            onChange={onHandleClick}
+                                            className="form-select-product "
                                         >
-                                            <div className={`btn-sort-option cursor-pointer flex items-center gap-1  px-3 py-2 rounded-lg  border   `}>
-                                                <button className="font-light text-sm">
-                                                    Danh Mục
-                                                </button>
-                                                <i><IoIosArrowDropdown /></i>
-                                            </div>
-                                        </Tooltip>
+                                            <option selected disabled>
+                                                Thương hiệu
+                                            </option>
+                                            {categoryData?.data?.map((category: ICategory) => {
+                                                return <option value={category.name}>{category.name}</option>;
+                                            })}
+                                        </select>
                                         <Tooltip placement="bottomRight" trigger={"click"} color="white"
                                             title={
                                                 <div className="list-size-option">
@@ -158,12 +178,21 @@ const Shop_Products = () => {
                             </div>
                             <div className="list-products-item mt-10">
                                 <div className="content-list-new-products   grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                                    {productData?.products
+                                    {dataSourceToRender
                                         .slice()
                                         .sort((a, b) => (sortBy === 'asc' ? a.price - b.price : b.price - a.price))
                                         .sort((a, b) => (sortBy === 'asc' ? b.price - a.price : a.price - b.price))
-                                        .map((product: IProduct, index: any) => (
-                                            <div className="w-full">  <Item product={product} key={index} /></div>))}
+                                        ?.map((product) => {
+                                            const cateName = categoryData?.data.find(
+                                                (cate: any) => cate._id == product.categoryId
+                                            )?.name;
+                                            return (
+                                                <div key={product._id}>
+                                                    <Item product={product} />
+                                                </div>
+                                            )
+                                        })}
+
                                 </div>
                             </div>
                         </div>

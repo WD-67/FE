@@ -44,7 +44,7 @@ const AddColor: React.FC = () => {
                 autoComplete="off"
             >
                 <Form.Item
-                    label="Size Name"
+                    label="Cổ Name"
                     name="name"
                     rules={[{ required: true, message: 'Please input your Name Product!' }, { min: 1, message: 'Product Name must be at least 5 characters.' }]}
                 >
