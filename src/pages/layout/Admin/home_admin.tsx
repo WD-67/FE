@@ -8,7 +8,6 @@ import { Chart, Interval, Tooltip, Axis, Legend } from 'bizcharts';
 import { Link } from 'react-router-dom';
 import { useGetTintucQuery } from '@/api/tintuc';
 import { useGetContactsQuery } from '@/api/contact';
-import { AiFillPhone ,AiOutlineDesktop} from "react-icons/ai";
 type Props = {
   products: IProduct[];
 };
@@ -32,12 +31,6 @@ const HomeAdmin = (props: Props) => {
       setTotalTintuc(tintucData.length);
     }
   }, [tintucData]);
-  // const [totalContact, setTotalContact] = useState<number>(0);
-  // useEffect(() => {
-  //   if (contactData) {
-  //     setTotalContact(contactData.length);
-  //   }
-  // }, [contactData]);
   const totalContacts = contactData?.data?.length || 0;
   useEffect(() => {
     if (categoryData) {
@@ -74,88 +67,71 @@ const HomeAdmin = (props: Props) => {
     { role: 'Nhân Viên', count: employeeCount },
     { role: 'Quản lý', count: managerCount },
   ];
-  const handleResetTotalSales = () => {
-    setTotalSales(0);
-  };
 
-  const handleCalculateTotalSales = () => {
-    // Tính toán tổng số tiền từ các nguồn dữ liệu khác nhau và cập nhật state
-    const calculatedTotalSales = 86; // Thay bằng công thức tính tổng số tiền
-    setTotalSales(calculatedTotalSales);
-  };
   return (
-    <section className="bg-white">
-      <h2 className="text-lg	font-bold">Thống kê</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 items-center">
-        {/* Bên trái */}
-        <div className="mt-8 sm:mt-12">
-          <dl className="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:divide-x sm:divide-gray-100">
-            <div className="flex flex-col px-4 py-8 text-center">
-              <dt className="order-last text-lg font-medium text-gray-500">Sản Phẩm</dt>
-              <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">{totalProducts}</dd>
-            </div>
+    <div>
+      <div className='text-4xl pb-10'>Tổng quan</div>
+      <div className='grid grid-cols-3'>
 
-            <div className="flex flex-col px-4 py-8 text-center">
-              <dt className="order-last text-lg font-medium text-gray-500">Danh mục</dt>
-              <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">{totalCategories}</dd>
-            </div>
 
-            <div className="flex flex-col px-4 py-8 text-center">
-              <dt className="order-last text-lg font-medium text-gray-500">Đã Bán</dt>
-              <dd className="text-4xl font-extrabold text-blue-600 md:text-5xl">86</dd>
-            </div>
-            <div className="flex flex-col px-4 py-8 text-center">
-              <button
-                className="text-blue-600 hover:underline"
-                onClick={handleCalculateTotalSales}
-              >
-                Tính tổng số tiền
-              </button>
-              <button
-                className="text-red-600 hover:underline ml-4"
-                onClick={handleResetTotalSales}
-              >
-                Reset
-              </button>
-            </div>
-            <div className="flex flex-col px-4 py-8 text-center">
-              <Link title="Cart" className="" to={"tintuc"}>
-                <i className="relative">
-                  <AiOutlineDesktop className="heart-icon text-black text-3xl" />Tin Tức
-                  <div className="quatity-producst  -top-2 ml-6 absolute">
-                    <span className="bg-red-500 text-white rounded-full text-xs px-1 py-[2px]">
-                      {totalTintuc}+
-                    </span>
-                  </div>
-                </i>
-              </Link>
-            </div>
-            <div className="flex flex-col px-4 py-8 text-center">
-              <Link title="Cart" className="" to={"contact"}>
-                <i className="relative">
-                  <AiFillPhone  className="heart-icon text-black text-3xl" />Liên hệ
-                  <div className="quatity-producst  -top-2 ml-6 absolute">
-                    <span className="bg-red-500 text-white rounded-full text-xs px-1 py-[2px]">
-                      {totalContacts}+
-                    </span>
-                  </div>
-                </i>
-              </Link>
-            </div>
-
-          </dl>
+        <Link to="product">
+          <div className='bg-yellow-500 rounded-lg pt-4 mb-6 block  w-[300px] h-[150px]'>
+          <div className='block  px-6'>
+            {<div className='text-5xl text-white font-semibold pb-[22px]'>{totalProducts}</div>}
+            <div className='text-white font-medium text-2xl mb-6'>Sản Phẩm</div>
+          </div>
         </div>
-        {/* Bên phải */}
-        <div className="mt-8">
-          <Chart height={300} data={data} autoFit>
-            <Axis name="Chức vụ" title />
-            <Tooltip shared />
-            <Interval position="role*count" color="role" adjust={['dodge']} />
-            {/* <Legend position="top-center" /> */}
-          </Chart>
+        </Link>
+        <Link to="category">
+        <div className='bg-green-500 rounded-lg pt-6 mb-8 block w-[300px] h-[150px]'>
+          <div className='block px-6'>
+            {<div className='text-5xl text-white font-semibold pb-[22px]'>{totalCategories}</div>}
+            <div className='text-white font-medium text-2xl mb-9'>Danh Mục Sản Phẩm</div>
+          </div>
+
         </div>
+        </Link>
+        <Link to="tintuc">
+        <div className='bg-orange-500 rounded-lg pt-6 mb-8 block w-[300px] h-[150px]'>
+          <div className='block px-6'>
+            {<div className='text-5xl text-white font-semibold pb-[22px]'>   {totalTintuc}  </div>}
+            <div className='text-white font-medium text-2xl mb-9'>Tin Tức</div>
+          </div>
+
+        </div>
+        </Link>
       </div>
-    </section>
+      <Link to="contact">
+      <div className='grid grid-cols-3 mt-10'>
+        <div className='bg-purple-500 rounded-lg pt-6 mb-8 block w-[300px] h-[150px]'>
+          <div className='block px-6'>
+            {<div className='text-5xl text-white font-semibold pb-[22px]'> {totalContacts}</div>}
+            <div className='text-white font-medium text-2xl mb-9'>Danh Sách Liên Hệ</div>
+          </div>
+
+        </div>
+
+        <div className='bg-rose-500 rounded-lg pt-6 mb-8 block w-[300px] h-[150px]'>
+          <div className='block px-6'>
+            {<div className='text-5xl text-white font-semibold pb-[22px]'></div>}
+            <div className='text-white font-medium text-2xl mb-9'>Đơn Hàng Chưa Xử Lý</div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+      </Link>
+      <div className="mt-8">
+        <Chart height={300} data={data} autoFit>
+          <Axis name="Chức vụ" title />
+          <Tooltip shared />
+          <Interval position="role*count" color="role" adjust={['dodge']} />
+
+        </Chart>
+      </div>
+    </div>
   );
 };
 
