@@ -46,7 +46,7 @@ const Header = () => {
   return (
     <>
       <div className="Header fixed z-40 shadow-2xl pt-1">
-        <header className="min-h-[100px] bg-gray-100 w-screen">
+        <header className="min-h-[100px] bg-white w-screen">
           <div className="content-header min-h-[100px] py-2 flex flex-col md:flex-row items-center justify-evenly">
             <div className="w-20 h-20 ">
               <Link to={"/"}>
@@ -74,11 +74,11 @@ const Header = () => {
             <div className="w-full md:w-80">
               <form
                 onSubmit={onSubmitSearch}
-                className={`search-header relative ml-auto  w-50 focus-within:w-80  h-10 border border-teal-700 bg-gray-300 group  flex items-center justify-around pl-2 rounded-3xl ${valueSearch.length > 0 ? "w-80" : ""
+                className={`search-header relative ml-auto  w-50 focus-within:w-80  h-10 border   group  flex items-center justify-around pl-2 rounded-3xl ${valueSearch.length > 0 ? "w-80" : ""
                   }`}
               >
                 <input
-                  className="inp-search w-5/6 text-sm  caret-teal-400  h-6 outline-none bg-gray-300   pl-2 pr-7"
+                  className="inp-search w-5/6 text-sm  caret-teal-400  h-6 outline-none   pl-2 pr-7"
                   type="text"
                   name=""
                   id=""
