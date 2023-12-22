@@ -19,10 +19,12 @@ const ListProductNew = () => {
             </div>
           ))}
 
-  
+        </div>
+      </div>
+    </div>
 
-       
-   
+
+
   );
 };
 

@@ -66,115 +66,110 @@ const Detail_Product = () => {
                             <li>/ {product?.product.name}</li>
                         </ul>
                     </div>
-                    {/* name và rating */}
-                    <div className="name-rating mt-8 md:mt-10">
-                        <div className="name-product mt-3">
-                            <h1 className="title-name uppercase font-medium text-[#282828] text-2xl">{product?.product.name}</h1>
-                        </div>
-                    </div>
                     {/* Slide và content */}
 
-                    <div className="slider-text-content min-w-full  flex flex-col gap-5 mt-8 md:mt-10 md:flex-row justify-between  ">
+                    <div className="slider-text-content min-w-full  flex flex-col gap-7 mt-8 md:mt-10 md:flex-row justify-between  ">
                         {/* slider */}
                         <div className="slider w-full md:w-2/5 relative overflow-hidden ">
-                            <ImagePriview width={80} listImage={product?.product.image} />
-
+                            <ImagePriview width={140} listImage={product?.product.image} />
                             {/* sale */}
                             <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
-                            {product?.product.hot_sale > 10 && (
-                                <div className=" py-[2px] bg-pink-600 my-1">
-                                    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
-                                        {product?.product.hot_sale} sale
-                                    </span>
-                                </div>
-                            )}
+                                {product?.product.hot_sale > 10 && (
+                                    <div className=" py-[2px] bg-pink-600 my-1">
+                                        <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+                                            {product?.product.hot_sale} sale
+                                        </span>
+                                    </div>
+                                )}
                                 <div className="prd-sale py-[2px] bg-blue-300">
                                     <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">NEW</span>
                                 </div>
                             </div>
                         </div>
                         {/* content */}
-                        <div className="text-content flex-1">
-                            <div className="info-price flex flex-col md:flex-row gap-5 items-center">
-                                <>
-                                    <h1 className="text-3xl font-normal">{product?.product.price}.vnđ</h1>
-                                    <div className="price-old">
-                                        <h2 className="text-lg line-through">{product?.product.price}.vnđ</h2>
-                                        <p className="text-sm font-medium text-[#fb317d]">You Save: %</p>
+
+                        <div className="text-content flex-1 flex flex-col md:flex-row ml-20 md:mt-[-15%]  ">
+                            <div className=" pr-5">
+                                <h1 className="title-name uppercase font-mono text-[#282828] text-2xl">{product?.product.name}</h1>
+                                <p className="text-xs my-2">Mã sản phẩm :{product?.product._id}</p>
+                                <div className="info-price flex flex-col gap-5 items-start mt-4 md:mt-10">
+                                    <div className="flex items-center gap-5">
+                                        {/* Giá gốc */}
+                                        <h1 className="text-3xl  font-bold  ">{product?.product.price}.vnđ</h1>
+                                        {/* Giá sale */}
+                                        {product?.product.hot_sale && (
+                                            <div className="price-old">
+                                                <h1 className="text-xl  font-bold line-through">{product?.product.price}.vnđ</h1>
+                                                <p className="text-sm font-medium text-[#fb317d">You Save:</p>
+                                            </div>
+                                        )}
                                     </div>
-                                </>
-                            </div >
-                            <div className="info-desc mt-5">
-                                <h2 className="text-lg font-medium">Thông tin sản phẩm</h2>
-                                <p className="break-words mt-3 text-base text-[#282828]">{product?.product.description}</p>
-                            </div>
-                            <hr className="bg-gray-300 h-1 mx-auto my-20" />
-                            {/* Status */}
-                            {/* Options */}
-                            <div className="options">
-                                {/* color */}
-                                {/* <div className="color flex items-center gap-10">
-                        <h4 className="text-sm font-medium text-gray-900">Color</h4>
-                        <fieldset className="mt-4">
-                            <legend className="sr-only">Choose a color</legend>
-                            <span className="flex items-center space-x-3">
-                            {product?.product.colorSizes.map((colorSize, index) =>
-                                <label key={colorSize._id} className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">
-                                <input type="radio" name="color-choice" value={colorSize.color} className="sr-only" aria-labelledby={`color-choice-${index}-label`}/>
-                                <span id={`color-choice-${index}-label`} className="sr-only">{colorSize.color}</span>
-                                <Button aria-hidden="true" className="h-8 w-8 rounded-full border border-black border-opacity-10" style={{backgroundColor: colorSize.color}}></Button>
-                                </label>
-                            )}
-                            </span>
-                        </fieldset>
-                        </div> */}
-                        {/* size */}
-                        {/* <div className="size flex items-center gap-10 mt-5">
-                            <h2 className="text-lg font-medium">Size:</h2>
-                            <ul className="flex items-center gap-2">
-                                <Radio.Button name="size" id="size">
-                                    {product?.product.colorSizes.map((colorSize) =>
-                                        colorSize.sizes.map((sizeObj) =>
-                                            <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
-                                        )
-                                    )}
-                                </Radio.Button>
-                            </ul>
-                        </div> */}
-                                {/* quantity by size */}
-                                <div className="size flex items-center gap-10 mt-5">
-                                    <ul className="flex items-center gap-2">
-                                        <div className="quantity flex items-center gap-5">
-                                            <h2 className="text-lg font-medium">Số Lượng:</h2>
-                                            <div className="input-number flex items-center  border-2 ">
-                                                <button className="btn-minus flex w-full px-2" onClick={handleCountDowQuantity}>
-                                                    -
-                                                </button>
-                                                <input value={quantity} type="text" className="w-12 text-center border-x-2" />
-                                                <button className="btn-plus px-2" onClick={handleIncreaseQuantity}>
-                                                    +
-                                                </button>
+                                    <div className="options">
+                                        {/* Màu sắc */}
+                                        <div className="color flex items-center gap-10">
+                                            <h1 className="text-base font-bold">Màu Sắc:</h1>
+                                            <div className="flex items-center space-x-3">
+                                                {/* Đây là một ví dụ về cách thêm màu sắc sử dụng các phần tử và lớp */}
+                                                <label className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">
+                                                    <input type="radio" name="color-choice" value="red" className="sr-only" />
+                                                    <span className="sr-only">Red</span>
+                                                    <button className=" mx-1 h-8 w-8 rounded-full border border-black border-opacity-10 bg-red-500"></button>
+                                                    <button className=" mx-1 h-8 w-8 rounded-full border border-black border-opacity-10 bg-pink-500"></button>
+                                                </label>
+                                                {/* Thêm các ô màu sắc khác tương tự ở đây */}
                                             </div>
                                         </div>
-                                    </ul>
-                                </div>
 
-                                {/* action-button số lượng yêu thích */}
-                                <div className="action-addtocart mt-5">
-                                    {/* button */}
-                                    <div className="button flex items-center gap-4 mt-5">
-                                        <button
-                                            onClick={handleAddProductToCart}
-                                            className="btn-addtocart flex-1 bg-[#17c6aa] text-white hover:bg-black py-4 rounded-md"
-                                        >
-                                            Thêm Vào Giỏ Hàng
-                                        </button>
+                                        {/* Kích cỡ */}
+                                        <div className="size flex items-center gap-10 mt-5">
+                                            <h1 className="text-base font-bold">Kích Cỡ:</h1>
+                                            <div className="flex items-center space-x-3">
+                                                {/* Hiển thị danh sách các kích cỡ từ dữ liệu */}
+                                                <div className="border-2 rounded-md">
+                                                    <button className="border-2  p-2 rounded-md hover:bg-gray-200" >
+                                                        37
+                                                    </button>
+                                                </div>
+                                                <div className="border-2 rounded-md">
+                                                    <button className="border-2  p-2 rounded-md hover:bg-gray-200" >
+                                                        38
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="options">
+                                    {/* Quantity Input */}
+                                    <div className="size flex items-center gap-10 mt-5">
+                                        <h2 className="text-lg font-medium">Số Lượng:</h2>
+                                        <div className="input-number flex items-center border-2 rounded-xl">
+                                            <button className="btn-minus flex w-full px-2 " onClick={handleCountDowQuantity}>-</button>
+                                            <input value={quantity} type="text" className="w-12 text-center border-x-2" />
+                                            <button className="btn-plus px-2" onClick={handleIncreaseQuantity}>+</button>
+                                        </div>
+                                    </div>
+
+                                    {/* Add to Cart Button */}
+                                    <div className="action-addtocart mt-5">
+                                        <div className="button flex items-center gap-4 mt-5">
+                                            <button
+                                                onClick={handleAddProductToCart}
+                                                className="btn-addtocart flex-1 bg-[#17c6aa] text-white hover:bg-black py-4 rounded-md"
+                                            >
+                                                Thêm Vào Giỏ Hàng
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <hr className="bg-gray-300 h-1 mx-auto my-6 md:my-10" />
+                                    <div className="info-desc mt-5">
+                                        <h2 className="text-lg font-medium">Thông tin sản phẩm</h2>
+                                        <p className="break-words mt-3 text-base text-[#282828]">{product?.product.description}</p>
                                     </div>
                                 </div>
                             </div>
-                        </div >
+                        </div>
                     </div >
-
                     {/* mô tả và support */}
                     < div className="desc-support" >
                         <div className="info-support flex flex-col gap-10 md:flex-row justify-between items-center bg-white  py-2 px-1 mt-8 md:mt-20">
@@ -209,61 +204,6 @@ const Detail_Product = () => {
                             </div>
                         </div>
                     </div >
-                    {/* Đánh giá */}
-                    {/* <div className="rating-user">
-                        <h1 className="my-5 text-xl font-medium">Đánh giá và Nhận xét </h1>
-                        <div className="shadow-rating-user  min-h-[200px] w-full rounded-lg p-5 ">
-                            <div className="content-rating min-h-[200px]  border-2 border-gray-300 rounded-2xl flex items-center">
-                                <div className="rating-big border-r-2 p-2 text-center w-1/3 ">
-                                    <p> Đánh giá và nhận xét</p>
-                                </div>
-                                <div className="rating-big-item w-full">
-
-
-                                </div>
-                            </div>
-                            button đánh giá
-                            <div className="button-rating-and-commnet mt-5 w-full mx-auto flex justify-center items-center ">
-                                <button className="btn-rating-and-commnet text-base bg-[#17c6aa] text-white hover:bg-black py-2 px-20 rounded-xl">
-                                    Đánh giá ngay
-                                </button>
-                            </div>
-                            user-rating và đánh giá
-                            <div className="user-rating-evaluate ">
-                                <div className="user-rating-evaluate-item mt-5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="user-rating-evaluate-item-img w-8 h-8">
-
-                                        </div>
-                                        <span className="font-semibold text-base">Đỗ Thành Long</span>
-                                    </div>
-
-                                    <div className="user-rating-evaluate-item-content ml-10">
-
-                                        <div className="rating-star bg-blue-gray-50 p-2 rounded-lg">
-                                            <div className="flex items-center h-8 ">
-                                                <span className="font-semibold text-sm">Đánh giá: </span>
-                                                <i className="flex items-center ">  tỷ56tyr4e</i>
-                                            </div>
-                                            <div className="flex items-center">
-                                                <span className=" font-semibold text-sm">Nhận xét: </span>
-                                                <p className="flex items-center text-xs">Sản phẩm rất là ok</p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-
-                          
-                        </div>
-
-
-
-                    </div> */}
                     {/* Coment user */}
                     <div className="comment">
                         <Comment />
