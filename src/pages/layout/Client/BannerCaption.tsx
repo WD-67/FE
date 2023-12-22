@@ -3,7 +3,7 @@ import React from 'react'
 const BannerCaption = () => {
   return (
     <div
-      className="relative bg-cover bg-center bg-no-repeat p-10 my-10 "
+      className="relative bg-cover bg-center bg-no-repeat  "
       style={{
         backgroundImage: "url('https://images.summitmedia-digital.com/spotph/images/2023/05/25/sunika-manila-store-1685000504.jpg')",
         backgroundPosition: " top",

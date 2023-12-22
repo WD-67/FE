@@ -114,7 +114,7 @@ const Blog = () => {
                             Chúng tôi luôn cập nhật xu hướng thời trang mới nhất để bạn có thể luôn tự tin và nổi bật trong mọi bữa tiệc hay hoạt động hàng ngày. Trang web của chúng tôi giúp bạn dễ dàng tìm hiểu về những xu hướng đang thịnh hành và cách kết hợp trang phục để tạo nên phong cách riêng độc đáo.
                         </p>
                         <img
-                            src="https://pos.nvncdn.net/f4d87e-8901/art/20230722_99fWPZKJ.jpeg"
+                            src="https://pos.nvncdn.com/f4d87e-8901/art/20230722_99fWPZKJ.jpeg"
                             alt=""
                             className=" mt-10 w-full h-[200px] sm:h-[300px] object-cover transition duration-500 group-hover:scale-105"
                         />
