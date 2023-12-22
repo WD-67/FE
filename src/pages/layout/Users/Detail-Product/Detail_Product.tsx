@@ -15,6 +15,7 @@ const Detail_Product = () => {
     const [quantity, setQuantity] = useState<number>(1);
     const { id } = useParams<{ id: string }>(); // Get the product id from the URL parameters
     const { data: product, isLoading } = useGetProductByIdQuery(String(id));
+
     const dispatch = useAppDispatch();
 
     const handleCountDowQuantity = () => {
@@ -112,35 +113,58 @@ const Detail_Product = () => {
                             {/* Status */}
                             {/* Options */}
                             <div className="options">
+                             
                                 {/* color */}
-                                {/* <div className="color flex items-center gap-10">
-                        <h4 className="text-sm font-medium text-gray-900">Color</h4>
-                        <fieldset className="mt-4">
-                            <legend className="sr-only">Choose a color</legend>
-                            <span className="flex items-center space-x-3">
-                            {product?.product.colorSizes.map((colorSize, index) =>
-                                <label key={colorSize._id} className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">
-                                <input type="radio" name="color-choice" value={colorSize.color} className="sr-only" aria-labelledby={`color-choice-${index}-label`}/>
-                                <span id={`color-choice-${index}-label`} className="sr-only">{colorSize.color}</span>
-                                <Button aria-hidden="true" className="h-8 w-8 rounded-full border border-black border-opacity-10" style={{backgroundColor: colorSize.color}}></Button>
-                                </label>
-                            )}
-                            </span>
-                        </fieldset>
-                        </div> */}
-                        {/* size */}
-                        {/* <div className="size flex items-center gap-10 mt-5">
-                            <h2 className="text-lg font-medium">Size:</h2>
-                            <ul className="flex items-center gap-2">
-                                <Radio.Button name="size" id="size">
-                                    {product?.product.colorSizes.map((colorSize) =>
-                                        colorSize.sizes.map((sizeObj) =>
-                                            <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
-                                        )
-                                    )}
-                                </Radio.Button>
+                                <div className="quantity-remain flex items-center gap-10 mt-5">
+    <ul className="flex flex-col items-start gap-2">
+        <h2 className="text-lg font-medium">Màu :</h2>
+        {product?.product.listQuantityRemain.map((item: any, index: number) => (
+            <li key={index} className="flex items-center gap-2">
+                <div style={{ backgroundColor: item.colorHex }} className="w-4 h-4 rounded-full"></div>
+            </li>
+        ))}
+    </ul>
+</div>
+                    {/*name color*/}
+                    <div className="quantity-remain flex items-center gap-10 mt-5">
+                        <ul className="flex flex-col items-start gap-2">
+                            <h2 className="text-lg font-medium">Tên màu :</h2>
+                            {product?.product.listQuantityRemain.map((item: any, index: number) => (
+                                <li key={index} className="flex items-center gap-2">
+                                    <div className="w-4 h-4 rounded-full">{item.colorName}</div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                        {/* quantity by color */}
+                        {/* <div className="quantity-remain flex items-center gap-10 mt-5">
+                            <ul className="flex flex-col items-start gap-2">
+                                <h2 className="text-lg font-medium">Số lượng :</h2>
+                                {product?.product.listQuantityRemain.map((item: any, index: number) => (
+                                    <li key={index} className="flex items-center gap-2">
+                                        <div className="w-4 h-4 rounded-full">{item.quantity}</div>
+                                    </li>
+                                ))}
                             </ul>
                         </div> */}
+
+                          
+                        {/* size */}
+                        {/* <div className="size flex items-center gap-10 mt-5">
+                            <ul className="flex items-center gap-2">
+                                <h2 className="text-lg font-medium">Size:</h2>
+                                <li className="flex items-center gap-2">
+                                    <Radio.Group defaultValue="a" buttonStyle="solid">
+                                        <Radio.Button value="a">S</Radio.Button>
+                                        <Radio.Button value="b">M</Radio.Button>
+                                        <Radio.Button value="c">L</Radio.Button>
+                                    </Radio.Group>
+                                    
+                                </li>
+                            </ul>
+                        </div> */}
+                              
+               
                                 {/* quantity by size */}
                                 <div className="size flex items-center gap-10 mt-5">
                                     <ul className="flex items-center gap-2">

@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Radio, Spin } from 'antd';
 import { useGetCommentQuery, useRemoveCommentMutation } from "../../../api/comment"
@@ -6,11 +7,14 @@ import { Switch, Popconfirm, Button } from "antd"
 import ImagePriview from '../../Image/ImagePriview'
 import { BsFillTrash3Fill } from "react-icons/bs"
 import { useGetProductByIdQuery } from "@/api/product";
+import { CheckOutlined } from '@ant-design/icons';
 const ProductDetail = () => {
     const { id } = useParams<{ id: string }>();
     const { data: commentData, refetch } = useGetCommentQuery();
     const { data: product, isLoading } = useGetProductByIdQuery(String(id));
     const [removeComment] = useRemoveCommentMutation()
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
     const handleSoftDelete = async (id: string) => {
         try {
             await removeComment(id);
@@ -88,54 +92,68 @@ const ProductDetail = () => {
                     </div>
                     <hr className="bg-gray-300 h-1 mx-auto my-20" />
                     <div className="options">
-                        {/* color */}
-                        <div className="color flex items-center gap-10">
-                        <h4 className="text-sm font-medium text-gray-900">Color</h4>
-                        <fieldset className="mt-4">
-                            <legend className="sr-only">Choose a color</legend>
-                            <span className="flex items-center space-x-3">
-                            {product?.product.colorSizes.map((colorSize, index) =>
-                                <label key={colorSize._id} className="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">
-                                <input type="radio" name="color-choice" value={colorSize.color} className="sr-only" aria-labelledby={`color-choice-${index}-label`}/>
-                                <span id={`color-choice-${index}-label`} className="sr-only">{colorSize.color}</span>
-                                <span aria-hidden="true" className="h-8 w-8 rounded-full border border-black border-opacity-10" style={{backgroundColor: colorSize.color}}></span>
-                                </label>
-                            )}
-                            </span>
-                        </fieldset>
-                        </div>
-                        {/* size */}
-                        <div className="size flex items-center gap-10 mt-5">
-                            <h2 className="text-lg font-medium">Size:</h2>
-                            <ul className="flex items-center gap-2">
-                                <Radio.Button name="size" id="size">
-                                    {product?.product.colorSizes.map((colorSize) =>
-                                        colorSize.sizes.map((sizeObj) =>
-                                            <option key={sizeObj._id} value={sizeObj.size}>{sizeObj.size}</option>
-                                        )
-                                    )}
-                                </Radio.Button>
-                            </ul>
-                        </div>
+                     {/*name color*/}
+                     {selectedColor && (
+    <div className="quantity-remain flex items-center gap-10 mt-5">
+        <ul className="flex flex-row items-start gap-2">
+            <h2 className="text-lg font-medium">Tên màu :</h2>
+            <li className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded-full">{selectedColor.nameColor}</div>
+            </li>
+        </ul>
+    </div>
+)}
+            {/* color */}
+            <div className="quantity-remain flex items-center gap-10 mt-5">
+            <ul className="flex flex-row items-start gap-2">
+    <h2 className="text-lg font-medium">Màu :</h2>
+    {product?.product.listQuantityRemain
+        .filter((v, i, a) => a.findIndex(t => (t.colorHex === v.colorHex)) === i)
+        .map((item: any, index: number) => (
+            <li key={index} className="flex items-center justify-center gap-2" onClick={() => setSelectedColor(selectedColor === item ? null : item)}>
+                <div style={{ backgroundColor: item.colorHex ,}} className="w-7 h-7 rounded-full flex items-center justify-center">
+                    {selectedColor === item && <CheckOutlined />}
+                </div>
+            </li>
+        ))
+    }
+</ul>
+</div>
+                        
+                          {/* size */}
+                          <div className="quantity-remain flex items-center gap-10 mt-5">
+    <ul className="flex flex-row items-start gap-2">
+        <h2 className="text-lg font-medium">Size :</h2>
+        {product?.product.listQuantityRemain.filter(item => !selectedColor || item.colorHex === selectedColor.colorHex).map((item: any, index: number) => (
+            <li key={index} className="flex items-center gap-2" onClick={() => setSelectedSize(selectedSize === item ? null : item)}>
+<div className="w-7 h-7 border border-gray-500 flex items-center justify-center">{item.nameSize}</div>                {selectedSize === item && <CheckOutlined />}
+            </li>
+        ))}
+    </ul>
+</div>
+                            {selectedColor && selectedSize && (
+    <div className="quantity-remain flex items-center gap-10 mt-5">
+        <ul className="flex flex-col items-start gap-2">
+            <h2 className="text-lg font-medium">Số lượng :</h2>
+            <li className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full">{selectedSize.quantity}</div>
+            </li>
+        </ul>
+    </div>
+)}
+
                         {/* quantity by size */}
-                        <div className="size flex items-center gap-10 mt-5">
-
-                            <ul className="flex items-center gap-2">
-
-                                <div className="quantity flex items-center gap-5">
-                                    <h2 className="text-lg font-medium">Số Lượng:</h2>
-                                    <div className="input-number flex items-center  border-2 ">
-
-                                        <input
-                                            type="text"
-                                            className="w-12 text-center border-x-2" defaultValue={product?.product.quantity} />
-
-                                    </div>
-
-                                </div>
-
+                        {/* <div className="quantity-remain flex items-center gap-10 mt-5">
+                            <ul className="flex flex-col items-start gap-2">
+                                <h2 className="text-lg font-medium">Số lượng theo size :</h2>
+                                {product?.product.listQuantityRemain.map((item: any, index: number) => (
+                                    <li key={index} className="flex items-center gap-2">
+                                        <div className="w-4 h-4 rounded-full">{item.quantity}</div>
+                                    </li>
+                                ))}
                             </ul>
-                        </div>
+                        </div> */}
+                 
                         {/* action-button số lượng yêu thích */}
                     </div>
 
