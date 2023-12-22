@@ -11,7 +11,7 @@ import { addProductToCart } from "@/store/cart/cart.slice";
 import { toast } from "react-toastify";
 import { Button, Radio } from "antd";
 import { CheckOutlined } from '@ant-design/icons';
-
+import Swal from 'sweetalert2';
 const Detail_Product = () => {
     const [quantity, setQuantity] = useState<number>(1);
     const { id } = useParams<{ id: string }>(); // Get the product id from the URL parameters
@@ -21,22 +21,44 @@ const Detail_Product = () => {
     const dispatch = useAppDispatch();
 
     const handleCountDowQuantity = () => {
-        if (quantity <= 1) return;
-        setQuantity(quantity - 1);
+        if (quantity > 1) {
+            setQuantity(quantity - 1);
+            
+        }
+        
     };
 
     const handleIncreaseQuantity = () => {
         if (quantity < selectedSize.quantity) {
             setQuantity(quantity + 1);
         } else {
-            alert('Không thể thêm vào giỏ hàng vì vượt quá số lượng có sẵn');
+            toast. 
+            error("Số lượng sản phẩm trong kho không đủ");  
         }
     };
 
     // Tôi k biết mấy bạn lam size màu kiểu gì, lên fix tạm mấy bạn vô sửa đoạn đây
     const handleAddProductToCart = () => {
         if (!product?.product) return;
+        
         const _product = product.product;
+        // console.log(_product);
+        if (!selectedColor || !selectedSize) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Vui làng chon ..',
+                text: 'Hãy chon màu với khích thức đẻ thêm vào giỏ hàng .',
+            });
+            return;
+        }
+        if (quantity <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Sản phẩm này đã hết hàng.',
+            });
+            return;
+        }
         const infoCart = {
             _id: _product._id,
             quantity,
@@ -45,15 +67,32 @@ const Detail_Product = () => {
                 name: _product.name,
                 image: _product.image,
                 price: _product.price,
+                listQuantityRemain : 
+                _product.listQuantityRemain.filter(item => !selectedColor || item.colorHex === selectedColor.colorHex).map((item: any, index: number) => (
+                    item
+                ))
+                ,
+
+         
+                // Note
             },
             // Note
-            color: "red",
-            size: "M",
+           
         };
-
+ console.log(infoCart);
+ 
         dispatch(addProductToCart(infoCart as any));
         toast.success("Thêm sản phẩm vào giỏ hàng thành công");
         // addProductToCart()
+        setQuantity(quantity - 1);
+
+        // Update the remaining quantity of the product
+        _product.listQuantityRemain = _product.listQuantityRemain.map((item: any) => {
+            if (item.colorHex === selectedColor.colorHex) {
+                return {...item, quantity: item.quantity - 1};
+            }
+            return item;
+        });
     };
 
     if (isLoading) return <div>Loading...</div>;

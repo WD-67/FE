@@ -125,11 +125,22 @@ const Cart = () => {
                                                 <div className=" items-center ">
                                                     <p className="text-xs lg:text-base">{cart.product.name}</p>
                                                     <div className="flex items-center gap-1">
-                                                        <span className="text-xs lg:text-base md:text-xl ">Color:{cart.color} </span>
+                                                        <span className="text-xs lg:text-base md:text-xl ">colorHex:    {cart.product.listQuantityRemain.
+                                                            find((item) => item.color === cart.color)?.colorHex}</span>
+                                                        
+                
                                                         <span className="flex gap-3 rounded-full w-4 h-4 opacity-70"></span>
                                                     </div>
                                                 </div>
-                                                <span className="  gap-3 text-xs lg:text-base md:text-xl">Size:{cart.size}</span>
+                                                <span className="  gap-3 text-xs lg:text-base md:text-xl">nameColor:  {
+                                                    cart.product.listQuantityRemain.find((item) => item.color === cart.color)?.nameColor
+                                                }</span>
+                                                <br />
+                                                <span className="  gap-3 text-xs lg:text-base md:text-xl">
+                                                nameSize :{
+                                                    cart.product.listQuantityRemain.find((item) => item.color === cart.color)?.nameSize
+                                                }
+                                                </span>
                                             </td>
                                             <td className="whitespace-nowrap text-gray-700 py-4">
                                                 <div className="flex items-center text-xs lg:text-xl">

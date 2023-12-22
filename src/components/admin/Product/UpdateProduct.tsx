@@ -68,10 +68,15 @@ const UpdateProduct: React.FC = () => {
             const updateProducts = await updateProduct({  ...values ,_id:id, image: [currentImage] ,
                 listQuantityRemain : 
                 values.listQuantityRemain.map((item: any) => ({
-                    colorHex: item.colorHex,
+                    colorHex: item.colorHex.toHexString(),
                     nameColor: item.nameColor,
                     nameSize: item.nameSize,
                     quantity: item.quantity,
+                })),
+                categoryId: 
+                values.categoryId.map((item: any) => ({
+                    _id: item,
+    
                 })),
              
              }).unwrap();
