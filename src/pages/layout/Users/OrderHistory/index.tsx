@@ -36,6 +36,11 @@ const OrderHistory = () => {
             {isFetching && <p>Loading...</p>}
 
             <div className="mt-10 flex flex-col max-w-5xl mx-auto">
+                {data?.data.length === 0 && <div className="text-center">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz4MjBlJbA8hvcOCecVRCOcR5vjgd9buBo7Q&usqp=CAU" alt="Empty Cart" className="mx-auto" />
+                    <p>Lịch sử mua hàng của bạn trống rỗng.</p>
+                </div>
+                }
                 {data?.data.map((order: any) => (
                     <div key={order._id} className="w-full">
                         <div className="flex items-center w-full py-2 px-4 bg-white mt-3 flex-col m-auto rounded-md">
@@ -46,12 +51,12 @@ const OrderHistory = () => {
                                         {order.status === "cancel"
                                             ? "Đã hủy"
                                             : order.status === "waiting"
-                                            ? "Chờ vận chuyển"
-                                            : order.status === "delivering"
-                                            ? "Đang vận chuyển"
-                                            : order.status === "done"
-                                            ? "Giao hàng thành công"
-                                            : "Chờ xác nhận shop"}
+                                                ? "Chờ vận chuyển"
+                                                : order.status === "delivering"
+                                                    ? "Đang vận chuyển"
+                                                    : order.status === "done"
+                                                        ? "Giao hàng thành công"
+                                                        : "Chờ xác nhận shop"}
                                     </span>
                                 </div>
                                 <div className="flex gap-2">
