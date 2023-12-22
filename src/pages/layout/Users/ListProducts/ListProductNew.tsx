@@ -3,6 +3,7 @@ import { useGetProductsQuery } from "@/api/product";
 import { IProduct } from "@/interfaces/product";
 
 const ListProductNew = () => {
+
   const { data: productData } = useGetProductsQuery();
 
   // Giới hạn hiển thị chỉ 10 sản phẩm
@@ -17,9 +18,11 @@ const ListProductNew = () => {
               <Item product={product} />
             </div>
           ))}
-        </div>
-      </div>
-    </div>
+
+  
+
+       
+   
   );
 };
 

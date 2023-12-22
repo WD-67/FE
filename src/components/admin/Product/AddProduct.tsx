@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Cascader, Checkbox, Col, Form, Input, notification, Row, Select, Space } from 'antd';
+import { Button, Cascader, Checkbox, Col, ColorPicker, Form, Input, notification, Row, Select, Space } from 'antd';
 import { InputNumber } from 'antd'
 import { useAddProductMutation } from '@/api/product';
 import { useGetSizesQuery } from '@/api/sizes';
@@ -15,7 +15,7 @@ import { useGetAllSalesQuery } from '@/api/sale/sale.api';
 import { IColor } from '@/interfaces/color';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import UpLoand from "../../Image/UploadImageTintuc"
-
+import { css } from '@emotion/react'
   
 
 const { Option } = Select;
@@ -23,10 +23,8 @@ const { Option } = Select;
 const AddProduct: React.FC = () => {
     const navigate = useNavigate();
     const [addproduct] = useAddProductMutation();
-    const { data: size } = useGetSizesQuery();
     const {data: image} = useGetImageProductsQuery();
     const {data: category} = useGetCategorysQuery();
-    const {data: color} = useGetColorsQuery();
     const {data: sale} = useGetAllSalesQuery();
     const [img, setImg] = useState<any>([]);
     const handleImage = (url: string) => {
@@ -39,7 +37,7 @@ const AddProduct: React.FC = () => {
     
     const { TextArea } = Input;
 
-    console.log(color);
+   
 
     const onFinish = (products: any) => {
         console.log(products);
@@ -51,10 +49,13 @@ const AddProduct: React.FC = () => {
             quantity: products.quantity,
             hot_sale:  products.hot_sale,
             categoryId: products.categoryId,
-            colorSizes: products.colorSizes.map((colorSize: any) => ({
-                color: colorSize.color,
-                sizes: colorSize.size.map((size: string) => ({ size }))
-            }))
+            listQuantityRemain : 
+            products.listQuantityRemain.map((item: any) => ({
+                colorHex: item.colorHex.toHexString(),
+                nameColor: item.nameColor,
+                nameSize: item.nameSize,
+                quantity: item.quantity,
+            })),
         }
        
         
@@ -78,7 +79,7 @@ const AddProduct: React.FC = () => {
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            autoComplete="off"
+            autoComplete="off"   
         >
         
                 <Col span={15}>
@@ -158,50 +159,55 @@ const AddProduct: React.FC = () => {
                         </Form.Item>
                     </Col>
                     </Row>
-                    <Col style={{ marginLeft: '150px' }}>
-                    <Form.List name="colorSizes" >
-                        {(fields, { add, remove }) => (
-                            <>
-                                {fields.map(({ key, name, ...restField }) => (
-                                    <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, 'color']}
-                                            rules={[{ required: true, message: 'Thiếu màu' }]}
-                                        >
-                                            <Select placeholder="Màu" style={{ width: 120 }}>
-                                                {color?.color?.map((color: IColor) => (
-                                                    <Option key={color._id} value={color._id}>
-                                                        {color.name}
-                                                    </Option>
-                                                ))}
-                                            </Select>
-                                        </Form.Item>
-                                        <Form.Item
-                                            {...restField}
-                                            name={[name, 'size']}
-                                            rules={[{ required: true, message: 'Thiếu kích cỡ' }]}
-                                        >
-                                            <Select mode="multiple" placeholder="Kích cỡ" style={{ width: 80 }}>
-                                                {size?.map((size: ISize) => (
-                                                    <Option key={size._id} value={size._id}>
-                                                        {size.name}
-                                                    </Option>
-                                                ))}
-                                            </Select>
-                                        </Form.Item>
-                                        <MinusCircleOutlined onClick={() => remove(name)} />
-                                    </Space>
-                                ))}
-                                <Form.Item>
-                                    <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                        Thêm Màu Kích Cỡ
-                                    </Button>
-                                </Form.Item>
-                            </>
-                        )}
-                    </Form.List>
-                    </Col>
+                   
+                    <Form.List
+              name='listQuantityRemain'
+              rules={[
+                {
+                  validator: async (_, names) => {
+                    if (names.length < 1) {
+                      return Promise.reject(new Error('Ít nhất phải có 1 biến thể'))
+                    }
+                  }
+                }
+              ]}
+              initialValue={[]}
+            >
+              {(fields, { add, remove }, { errors }) => (
+                <div css={formcss} style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space className='space' key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
+                      <Form.Item className='colorFormItem' {...restField} name={[name, 'colorHex']}>
+                        <ColorPicker defaultValue={'fff'} showText={(color) => color.toHexString()} format='hex' />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, 'nameColor']} rules={[{ required: true, message: 'Trường mô tả là bắt buộc!' }]}>
+                        <Input placeholder='Tên màu' />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, 'nameSize']} rules={[{ required: true, message: 'Trường mô tả là bắt buộc!' }]}>
+                        <Input placeholder='Tên size' />
+                      </Form.Item>
+                      <Form.Item {...restField} name={[name, 'quantity']} rules={[{ required: true, message: 'Trường mô tả là bắt buộc!' }]}>
+                        <InputNumber placeholder='Số lượng' min={1} />
+                      </Form.Item>
+                      <PlusOutlined
+                        onClick={() => {
+                          remove(name)
+                        }}
+                      />
+                    </Space>
+                  ))}
+
+                  <Button type='dashed' onClick={() => add()} block>
+                    + Thêm biến thể
+                  </Button>
+                  <Form.ErrorList className='text-red-500' errors={errors} />
+                </div>
+              )}
+            </Form.List>
+                
+   
+                 
+                  
                 </Col>
     
                 <Row gutter={1} style={{ marginLeft: '26px' }}>
@@ -226,7 +232,7 @@ const AddProduct: React.FC = () => {
             </Row>
     
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit">
+                <Button  htmlType="submit">
                     Thêm sản phẩm mới
                 </Button>
             </Form.Item>
@@ -237,3 +243,14 @@ const AddProduct: React.FC = () => {
 };
 
 export default AddProduct;
+const formcss = css`
+  .ant-space-item {
+    margin: auto;
+  }
+  .ant-form-item {
+    margin: auto;
+  }
+  .anticon-close {
+    margin-bottom: 8px;
+  }
+`

@@ -9,7 +9,8 @@ html, body, h1, h2, p, ul {
     font-family: 'Arial', sans-serif;
     background-color:#fff;
     color: #333; /* Màu chữ chính */
-    padding: 20px; /* Thêm khoảng cách xung quanh nội dung */
+    padding-top: 20px; /* Thêm khoảng cách xung quanh nội dung */
+    padding-bottom: 20px;
   }
   
   /* Header styles */

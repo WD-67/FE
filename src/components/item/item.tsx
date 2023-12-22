@@ -23,7 +23,7 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
   const handleClickThumbnail = (image: string) => {
     setImage(image);
   };
-
+  const hasDiscount = product?.hot_sale > 10;
   return (
     <>
       <div className="w-full md:w-64 m-auto content shadow-2xl rounded-lg overflow-hidden">
@@ -35,11 +35,15 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
               </div>
             </td>
             <div className="prd-sale absolute top-2 left-1 min-w-[60px]">
+            {hasDiscount && (
               <div className="py-[2px] mb-1 bg-pink-600">
                 <span className="m-1 block rounded-full text-center text-sm font-medium text-white">
                   {product?.hot_sale} SALE
                 </span>
+                
               </div>
+              )}
+
               <div className="py-[2px] bg-[#33c7fd]">
                 <span className="m-1 block rounded-full text-center text-sm font-medium text-white">
                   Mới
