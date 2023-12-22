@@ -94,7 +94,7 @@ const Shop_Products = () => {
                                 <h1 className="text-new-products uppercase text-4xl font-black text-white">Hot Sale</h1>
                                 <div className="list-new-products hot-sale-scroll p-8 overflow-x-auto  ">
                                     <Slider {...settings}>
-                                        {productData?.products.map((product: IProduct, index: any) => (
+                                        {productData?.products.filter((product) => product.hot_sale > 10).map((product: IProduct, index: any) => (
                                             <div key={index}>
                                                 <Item product={product} />
                                             </div>

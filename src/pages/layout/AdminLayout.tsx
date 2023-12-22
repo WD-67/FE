@@ -54,12 +54,7 @@ const items: MenuItem[] = [
       getItem(<Link to="/admin/size/add">Add</Link>, '16'),
 
     ]),
-  getItem(<Link to="/admin/imageProduct">ImgProduct</Link>, '18', <FileImageOutlined />,
-    [
-      getItem(<Link to="/admin/imageProduct">List</Link>, '19',),
-      getItem(<Link to="/admin/imageProduct/add">Add</Link>, '20'),
 
-    ]),
   // getItem(<Link to="/admin/imagetintuc">Image Tin tức</Link>, '22', <FileImageOutlined />,
   //   [
   //     getItem(<Link to="/admin/imagetintuc/add">Thêm ảnh tin tức</Link>, '24'),

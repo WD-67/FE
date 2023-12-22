@@ -7,12 +7,15 @@ import { Link } from 'react-router-dom';
 import { ICategory } from '@/interfaces/category';
 import ImagePriview from '../../Image/ImagePriview';
 import { Modal } from 'antd';
+import AddProduct from './AddProduct';
 type Props = {
     products: IProduct[];
 };
 
 const Product = (props: Props) => {
     const { data: productData ,refetch} = useGetProductsQuery();
+    console.log(productData);
+    
     const [softDeleteProduct] = useRemoveProductMutation();
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -43,14 +46,34 @@ const Product = (props: Props) => {
     const handleSearch = (value: string) => {
         setSearchTerm(value);
     };
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+        refetch();
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
     const dataSource = productData?.products?.filter((product: IProduct) => product.name.toLowerCase().includes(searchTerm.toLowerCase())).map((product: any) => ({
         key: product._id,
         name: product.name,
         image: product.image,
         price: product.price,
         categoryId: product.categoryId,
-        inventoryStatus: product.inventoryStatus,
+        listQuantityRemain : 
+        product.listQuantityRemain.map((item: any) => ({
+            colorHex: item.colorHex,
+            nameColor: item.nameColor,
+            nameSize: item.nameSize,
+            quantity: item.quantity,
+        })),
+        // inventoryStatus: product.inventoryStatus,
     }));
     console.log(dataSource);
     
@@ -98,10 +121,85 @@ const columns = [
     key: 'categoryId',
   },
   {
-    title: 'Status',
-    dataIndex: 'inventoryStatus',
-    key: 'inventoryStatus',
+    title: "colorHex",
+    dataIndex: "listQuantityRemain",
+    key: "listQuantityRemain",
+    render: (listQuantityRemain: Array<any>) => {
+        return (
+            <td className="whitespace-nowrap text-gray-700 py-4">
+                <div className="items-center">
+                    <div className="flex flex-col gap-2">
+                        {listQuantityRemain.map((item: any) => (
+                            <p className="text-xs lg:text-base md:text-xl">{item.colorHex}</p>
+                        ))}
+                    </div>
+                </div>
+            </td>
+        );
+    }
   },
+  {
+    title: 'Màu',
+    dataIndex: 'listQuantityRemain',
+    key: 'listQuantityRemain',
+    render: (listQuantityRemain: Array<any>) => {
+        return (
+            <td className="whitespace-nowrap text-gray-700 py-4">
+                <div className="items-center">
+                    <div className="flex flex-col gap-2">
+                        {listQuantityRemain.map((item: any) => (
+                            <p className="text-xs lg:text-base md:text-xl">{item.nameColor}</p>
+                        ))}
+                    </div>
+                </div>
+            </td>
+        );
+    }
+},
+{
+    title: 'size',
+    dataIndex: 'listQuantityRemain',
+    key: 'listQuantityRemain',
+    render: (listQuantityRemain: Array<any>) => {
+        return (
+            <td className="whitespace-nowrap text-gray-700 py-4">
+                <div className="items-center">
+                    <div className="flex flex-col gap-2">
+                        {listQuantityRemain.map((item: any) => (
+                            <p className="text-xs lg:text-base md:text-xl">{item.nameSize}</p>
+                        ))}
+                    </div>
+                </div>
+            </td>
+        );
+    }
+},
+{
+    title: 'Số lượng',
+    dataIndex: 'listQuantityRemain',
+    key: 'listQuantityRemain',
+    render: (listQuantityRemain: Array<any>) => {
+        return (
+            <td className="whitespace-nowrap text-gray-700 py-4">
+                <div className="items-center">
+                    <div className="flex flex-col gap-2">
+                        {listQuantityRemain.map((item: any) => (
+                            <p className="text-xs lg:text-base md:text-xl">{item.quantity}</p>
+                        ))}
+                    </div>
+                </div>
+            </td>
+        );
+    }
+},
+  
+  
+//   {
+//     title: 'Status',
+//     dataIndex: 'inventoryStatus',
+//     key: 'inventoryStatus',
+//   },
+
 
   {
     title: 'Action',
@@ -130,9 +228,12 @@ return (
             onSearch={handleSearch}
             style={{width: 600}}
         />
-        <Button type="primary" danger>
-            <Link to="/admin/product/add">Thêm sản phẩm</Link>
-        </Button>
+       <Button type="default" onClick={showModal}>
+                Thêm sản phẩm
+            </Button>
+            <Modal title="Thêm sản phẩm" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  width="50%">
+                <AddProduct />
+            </Modal>
     </header>
     {loading ? <Spin /> : <Table dataSource={dataSource} columns={columns} />}
 </div>
