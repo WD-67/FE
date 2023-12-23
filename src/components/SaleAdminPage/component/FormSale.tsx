@@ -85,6 +85,17 @@ const FormSale = ({ isModalOpen, setIsModalOpen, mode, defaultValues }: FormSale
                             <Form.Item
                                 labelCol={{ span: 24 }}
                                 wrapperCol={{ span: 24 }}
+                                name="code"
+                                label="Mã code"
+                                rules={[{ required: true }, { whitespace: true }]}
+                            >
+                                <Input size="large" placeholder="Nhập mã code..." />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                wrapperCol={{ span: 24 }}
                                 name="type"
                                 label="Loại giảm giá"
                                 rules={[{ required: true }, { whitespace: true }]}

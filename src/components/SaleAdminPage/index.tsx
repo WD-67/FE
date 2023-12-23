@@ -26,6 +26,12 @@ const SaleAdminPage = () => {
             render: (name) => <div className="text-[#1e5460] text-center font-semibold">{name}</div>,
         },
         {
+            title: "Mã code",
+            dataIndex: "code",
+            key: "code",
+            render: (code) => <div className="text-[#1e5460] text-center font-semibold">{code}</div>,
+        },
+        {
             title: "Thông tỉn giảm giá",
             key: "sale",
             render: (sale) => (
