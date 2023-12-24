@@ -101,3 +101,16 @@
   margin-bottom: 10px;
   /* Giá trị tối đa của chiều cao phần tử .list-color */
 }
+@keyframes scrollText {
+  from {
+    transform: translateX(200%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scrolling-text {
+  animation: scrollText 20s linear infinite;
+}
+

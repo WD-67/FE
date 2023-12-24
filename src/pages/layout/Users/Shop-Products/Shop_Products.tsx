@@ -51,28 +51,48 @@ const Shop_Products = () => {
     let filteredData = dataSourceToRender
 
 
-    const onHandleClick = ({ target: { value } }: any) => {
-        console.log(value);
-        // console.log("Initial dataSourceToRender:", dataSourceToRender);
+    // const onHandleClick = ({ target: { value } }: any) => {
+    //     console.log(value);
+    //     // console.log("Initial dataSourceToRender:", dataSourceToRender);
 
-        if (Array.isArray(filteredData)) {
-            filteredData = filteredData.filter(
-                (itemm) => String(itemm.categoryId) === String(value)
+    //     if (Array.isArray(filteredData)) {
+    //         filteredData = filteredData.filter(
+    //             (itemm) => String(itemm.categoryId) === String(value)
+    //         );
+    //         // console.log("Filtered data:", filteredData);
+    //         if (filteredData.length > 0) {
+    //             setDataSourceToRender(filteredData);
+    //         } else {
+    //             setDataSourceToRender([...searchResult]);
+    //         }
+    //     };
+    // } 
+    const [selectedBrand, setSelectedBrand] = useState(""); // Thêm state để theo dõi danh mục được chọn
+
+    const onHandleClick = (event) => {
+        const value = event.target.value;
+
+        // Kiểm tra nếu giá trị là danh mục, thì cập nhật state và thực hiện lọc
+        if (value && value !== selectedBrand) {
+            setSelectedBrand(value);
+
+            // Lọc sản phẩm theo danh mục được chọn
+            const filteredProducts = searchResult.filter(
+                (product) => String(product.categoryId) === String(value)
             );
-            // console.log("Filtered data:", filteredData);
-            if (filteredData.length > 0) {
-                setDataSourceToRender(filteredData);
-            } else {
-                setDataSourceToRender([...searchResult]);
-            }
-        };
-    }
+
+            setDataSourceToRender(filteredProducts);
+        } else {
+            // Nếu giá trị là rỗng hoặc đã được chọn trước đó, hiển thị tất cả sản phẩm
+            setSelectedBrand("");
+            setDataSourceToRender([...searchResult]);
+        }
+    };
+
     return (
         <>
             <div className="box-container"
-            >
-
-                <div className="box-content mt-10">
+            >       <div className="box-content mt-10">
                     <div className="big-content w-full px-2 md:w-11/12  mx-auto">
                         {/* menu */}
                         <div className="breadcrumbs">
@@ -104,99 +124,87 @@ const Shop_Products = () => {
                             </div>
                         </div>
                         {/* list */}
-                        <div className="list_AllProducts ">
 
-                            <div className="content-list-sort">
-                                <div className="sort-products-list">
-                                    <h1 className="font-semibold text-lg text-[#4a4a4a]  my-3">Lọc sản phẩm theo:</h1>
-                                    <div className="list-sort flex flex-col md:flex-row gap-2">
-                                        <select
-                                            onChange={onHandleClick}
-                                            className="form-select-product "
-                                        >
-                                            <option selected disabled>
-                                                Thương hiệu
-                                            </option>
-                                            {categoryData?.data?.map((category: ICategory) => {
-                                                return <option value={category.name}>{category.name}</option>;
-                                            })}
-                                        </select>
-                                        <Tooltip placement="bottomRight" trigger={"click"} color="white"
-                                            title={
-                                                <div className="list-size-option">
-                                                    <ul className="grid grid-cols-3 p-1">
-                                                        <li className="bg-teal-500 m-1 cursor-pointer flex  items-center justify-center text-white text-center w-8 h-8 rounded-full">Tên sản Phẩm</li>
-                                                    </ul>
-                                                </div>
-                                            }
-                                        >
+                        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+                            <div className="  rounded-2xl bg-gray-100  h-screen flex-col justify-between border-e">
+                                <div className="px-4 py-10 "><p className="px-4 font-mono text-xl " >
+                                    Lọc sản phẩm theo
+                                </p>
+                                    <ul className="mt-6 space-y-1 text-left">
+
+                                        <li className="mt-6 "  >
                                             <div className={`btn-sort-option border cursor-pointer flex items-center gap-1 px-3 py-2 rounded-lg`}>
-                                                <button >Size</button>
+                                                <button className="font-light text-sm" >Size</button>
                                                 <i><IoIosArrowDropdown /></i>
                                             </div>
-                                        </Tooltip>
-                                        <Tooltip placement="bottomRight" trigger={"click"} color="white"
-                                            title={
-                                                <div className="list-size-option">
-                                                    <ul className="grid grid-cols-10 p-2">
-                                                        <button className={`rounded-sm border-2 border-gray-400 m-1 p-2`}> nút màu</button>
-                                                    </ul>
-                                                </div>
-                                            }
-                                        >
+                                        </li>
+                                        <li className="pt-2 " >
                                             <div className={`btn-sort-option cursor-pointer flex items-center gap-1  px-3 py-2 rounded-lg border `}>
                                                 <button className="font-light text-sm">Color</button>
                                                 <i><IoIosArrowDropdown /></i>
                                             </div>
-                                        </Tooltip>
-                                        <div className="sorted-by flex flex-wrap gap-3 cursor-pointer overflow-x-auto">
+                                        </li>
+                                        <li className="pt-2 ">
+                                            <div className={`btn-sort-option border cursor-pointer flex items-center gap-1 px-3 py-2 rounded-lg`} onClick={() => handleSortBy('asc')}>
+                                                <i className="text-lg"><BsSortDown /></i>
+                                                <button className="text-xs">Giá sản phẩm giảm dần</button>
+                                            </div>
+                                        </li>
+                                        <li className="pt-2 ">
+                                            <div className={`btn-sort-option border cursor-pointer flex items-center gap-1 px-3 py-2 rounded-lg`} onClick={() => handleSortBy('desc')}>
+                                                <i className="text-lg"><BsSortDownAlt /></i>
+                                                <button className="text-xs">Giá sản phẩm tăng dần</button>
+                                            </div>
+                                        </li>
+                                        <li className="pt-2 ">
+                                            <div className={`btn-sort-option border cursor-pointer flex items-center gap-1 px-3 py-2 rounded-lg`}>
+                                                <i className="text-lg"><RiTShirtLine /></i>
+                                                <button className="text-xs">Sản Phẩm Mới</button>
+                                            </div>
+                                        </li>
+                                        <li className="pt-2 ">
+                                            <div className={`btn-sort-option border cursor-pointer flex items-center gap-1 px-3 py-2 rounded-lg`}>
+                                                <select style={{ width: '200%' }}
+                                                    onChange={onHandleClick}
+                                                    className="form-select-product appearance-none py-2 pl-3 pr-5 rounded-lg border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-200 transition btn-sort-option cursor-pointer flex items-center "
+                                                >
+                                                    <option value="" selected disabled>
+                                                        Thương hiệu
+                                                    </option>
+                                                    {categoryData?.data?.map((category: ICategory) => (
+                                                        <option key={category.id} value={category.name}>
+                                                            {category.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
 
-                                            <div className="list-sorted-by flex flex-col md:flex-row gap-2   px-3 py-2 rounded-lg border ">
-                                                <div className="btn-option High-Low price flex items-center gap-1" onClick={() => handleSortBy('asc')}>
-                                                    <i className="text-lg"><BsSortDown /></i>
-                                                    <button className="text-xs">Giá sản phẩm giảm dần</button>
-                                                </div>
-
                                             </div>
-                                            {/* price */}
-                                            <div className="list-sorted-by flex flex-col md:flex-row gap-2   px-3 py-2 rounded-lg border ">
-                                                <div className="btn-option High-Low price flex items-center gap-1" onClick={() => handleSortBy('desc')}>
-                                                    <i className="text-lg"><BsSortDownAlt /></i>
-                                                    <button className="text-xs">Giá sản phẩm tăng dần</button>
-                                                </div>
-                                            </div>
-                                            {/* New */}
-                                            <div className="list-sorted-by flex flex-col md:flex-row gap-2   px-3 py-2 rounded-lg border ">
-                                                <div className="btn-option High-Low price flex items-center gap-1">
-                                                    <i className="text-lg"><RiTShirtLine /></i>
-                                                    <button className="text-xs">Sản Phẩm Mới</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="pt-4 rounded-lg  lg:col-span-2">
+                                <div className=" mt-15">
+                                    <div className=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                                        {dataSourceToRender
+                                            .slice()
+                                            .sort((a, b) => (sortBy === 'asc' ? a.price - b.price : b.price - a.price))
+                                            .sort((a, b) => (sortBy === 'asc' ? b.price - a.price : a.price - b.price))
+                                            ?.map((product) => {
+                                                const cateName = categoryData?.data.find(
+                                                    (cate: any) => cate._id == product.categoryId
+                                                )?.name;
+                                                return (
+                                                    <div key={product._id}>
+                                                        <Item product={product} />
+                                                    </div>
+                                                )
+                                            })}
                                     </div>
                                 </div>
                             </div>
-                            <div className="list-products-item mt-10">
-                                <div className="content-list-new-products   grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                                    {dataSourceToRender
-                                        .slice()
-                                        .sort((a, b) => (sortBy === 'asc' ? a.price - b.price : b.price - a.price))
-                                        .sort((a, b) => (sortBy === 'asc' ? b.price - a.price : a.price - b.price))
-                                        ?.map((product) => {
-                                            const cateName = categoryData?.data.find(
-                                                (cate: any) => cate._id == product.categoryId
-                                            )?.name;
-                                            return (
-                                                <div key={product._id}>
-                                                    <Item product={product} />
-                                                </div>
-                                            )
-                                        })}
 
-                                </div>
-                            </div>
                         </div>
-
                     </div>
                 </div>
 
