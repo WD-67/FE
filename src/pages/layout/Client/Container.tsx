@@ -19,8 +19,9 @@ const Container = (props: Props) => {
         <div>
 
             <BannerHome />
-            <BannerCategory />
             <ListProducts />
+    
+            <BannerCaption />
          
         </div>
     )

@@ -23,24 +23,24 @@ const Detail_Product = () => {
     const handleCountDowQuantity = () => {
         if (quantity > 1) {
             setQuantity(quantity - 1);
-            
+
         }
-        
+
     };
 
     const handleIncreaseQuantity = () => {
         if (quantity < selectedSize.quantity) {
             setQuantity(quantity + 1);
         } else {
-            toast. 
-            error("Số lượng sản phẩm trong kho không đủ");  
+            toast.
+                error("Số lượng sản phẩm trong kho không đủ");
         }
     };
 
     // Tôi k biết mấy bạn lam size màu kiểu gì, lên fix tạm mấy bạn vô sửa đoạn đây
     const handleAddProductToCart = () => {
         if (!product?.product) return;
-        
+
         const _product = product.product;
         // console.log(_product);
         if (!selectedColor || !selectedSize) {
@@ -67,20 +67,20 @@ const Detail_Product = () => {
                 name: _product.name,
                 image: _product.image,
                 price: _product.price,
-                listQuantityRemain : 
-                _product.listQuantityRemain.filter(item => !selectedColor || item.colorHex === selectedColor.colorHex).map((item: any, index: number) => (
-                    item
-                ))
+                listQuantityRemain:
+                    _product.listQuantityRemain.filter(item => !selectedColor || item.colorHex === selectedColor.colorHex).map((item: any, index: number) => (
+                        item
+                    ))
                 ,
 
-         
+
                 // Note
             },
             // Note
-           
+
         };
- console.log(infoCart);
- 
+        console.log(infoCart);
+
         dispatch(addProductToCart(infoCart as any));
         toast.success("Thêm sản phẩm vào giỏ hàng thành công");
         // addProductToCart()
@@ -89,7 +89,7 @@ const Detail_Product = () => {
         // Update the remaining quantity of the product
         _product.listQuantityRemain = _product.listQuantityRemain.map((item: any) => {
             if (item.colorHex === selectedColor.colorHex) {
-                return {...item, quantity: item.quantity - 1};
+                return { ...item, quantity: item.quantity - 1 };
             }
             return item;
         });
@@ -127,13 +127,13 @@ const Detail_Product = () => {
 
                             {/* sale */}
                             <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
-                            {product?.product.hot_sale > 10 && (
-                                <div className=" py-[2px] bg-pink-600 my-1">
-                                    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
-                                        {product?.product.hot_sale} sale
-                                    </span>
-                                </div>
-                            )}
+                                {product?.product.hot_sale > 10 && (
+                                    <div className=" py-[2px] bg-pink-600 my-1">
+                                        <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+                                            {product?.product.hot_sale} sale
+                                        </span>
+                                    </div>
+                                )}
                                 <div className="prd-sale py-[2px] bg-blue-300">
                                     <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">NEW</span>
                                 </div>
@@ -158,71 +158,71 @@ const Detail_Product = () => {
                             {/* Status */}
                             {/* Options */}
                             <div className="options">
-                             
+
                                 {/* color */}
                                 <div className="quantity-remain flex items-center gap-10 mt-5">
-            <ul className="flex flex-row items-start gap-2">
-    <h2 className="text-lg font-medium">Màu :</h2>
-    {product?.product.listQuantityRemain
-        .filter((v, i, a) => a.findIndex(t => (t.colorHex === v.colorHex)) === i)
-        .map((item: any, index: number) => (
-            <li key={index} className="flex items-center justify-center gap-2" onClick={() => setSelectedColor(selectedColor === item ? null : item)}>
-                <div style={{ backgroundColor: item.colorHex ,}} className="w-7 h-7 rounded-full flex items-center justify-center">
-                    {selectedColor === item && <CheckOutlined />}
-                </div>
-            </li>
-        ))
-    }
-</ul>
-</div>
-                    {/*name color*/}
-                    {selectedColor && (
-    <div className="quantity-remain flex items-center gap-10 mt-5">
-        <ul className="flex flex-row items-start gap-2">
-            <h2 className="text-lg font-medium">Tên màu :</h2>
-            <li className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-full">{selectedColor.nameColor}</div>
-            </li>
-        </ul>
-    </div>
-)}
-                          {/* size */}
-                          <div className="quantity-remain flex items-center gap-10 mt-5">
-    <ul className="flex flex-row items-start gap-2">
-        <h2 className="text-lg font-medium">Size :</h2>
-        {product?.product.listQuantityRemain.filter(item => !selectedColor || item.colorHex === selectedColor.colorHex).map((item: any, index: number) => (
-            <li key={index} className="flex items-center gap-2" onClick={() => setSelectedSize(selectedSize === item ? null : item)}>
-<div className="w-7 h-7 border border-gray-500 flex items-center justify-center">{item.nameSize}</div>                {selectedSize === item && <CheckOutlined />}
-            </li>
-        ))}
-    </ul>
-</div>
+                                    <ul className="flex flex-row items-start gap-2">
+                                        <h2 className="text-lg font-medium">Màu :</h2>
+                                        {product?.product.listQuantityRemain
+                                            .filter((v, i, a) => a.findIndex(t => (t.colorHex === v.colorHex)) === i)
+                                            .map((item: any, index: number) => (
+                                                <li key={index} className="flex items-center justify-center gap-2" onClick={() => setSelectedColor(selectedColor === item ? null : item)}>
+                                                    <div style={{ backgroundColor: item.colorHex, }} className="w-7 h-7 rounded-full flex items-center justify-center">
+                                                        {selectedColor === item && <CheckOutlined />}
+                                                    </div>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
+                                {/*name color*/}
+                                {selectedColor && (
+                                    <div className="quantity-remain flex items-center gap-10 mt-5">
+                                        <ul className="flex flex-row items-start gap-2">
+                                            <h2 className="text-lg font-medium">Tên màu :</h2>
+                                            <li className="flex items-center gap-2">
+                                                <div className="w-5 h-5 rounded-full">{selectedColor.nameColor}</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )}
+                                {/* size */}
+                                <div className="quantity-remain flex items-center gap-10 mt-5">
+                                    <ul className="flex flex-row items-start gap-2">
+                                        <h2 className="text-lg font-medium">Size :</h2>
+                                        {product?.product.listQuantityRemain.filter(item => !selectedColor || item.colorHex === selectedColor.colorHex).map((item: any, index: number) => (
+                                            <li key={index} className="flex items-center gap-2" onClick={() => setSelectedSize(selectedSize === item ? null : item)}>
+                                                <div className="w-7 h-7 border border-gray-500 flex items-center justify-center">{item.nameSize}</div>                {selectedSize === item && <CheckOutlined />}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
 
-                              
-               
+
+
                                 {/* quantity by size */}
                                 <div className="size flex items-center gap-10 mt-5">
-    <ul className="flex items-center gap-2">
-        <div className="quantity flex items-center gap-5">
-            <h2 className="text-lg font-medium">Số Lượng:</h2>
-            <div className="input-number flex items-center  border-2 ">
-                <button className="btn-minus flex w-full px-2" onClick={handleCountDowQuantity}>
-                    -
-                </button>
-                <input value={quantity} type="text" className="w-12 text-center border-x-2" />
-                <button className="btn-plus px-2" onClick={handleIncreaseQuantity}>
-                    +
-                </button>
-            </div>
-            {selectedSize && (
-                <div className="available-quantity flex items-center gap-5">
-                    <h2 className="text-lg font-medium">Số lượng có sẵn:</h2>
-                    <div>{selectedSize.quantity}</div>
-                </div>
-            )}
-        </div>
-    </ul>
-</div>
+                                    <ul className="flex items-center gap-2">
+                                        <div className="quantity flex items-center gap-5">
+                                            <h2 className="text-lg font-medium">Số Lượng:</h2>
+                                            <div className="input-number flex items-center  border-2 ">
+                                                <button className="btn-minus flex w-full px-2" onClick={handleCountDowQuantity}>
+                                                    -
+                                                </button>
+                                                <input value={quantity} type="text" className="w-12 text-center border-x-2" />
+                                                <button className="btn-plus px-2" onClick={handleIncreaseQuantity}>
+                                                    +
+                                                </button>
+                                            </div>
+                                            {selectedSize && (
+                                                <div className="available-quantity flex items-center gap-5">
+                                                    <h2 className="text-lg font-medium">Số lượng có sẵn:</h2>
+                                                    <div>{selectedSize.quantity}</div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </ul>
+                                </div>
                                 {/* action-button số lượng yêu thích */}
                                 <div className="action-addtocart mt-5">
                                     {/* button */}

@@ -23,10 +23,10 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
   const handleClickThumbnail = (image: string) => {
     setImage(image);
   };
-  const hasDiscount = product?.hot_sale > 10;
+  const hasDiscount = product?.hot_sale > 0;
   return (
     <>
-      <div className="w-full md:w-64 m-auto content shadow-2xl rounded-lg overflow-hidden">
+      <div className="w-full md:w-64 m-auto content  rounded-2xl overflow-hidden hover:border">
         <div className="w-full">
           <div className="w-full relative overflow-hidden ">
             <td className="whitespace-nowrap text-gray-700">
@@ -36,15 +36,15 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
             </td>
             <div className="prd-sale absolute top-2 left-1 min-w-[60px]">
             {hasDiscount && (
-              <div className="py-[2px] mb-1 bg-pink-600">
+              <div className="py-[2px] mb-1 bg-pink-600 rounded-xl">
                 <span className="m-1 block rounded-full text-center text-sm font-medium text-white">
-                  {product?.hot_sale} SALE
+                SALE     {product?.hot_sale} %
                 </span>
                 
               </div>
               )}
 
-              <div className="py-[2px] bg-[#33c7fd]">
+              <div className="py-[2px] bg-[#33c7fd] rounded-xl">
                 <span className="m-1 block rounded-full text-center text-sm font-medium text-white">
                   Mới
                 </span>
@@ -85,10 +85,10 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
                 </h2>
                 <h2 className="price flex justify-center gap-5 text-center mt-1 cursor-pointer">
                   <div className="flex gap-2">
-                    <span className="text-[#110606] text-base line-through">
+                    <span className="text-[#110606] text-xs line-through">
                       {product?.price}.vnđ
                     </span>
-                    <span className="text-[#d34949] text-2xl font-semibold">
+                    <span className="text-[#d34949] text-xl font-semibold">
                       {product?.price}.vnđ
                     </span>
                   </div>
