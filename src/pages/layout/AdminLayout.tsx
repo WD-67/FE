@@ -11,7 +11,8 @@ import {
   CommentOutlined,
   ControlOutlined,
   BookOutlined,
-  MailOutlined
+  MailOutlined,
+  HomeOutlined
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
@@ -71,10 +72,6 @@ const items: MenuItem[] = [
   getItem('Liên hệ', 'sub22', <MailOutlined />, [
     getItem(<Link to="/admin/contact">List</Link>, '39',),
   ]),
-  getItem('Customer', 'sub3', <UserOutlined />, [
-    getItem(<Link to="/admin/customer">List</Link>, '32',),
-    getItem(<Link to="/admin/customer/add">Add</Link>, '33'),
-  ]),
   getItem('Role', 'sub4', <UnorderedListOutlined />, [
     getItem(<Link to="/admin/role">List</Link>, '34',),
     getItem(<Link to="/admin/role/add">Add</Link>, '35'),
@@ -84,6 +81,7 @@ const items: MenuItem[] = [
     getItem(<Link to="/admin/color/add">Add</Link>, '37'),
   ]),
   getItem(<Link to="/admin/sale">Sale</Link>, '38', <TeamOutlined />,),
+  getItem(<Link to="/">Trang chủ</Link>, '50', <HomeOutlined />,),
 ];
 
 const AdminLayout: React.FC = () => {

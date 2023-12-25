@@ -3,6 +3,7 @@ import { IUser } from "@/interfaces/user";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
 import { useGetRoleQuery } from "@/api/role";
+import { DeleteTwoTone, EditOutlined } from '@ant-design/icons';
 type Props = {};
 
 const AdminUser = (props: Props) => {
@@ -69,26 +70,28 @@ const AdminUser = (props: Props) => {
     //   key: "addressUser",
     // },
     {
-      render: ({ key: id }: { key: string | number }) => {  
-        return (
-          <>
-            <div className="flex space-x-2">
-              <Popconfirm
-                title="Bạn muốn xóa không?"
-                onConfirm={() => confirm(id)}
-                okText="Yes"
-                cancelText="No"
-              >
+      render: ({ key: id }: { key: string | number }) => {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+        if (user && user.role && user.role.role_name === "admin") {
+          return (
+            <>
+              <div className="flex space-x-2">              
                 <Button>
-                Xóa
+                  <Link to={`/admin/user/edit/${id}`}><EditOutlined /></Link>
                 </Button>
-              </Popconfirm>
-              <Button type="primary" danger>
-                <Link to={`/admin/user/edit/${id}`}>Sửa</Link>
-              </Button>
-            </div> 
-          </>       
-        );    
+                <Popconfirm
+                  title="Bạn muốn xóa không?"
+                  onConfirm={() => confirm(id)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button><DeleteTwoTone /></Button>
+                </Popconfirm>
+              </div>
+            </>
+          );
+        }
       },
     },
   ];

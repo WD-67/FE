@@ -1,10 +1,11 @@
-import { Form, Button, Input, DatePicker } from "antd";
+import { Form, Button, Input, DatePicker, message } from "antd";
 import LoadingOutlined from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useAddUserMutation, useSignupUserMutation } from "@/api/user";
 import { IUser } from "@/interfaces/user";
 import { useForm } from "react-hook-form";
+import zxcvbn from "zxcvbn";
 type FieldType = {
   name: string;
   fullname: string;
@@ -15,13 +16,31 @@ type FieldType = {
   trang_thai: string;
 };
 const Signup = () => {
-  const { handleSubmit, register } = useForm<IUser>();
+  const { handleSubmit, register, getValues } = useForm<IUser>();
   const [signup, { isLoading }] = useSignupUserMutation();
   const navigate = useNavigate();
   const onFinish = (values: IUser) => {
+    const { password, confirmPassword } = values;
+    if (password !== confirmPassword) {
+      message.error("Mật khẩu xác nhận không khớp!");
+      return;
+    }
+
+    if (password.length < 6) {
+      message.error("Mật khẩu phải có ít nhất 6 kí tự!");
+      return;
+    }
+
     signup(values)
       .unwrap()
-      .then(() => navigate("/signin"));
+      .then(() => {
+        message.success("Đăng ký thành công!");
+        navigate("/signin");
+      })
+      .catch((error) => {
+        message.error("Đăng ký thất bại. Vui lòng thử lại!");
+        console.log(error);
+      });
   };
   return (
     <>
@@ -150,6 +169,11 @@ const Signup = () => {
                           required
                         />
                       </div>
+                      {getValues("password") && (
+                        <div className="text-red-500 text-xs mt-1">
+                          {zxcvbn(getValues("password")).feedback.warning}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex -mx-3">

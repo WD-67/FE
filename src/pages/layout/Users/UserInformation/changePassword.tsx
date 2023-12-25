@@ -68,11 +68,11 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({
         setVisible(false);
         handleHideChangePassword();
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 401) {
         message.error('Mật khẩu cũ không đúng');
       } else {
-        message.error('Đổi mật khẩu không thành công');
+        message.error('Đổi mật khẩu không thành công, mật khẩu cũ không đúng');
       }
     }
   };
