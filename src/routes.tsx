@@ -70,7 +70,6 @@ import OrderHistory from "./pages/layout/Users/OrderHistory";
 
 
 const isAuthenticated = (): boolean => {
-  return true
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : {};
   const allowedRoles = ["admin", "nhân viên", "quản lý"]; // Danh sách các vai trò được phép truy cập
