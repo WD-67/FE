@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Cascader, Checkbox, Col, ColorPicker, Form, Input, notification, Row, Select, Space } from 'antd';
 import { InputNumber } from 'antd'
@@ -16,11 +16,16 @@ import { IColor } from '@/interfaces/color';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import UpLoand from "../../Image/UploadImageTintuc"
 import { css } from '@emotion/react'
+import { AnyAction } from '@reduxjs/toolkit';
   
 
 const { Option } = Select;
+type Props = {
+    setIsModalVisible: Dispatch<SetStateAction<boolean>>;
 
-const AddProduct: React.FC = () => {
+
+}
+const AddProduct = ({setIsModalVisible} : Props) => {
     const navigate = useNavigate();
     const [addproduct] = useAddProductMutation();
     const {data: image} = useGetImageProductsQuery();
@@ -37,7 +42,8 @@ const AddProduct: React.FC = () => {
     
     const { TextArea } = Input;
 
-   
+    const [form] = Form.useForm();
+
 
     const onFinish = (products: any) => {
         console.log(products);
@@ -61,13 +67,15 @@ const AddProduct: React.FC = () => {
         
         // return;
         addproduct(product as any);
+        setIsModalVisible(false);
         
-
+        form.resetFields();
         navigate('/admin/product');
         notification.success({
             message: 'Success',
             description: 'Thêm sản phẩm thành công',
         });
+        
     };
    
 
@@ -82,7 +90,7 @@ const AddProduct: React.FC = () => {
             autoComplete="off"   
         >
         
-                <Col span={15}>
+                <Col span={20}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -123,8 +131,6 @@ const AddProduct: React.FC = () => {
                             ))}
                         </Select>
                     </Form.Item>
-                    <Row gutter={20} style={{ marginLeft: '90px' }}>
-                    <Col span={12}>
                         <Form.Item
                         label="Sale"
                         name="hot_sale"
@@ -140,8 +146,6 @@ const AddProduct: React.FC = () => {
                         >
                         <InputNumber />
                         </Form.Item>
-                    </Col>
-                    <Col span={12}>
                         <Form.Item
                         label="Quanity"
                         name="quantity"
@@ -157,10 +161,21 @@ const AddProduct: React.FC = () => {
                         >
                         <InputNumber />
                         </Form.Item>
-                    </Col>
-                    </Row>
-                   
-                    <Form.List
+    
+                <Form.Item label="IMG" name="image">
+                    <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />
+                </Form.Item>
+                <Form.Item
+                    label="Mô tả"
+                    name="description"
+                    rules={[
+                        { required: true, message: 'Vui lòng nhập mô tả sản phẩm!' },
+                        { min: 5, message: 'Mô tả sản phẩm phải có ít nhất 5 ký tự.' },
+                    ]}
+                >
+                    <TextArea rows={4} />
+                </Form.Item>
+            <Form.List
               name='listQuantityRemain'
               rules={[
                 {
@@ -204,33 +219,8 @@ const AddProduct: React.FC = () => {
                 </div>
               )}
             </Form.List>
-                
-   
-                 
-                  
-                </Col>
-    
-                <Row gutter={1} style={{ marginLeft: '26px' }}>
-            <Col span={12} >
-                <Form.Item label="IMG" name="image">
-                    <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />
-                </Form.Item>
             </Col>
-            <Col span={12}  style={{ marginRight: '10px' }}>
-                <Form.Item
-                    label="Mô tả"
-                    name="description"
-                    rules={[
-                        { required: true, message: 'Vui lòng nhập mô tả sản phẩm!' },
-                        { min: 5, message: 'Mô tả sản phẩm phải có ít nhất 5 ký tự.' },
-                    ]}
-                >
-                    <TextArea rows={4} />
-                </Form.Item>
-            </Col>
-    
-            </Row>
-    
+                        <br />
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button  htmlType="submit">
                     Thêm sản phẩm mới

@@ -6,29 +6,38 @@ const productApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API
     }),
+    tagTypes: ["Products"],
     endpoints: (builder) => ({
         // actions
         // GET 
         getProducts: builder.query<IProduct, void>({
-            query: () => `/products`
+            query: () => `/products`,
+            providesTags: ["Products"]
+
             
         }),
         getProductById: builder.query<IProduct, number | string>({
-            query: (id) => `/products/${id}`
+            query: (id) => `/products/${id}`,
+            providesTags: ["Products"]  
         }),
+
         addProduct: builder.mutation<IProduct, IProduct>({
             query: (product) => ({
                 url: `/products`,
                 method: "POST",
                 body: product
-            })
+            }),
+            invalidatesTags: ["Products"]
+        
         }),
         updateProduct: builder.mutation<IProduct, IProduct>({
             query: (product) => ({
                 url: `/products/${product._id}`,
                 method: "PUT",
                 body: product
-            })
+            }),
+            invalidatesTags: ["Products"]
+
         }),
         removeProduct: builder.mutation<IProduct, number | string>({
             query: (id) => ({

@@ -6,6 +6,7 @@ type Props = {
 };
 
 const ImagePriview = ({ listImage, width }: Props) => {
+    
     return (
         <Image.PreviewGroup>
             <div className={`cursor-pointer overflow-hidden w-${width}`}>

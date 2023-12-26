@@ -39,7 +39,9 @@ const Header = () => {
     setSearchTerm(e.target.value);
   };
   const handleSelectProduct = (productName: string) => {
-    setSearchTerm("");
+    setSearchTerm(productName);
+    
+
     // Hide search results here
   };
   const handleClear =
@@ -91,7 +93,6 @@ const Header = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Nhập từ khóa tìm kiếm..."
                   ref={inputRef}
-                  onFocus={() => setOpen(true)}
                 />
                 {searchTerm && (
                   <span
@@ -125,7 +126,7 @@ const Header = () => {
                       searchResults.products.length > 0 ? (
                         <div>
                           <ul style={{ listStyle: "none", padding: 0 }}>
-                            {searchResults.products.map((product) => (
+                            {searchResults.products.map((product:any) => (
                               <li
                                 key={product._id}
                                 style={{ marginBottom: "10px" }}
@@ -136,8 +137,12 @@ const Header = () => {
                                     color: "black",
                                     textDecoration: "none",
                                   }}
-                                  onClick={() =>
+                                  onClick={() =>{
                                     handleSelectProduct(product.name)
+                                    // setSearchTerm(product.name)
+                                    
+                                  }
+                                  
                                   }
                                 >
                                   {product.name}

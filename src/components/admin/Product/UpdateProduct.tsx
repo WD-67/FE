@@ -1,33 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Form, Input, notification, Select, Row, Col, Space, InputNumber ,ColorPicker} from 'antd';
-import { useGetSizesQuery } from '@/api/sizes';
+import { Button, Form, Input, notification, Select, Row, Col, Space, InputNumber ,ColorPicker, Image} from 'antd';
 import { useGetProductByIdQuery, useUpdateProductMutation } from '@/api/product';
 import { useGetCategorysQuery } from '@/api/category';
 import { ICategory } from '@/interfaces/category';
-import { ISize } from '@/interfaces/size';
-import { IColor } from '@/interfaces/color';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { useGetColorsQuery } from '@/api/color';
+import {  PlusOutlined } from '@ant-design/icons';
 import UpLoand from '../../Image/UploadImageTintuc';
 import mongoose from 'mongoose';
 import { css } from '@emotion/react'
-
 
 const { Option } = Select;
 const UpdateProduct: React.FC = () => {
     const navigate = useNavigate();
     const [updateProduct] = useUpdateProductMutation(); 
     const { id } = useParams<{ id: string }>();
-    const { data, isLoading } = useGetProductByIdQuery(String(id)); 
-    const { data: size } = useGetSizesQuery();
+    const { data, isLoading } = useGetProductByIdQuery(String(id))
+    console.log(data);
     const { data: category } = useGetCategorysQuery();
-    const { data: color } = useGetColorsQuery();
-
-
-
-
-    const [currentImage, setCurrentImage] = useState<Array[]>(data?.product.image || []);
+    const [currentImage, setCurrentImage] = useState([]);
+    console.log(currentImage);
+    
 
     const handleImage = (imageUrl: string) => {
         setCurrentImage([...currentImage, imageUrl]);
@@ -50,7 +42,6 @@ const UpdateProduct: React.FC = () => {
             quantity: data?.product.quantity,
             hot_sale: data?.product.hot_sale,
             categoryId: data?.product.categoryId ,
-            trang_thai: data?.product.trang_thai,
             listQuantityRemain : 
             data?.product.listQuantityRemain.map((item: any) => ({
                 colorHex: item.colorHex,
@@ -60,24 +51,21 @@ const UpdateProduct: React.FC = () => {
             })),
        
         })
+        setCurrentImage(data?.product.image)
     }, [ data ,form ,isLoading]);
 
     const onFinish = async (values: any) => {
         try {
 
-            const updateProducts = await updateProduct({  ...values ,_id:id, image: [currentImage] ,
+            const updateProducts = await updateProduct({  ...values ,_id:id, image: [...currentImage] ,
                 listQuantityRemain : 
                 values.listQuantityRemain.map((item: any) => ({
-                    colorHex: item.colorHex.toHexString(),
+                    colorHex:  typeof item.colorHex === 'string' ? item.colorHex : item.colorHex.toHexString(),
                     nameColor: item.nameColor,
                     nameSize: item.nameSize,
                     quantity: item.quantity,
                 })),
-                categoryId: 
-                values.categoryId.map((item: any) => ({
-                    _id: item,
-    
-                })),
+          
              
              }).unwrap();
             notification.success({
@@ -95,6 +83,17 @@ const UpdateProduct: React.FC = () => {
             });
         }
     };
+    const handleImageDelete = (item:any) => {
+        if(currentImage.length == 1 ){
+            notification.error({
+                message: "Phải có it nhất 1 ảnh cho sản phẩm ",
+                description: 'Xóa thất bại',
+                duration: 2,
+            })
+            return
+        }
+        setCurrentImage(currentImage.filter(image => image !== item));
+    }
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -102,8 +101,7 @@ const UpdateProduct: React.FC = () => {
 
     return (
         <div>
-             <div>
-             <Form
+           <Form
             form={form}
             name="basic"
             labelCol={{ span: 8 }}
@@ -111,9 +109,10 @@ const UpdateProduct: React.FC = () => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"   
+            
         >
         
-                <Col span={15}>
+                <Col span={20}>
                     <Form.Item
                         label="Name"
                         name="name"
@@ -140,7 +139,7 @@ const UpdateProduct: React.FC = () => {
                     >
                         <Input />
                     </Form.Item>
-      
+    
                     <Form.Item
                         label="Category"
                         name="categoryId"
@@ -154,8 +153,6 @@ const UpdateProduct: React.FC = () => {
                             ))}
                         </Select>
                     </Form.Item>
-                    <Row gutter={20} style={{ marginLeft: '90px' }}>
-                    <Col span={12}>
                         <Form.Item
                         label="Sale"
                         name="hot_sale"
@@ -171,8 +168,6 @@ const UpdateProduct: React.FC = () => {
                         >
                         <InputNumber />
                         </Form.Item>
-                    </Col>
-                    <Col span={12}>
                         <Form.Item
                         label="Quanity"
                         name="quantity"
@@ -188,10 +183,51 @@ const UpdateProduct: React.FC = () => {
                         >
                         <InputNumber />
                         </Form.Item>
-                    </Col>
-                    </Row>
-                   <Col style={{ marginLeft: '200px' }}>
-                    <Form.List
+    
+                 
+                <Form.Item label="IMG" name="image">  
+                <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />
+                Ảnh cũ :
+                <Row gutter={16}>
+        {currentImage?.map((item:any) => {
+            return(
+           
+
+                <Col span={8} key={item}>
+                  
+                    <Image
+                        width={90}
+                        src={item}
+                        
+                    />
+                    {/*delete image */}
+                    <Button
+                        type="primary"
+                        danger
+                        onClick={() => handleImageDelete(item)}
+                    >
+                        Xóa
+                    </Button>
+                </Col>
+            )
+        })}
+    </Row>
+                 
+
+                </Form.Item>
+          
+         
+                <Form.Item
+                    label="Mô tả"
+                    name="description"
+                    rules={[
+                        { required: true, message: 'Vui lòng nhập mô tả sản phẩm!' },
+                        { min: 5, message: 'Mô tả sản phẩm phải có ít nhất 5 ký tự.' },
+                    ]}
+                >
+                    <TextArea rows={4} />
+                </Form.Item>
+            <Form.List
               name='listQuantityRemain'
               rules={[
                 {
@@ -203,7 +239,6 @@ const UpdateProduct: React.FC = () => {
                 }
               ]}
               initialValue={[]}
-              
             >
               {(fields, { add, remove }, { errors }) => (
                 <div css={formcss} style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
@@ -237,37 +272,13 @@ const UpdateProduct: React.FC = () => {
               )}
             </Form.List>
             </Col>
-
-                </Col>
-    
-                <Row gutter={1} style={{ marginLeft: '26px' }}>
-            <Col span={12} >
-                <Form.Item label="IMG" name="image">
-                    <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />
-                </Form.Item>
-            </Col>
-            <Col span={12}  style={{ marginRight: '10px' }}>
-                <Form.Item
-                    label="Mô tả"
-                    name="description"
-                    rules={[
-                        { required: true, message: 'Vui lòng nhập mô tả sản phẩm!' },
-                        { min: 5, message: 'Mô tả sản phẩm phải có ít nhất 5 ký tự.' },
-                    ]}
-                >
-                    <TextArea rows={4} />
-                </Form.Item>
-            </Col>
-    
-            </Row>
-    
+                        <br />
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button  htmlType="submit">
-                    Thêm sản phẩm mới
+                    Sửa sản phẩm mới
                 </Button>
             </Form.Item>
         </Form>
-        </div>
         </div>
     );
 };

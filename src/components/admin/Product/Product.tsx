@@ -50,6 +50,7 @@ const Product = (props: Props) => {
 
     const showModal = () => {
         setIsModalVisible(true);
+        refetch();
     };
 
     const handleOk = () => {
@@ -192,13 +193,6 @@ const columns = [
         );
     }
 },
-  
-  
-//   {
-//     title: 'Status',
-//     dataIndex: 'inventoryStatus',
-//     key: 'inventoryStatus',
-//   },
 
 
   {
@@ -231,8 +225,8 @@ return (
        <Button type="default" onClick={showModal}>
                 Thêm sản phẩm
             </Button>
-            <Modal title="Thêm sản phẩm" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  width="50%">
-                <AddProduct />
+            <Modal destroyOnClose title="Thêm sản phẩm" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}  width="40%">
+                <AddProduct setIsModalVisible={setIsModalVisible} />
             </Modal>
     </header>
     {loading ? <Spin /> : <Table dataSource={dataSource} columns={columns} />}
