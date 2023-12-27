@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Input, notification, Select, Row, Col, Space, InputNumber ,ColorPicker, Image} from 'antd';
 import { useGetProductByIdQuery, useUpdateProductMutation } from '@/api/product';
@@ -8,9 +8,13 @@ import {  PlusOutlined } from '@ant-design/icons';
 import UpLoand from '../../Image/UploadImageTintuc';
 import mongoose from 'mongoose';
 import { css } from '@emotion/react'
+type Props = {
+    setIsModalVisible: Dispatch<SetStateAction<boolean>>;
 
+
+}
 const { Option } = Select;
-const UpdateProduct: React.FC = () => {
+const UpdateProduct = ({setIsModalVisible} : Props) => {
     const navigate = useNavigate();
     const [updateProduct] = useUpdateProductMutation(); 
     const { id } = useParams<{ id: string }>();
@@ -39,7 +43,6 @@ const UpdateProduct: React.FC = () => {
             price: data?.product.price,
             image: currentImage,
             description: data?.product.description,
-            quantity: data?.product.quantity,
             hot_sale: data?.product.hot_sale,
             categoryId: data?.product.categoryId ,
             listQuantityRemain : 
@@ -52,6 +55,7 @@ const UpdateProduct: React.FC = () => {
        
         })
         setCurrentImage(data?.product.image)
+        
     }, [ data ,form ,isLoading]);
 
     const onFinish = async (values: any) => {
@@ -68,6 +72,7 @@ const UpdateProduct: React.FC = () => {
           
              
              }).unwrap();
+           
             notification.success({
                 message: 'Cập nhật thành công',
                 description: `The Size ${updateProducts.name} has been updated.`,
@@ -109,7 +114,7 @@ const UpdateProduct: React.FC = () => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"   
-            
+
         >
         
                 <Col span={20}>
@@ -168,22 +173,6 @@ const UpdateProduct: React.FC = () => {
                         >
                         <InputNumber />
                         </Form.Item>
-                        <Form.Item
-                        label="Quanity"
-                        name="quantity"
-                        rules={[
-                            { required: true, message: 'Vui lòng nhập số lượng sản phẩm!' },
-                            {
-                            validator: (_, value) =>
-                                !value || !isNaN(Number(value))
-                                ? Promise.resolve()
-                                : Promise.reject('Giá phải là một số'),
-                            },
-                        ]}
-                        >
-                        <InputNumber />
-                        </Form.Item>
-    
                  
                 <Form.Item label="IMG" name="image">  
                 <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />

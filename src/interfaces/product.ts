@@ -4,9 +4,8 @@ export interface IProduct {
   price: number;
   hot_sale?: number  ;
   image: Array<string>;
-  colorSizes?:  Array<string>;
+  listQuantityRemain:  Array<string>;
   categoryId: string | number | object;  
-  quantity : number;
   description: string;
 
 }

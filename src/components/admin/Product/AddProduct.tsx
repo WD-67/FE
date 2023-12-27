@@ -52,7 +52,6 @@ const AddProduct = ({setIsModalVisible} : Props) => {
             price: products.price,
             image: img,
             description: products.description,
-            quantity: products.quantity,
             hot_sale:  products.hot_sale,
             categoryId: products.categoryId,
             listQuantityRemain : 
@@ -136,21 +135,6 @@ const AddProduct = ({setIsModalVisible} : Props) => {
                         name="hot_sale"
                         rules={[
                             // { required: true, message: 'Vui lòng nhập khuyến mại sản phẩm!' },
-                            {
-                            validator: (_, value) =>
-                                !value || !isNaN(Number(value))
-                                ? Promise.resolve()
-                                : Promise.reject('Giá phải là một số'),
-                            },
-                        ]}
-                        >
-                        <InputNumber />
-                        </Form.Item>
-                        <Form.Item
-                        label="Quanity"
-                        name="quantity"
-                        rules={[
-                            { required: true, message: 'Vui lòng nhập số lượng sản phẩm!' },
                             {
                             validator: (_, value) =>
                                 !value || !isNaN(Number(value))
