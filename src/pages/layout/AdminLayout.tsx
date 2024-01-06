@@ -37,51 +37,55 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link to="/admin">Dashboard</Link>, '1', <PieChartOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem(<Link to="/admin/user">List</Link>, '3',),
-    getItem(<Link to="/admin/user/add">Add</Link>, '4'),
+  getItem(<Link to="/admin">Thống kê</Link>, '1', <PieChartOutlined />),
+  getItem('Người dùng', 'sub1', <UserOutlined />, [
+    getItem(<Link to="/admin/user">Danh sách</Link>, '3',),
+    // getItem(<Link to="/admin/user/add">Add</Link>, '4'),
   ]),
-  getItem(<Link to="/admin/product">Product</Link>, '10', <UnorderedListOutlined />,
+  getItem(<Link to="/admin/product">Sản phẩm</Link>, '10', <UnorderedListOutlined />,
     [
-      getItem(<Link to="/admin/product">List</Link>, '11',),
-      getItem(<Link to="/admin/product/add">Add</Link>, '12'),
+      getItem(<Link to="/admin/product">Danh sách</Link>, '11',),
+      // getItem(<Link to="/admin/product/add">Add</Link>, '12'),
       getItem(<Link to="/admin/product/recycle"><DeleteOutlined /></Link>, '13'),
 
     ]),
-  getItem(<Link to="/admin/size">Size</Link>, '14', <ControlOutlined />,
-    [
-      getItem(<Link to="/admin/size">List</Link>, '15',),
-      getItem(<Link to="/admin/size/add">Add</Link>, '16'),
+  // getItem(<Link to="/admin/size">Size</Link>, '14', <ControlOutlined />,
+  //   [
+  //     getItem(<Link to="/admin/size">Danh sách</Link>, '15',),
+  //     getItem(<Link to="/admin/size/add">Add</Link>, '16'),
 
-    ]),
+  //   ]),
   getItem(<Link to="/admin/tintuc">Tin tức</Link>, '25', <DesktopOutlined />,
     [
       getItem(<Link to="/admin/tintuc/add">Thêm tin tức</Link>, '27'),
     ]),
-  getItem(<Link to="/admin/comments">Comment</Link>, '28', <CommentOutlined />,
+  getItem(<Link to="/admin/comments">Bình luận</Link>, '28', <CommentOutlined />,
   ),
   getItem('Danh mục', 'sub20', <UnorderedListOutlined />, [
-    getItem(<Link to="/admin/category">List</Link>, '37',),
-    getItem(<Link to="/admin/category/add">Add</Link>, '4'),
+    getItem(<Link to="/admin/category">Danh sách</Link>, '37',),
+    getItem(<Link to="/admin/category/add">Thêm</Link>, '4'),
   ]),
   getItem('Thông tin', 'sub21', <BookOutlined />, [
-    getItem(<Link to="/admin/information">List</Link>, '38',),
-    getItem(<Link to="/admin/information/add">Add</Link>, '40'),
+    getItem(<Link to="/admin/information">Danh sách</Link>, '38',),
+    getItem(<Link to="/admin/information/add">Thêm</Link>, '40'),
   ]),
   getItem('Liên hệ', 'sub22', <MailOutlined />, [
-    getItem(<Link to="/admin/contact">List</Link>, '39',),
+    getItem(<Link to="/admin/contact">Danh sách</Link>, '39',),
   ]),
-  getItem('Role', 'sub4', <UnorderedListOutlined />, [
-    getItem(<Link to="/admin/role">List</Link>, '34',),
-    getItem(<Link to="/admin/role/add">Add</Link>, '35'),
+  getItem('Vai trò', 'sub4', <UnorderedListOutlined />, [
+    getItem(<Link to="/admin/role">Danh sách</Link>, '34',),
+    getItem(<Link to="/admin/role/add">Thêm</Link>, '35'),
   ]),
-  getItem('Color', 'sub5', <UnorderedListOutlined />, [
-    getItem(<Link to="/admin/color">List</Link>, '36',),
-    getItem(<Link to="/admin/color/add">Add</Link>, '37'),
+  getItem('Đơn hàng', 'sub5', <PieChartOutlined /> , [
+    getItem(<Link to="/admin/order">Danh sách</Link>, '36',),
+    // getItem(<Link to="/admin/role/add">Add</Link>, '37'),
   ]),
-  getItem(<Link to="/admin/sale">Sale</Link>, '38', <TeamOutlined />,),
-  getItem(<Link to="/">Trang chủ</Link>, '50', <HomeOutlined />,),
+  // getItem('Color', 'sub6', <UnorderedListOutlined />, [
+  //   getItem(<Link to="/admin/order">Danh sách</Link>, '38',),
+  //   getItem(<Link to="/admin/color/add">Thêm</Link>, '39'),
+  // ]),
+  getItem(<Link to="/admin/sale">Mã giảm giá</Link>, '40', <TeamOutlined />,),
+  getItem(<Link to="/">Trang chủ</Link>, '41', <HomeOutlined />,),
 ];
 
 const AdminLayout: React.FC = () => {
