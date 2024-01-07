@@ -6,6 +6,10 @@ const saleApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8080",
     }),
+    // reducerPath: "saleApi",
+    // baseQuery: fetchBaseQuery({
+    //     baseUrl: "http://localhost:8080",
+    // }),
     tagTypes: ["Sales"],
     endpoints: (builder) => ({
         getAllSales: builder.query<{ data: ISale[] }, void>({

@@ -15,6 +15,9 @@ const paymentApi = createApi({
         newPayment: builder.mutation<{ data: IPayment }, IPayment>({
             query: (data) => ({ url: "/api/payments", method: "POST", body: data}),
         }),
+        // newPayment: builder.mutation<{ data: IPayment }, IPayment>({
+        //     query: (data) => ({ url: "/api/payments", method: "POST", body: data}),
+        // }),
     }),
 });
 

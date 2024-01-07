@@ -128,6 +128,9 @@ const PaymentAdmin =()=> {
                     <span className="text-sm mt-0.5" style={{ color: "#64748b", fontWeight: "500" }}>
                         {format(new Date(createdAt), "HH:mm:ss")}
                     </span>
+                    {/* <span className="text-sm mt-0.5" style={{ color: "#64748b", fontWeight: "500" }}>
+                        {format(new Date(createdAt), "HH:mm:ss")}
+                    </span> */}
                 </div>
             ),
         },
