@@ -28,7 +28,6 @@ import ContactEdit from "./components/admin/Contact/edit";
 import AdminInformation from "./components/admin/Inpormation";
 import InformationAdd from "./components/admin/Inpormation/add";
 import InformationEdit from "./components/admin/Inpormation/edit";
-
 import AdminUser from "./components/admin/user/user";
 import AdminUserAdd from "./components/admin/user/add";
 import AdminEditUser from "./components/admin/user/edit";
@@ -38,7 +37,6 @@ import AdminCustomerEdit from "./components/admin/customer/edit";
 import AdminRole from "./components/admin/role/role";
 import AdminRoleAdd from "./components/admin/role/add";
 import AdminRoleEdit from "./components/admin/role/edit";
-
 import SaleAdminPage from "./components/SaleAdminPage";
 import PaymentAdmin from "./components/PaymentAdmin";
 import ProductDetail from "./components/admin/Product/ProductDetail";
@@ -54,20 +52,15 @@ import Orderr from "./pages/layout/Users/order/Order";
 import ListCategory from "./pages/layout/Users/List-Category/ListCategory";
 import Signin from "./pages/layout/Users/Signin/signin";
 import Signup from "./pages/layout/Users/Signup/signup";
-
 import AddColor from "./components/admin/color/add";
 import UpdateColor from "./components/admin/color/update";
 import Color from "./components/admin/color/list";
-
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ForgotPassword from "./pages/layout/Users/ForgotPassword/forgotPassword";
 import Detailtintuc from "./components/admin/tintuc/detail-tintuc";
 import NotFound from "./pages/layout/Client/NotFound";
 import Detail_category from "./pages/layout/Users/List-Category/detail-category";
 import OrderHistory from "./pages/layout/Users/OrderHistory";
-
 
 const isAuthenticated = (): boolean => {
   const userString = localStorage.getItem("user");

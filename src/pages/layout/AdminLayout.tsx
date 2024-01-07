@@ -45,16 +45,9 @@ const items: MenuItem[] = [
   getItem(<Link to="/admin/product">Sản phẩm</Link>, '10', <UnorderedListOutlined />,
     [
       getItem(<Link to="/admin/product">Danh sách</Link>, '11',),
-      // getItem(<Link to="/admin/product/add">Add</Link>, '12'),
       getItem(<Link to="/admin/product/recycle"><DeleteOutlined /></Link>, '13'),
 
     ]),
-  // getItem(<Link to="/admin/size">Size</Link>, '14', <ControlOutlined />,
-  //   [
-  //     getItem(<Link to="/admin/size">Danh sách</Link>, '15',),
-  //     getItem(<Link to="/admin/size/add">Add</Link>, '16'),
-
-  //   ]),
   getItem(<Link to="/admin/tintuc">Tin tức</Link>, '25', <DesktopOutlined />,
     [
       getItem(<Link to="/admin/tintuc/add">Thêm tin tức</Link>, '27'),
@@ -78,12 +71,8 @@ const items: MenuItem[] = [
   ]),
   getItem('Đơn hàng', 'sub5', <PieChartOutlined /> , [
     getItem(<Link to="/admin/order">Danh sách</Link>, '36',),
-    // getItem(<Link to="/admin/role/add">Add</Link>, '37'),
   ]),
-  // getItem('Color', 'sub6', <UnorderedListOutlined />, [
-  //   getItem(<Link to="/admin/order">Danh sách</Link>, '38',),
-  //   getItem(<Link to="/admin/color/add">Thêm</Link>, '39'),
-  // ]),
+
   getItem(<Link to="/admin/sale">Mã giảm giá</Link>, '40', <TeamOutlined />,),
   getItem(<Link to="/">Trang chủ</Link>, '41', <HomeOutlined />,),
 ];

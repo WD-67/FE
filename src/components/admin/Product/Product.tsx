@@ -4,7 +4,6 @@ import { DeleteTwoTone, EditOutlined } from '@ant-design/icons';
 import { useGetProductsQuery, useRemoveProductMutation } from '../../../api/product';
 import { IProduct } from '../../../interfaces/product';
 import { Link } from 'react-router-dom';
-import { ICategory } from '@/interfaces/category';
 import ImagePriview from '../../Image/ImagePriview';
 import { Modal } from 'antd';
 import AddProduct from './AddProduct';
