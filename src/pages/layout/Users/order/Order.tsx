@@ -104,6 +104,17 @@ const Orderr = () => {
         if (_infoCart) setInfoCart(_infoCart);
     }, []);
 
+    // const saleMoney = selectedSale?._id
+    //     ? selectedSale.type === "cash"
+    //         ? infoCart?.totalPrice - +selectedSale.sale
+    //         : (infoCart?.totalPrice * +selectedSale.sale) / 100
+    //     : 0;
+
+    // useEffect(() => {
+    //     const _infoCart = JSON.parse(sessionStorage.getItem("infoPayment") || "");
+    //     if (_infoCart) setInfoCart(_infoCart);
+    // }, []);
+
     useEffect(() => {
         const handleNewBooking = async () => {
             const paymentId = searchParams.get("payment_id");

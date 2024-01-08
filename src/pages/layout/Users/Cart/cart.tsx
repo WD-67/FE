@@ -55,6 +55,16 @@ const Cart = () => {
             totalPrice,
         };
     };
+    // const handleToTalCart = () => {
+    //     const cartSelected = carts.filter((item) => checkedItems[item._id as any]);
+    //     const totalPrice = cartSelected.reduce((value, item) => value + item.quantity * item.product.price, 0);
+    //     return {
+    //         cartSelected,
+    //         length: cartSelected.length,
+    //         totalPrice,
+    //     };
+    // };
+    
 
     const handlePayment = () => {
         Swal.fire({

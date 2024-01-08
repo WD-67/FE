@@ -51,6 +51,26 @@ const FormSale = ({ isModalOpen, setIsModalOpen, mode, defaultValues }: FormSale
                 .catch((error) => toast.error("Thất bại " + error.message));
         }
     };
+    // const handleSubmit = (values: ISale) => {
+    //     if (mode === "create") {
+    //         newSale(values)
+    //             .unwrap()
+    //             .then(() => {
+    //                 toast.success("Thêm mã giảm giá thành công !");
+    //                 setIsModalOpen(false);
+    //             })
+    //             .catch((error) => toast.error("Thất bại " + error.message));
+    //     }
+    //     if (mode === "edit") {
+    //         updateSale({ _id: defaultValues?._id, ...values })
+    //             .unwrap()
+    //             .then(() => {
+    //                 toast.success("Sửa mã giảm giá thành công !");
+    //                 setIsModalOpen(false);
+    //             })
+    //             .catch((error) => toast.error("Thất bại " + error.message));
+    //     }
+    // };
 
     return (
         <div>

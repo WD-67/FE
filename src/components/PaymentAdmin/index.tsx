@@ -97,6 +97,18 @@ const PaymentAdmin =()=> {
                     {payment_function==='cash'?'Tiền mặt':'Chuyển khoản'}
                 </p>
             ),
+            // render: (payment_function) => (
+            //     <p
+            //         style={{
+            //             maxWidth: "200px",
+            //             whiteSpace: "normal",
+            //             color: "#334155",
+            //         }}
+            //         className="text-line-3 text-base font-medium"
+            //     >
+            //         {payment_function==='cash'?'Tiền mặt':'Chuyển khoản'}
+            //     </p>
+            // ),
         },
         {
             title: "Trạng thái",

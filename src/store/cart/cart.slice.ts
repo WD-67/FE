@@ -26,6 +26,19 @@ const cartSlice = createSlice({
                 cart.product._id === action.payload.product._id ? { ...cart, quantity: cart.quantity + action.payload.quantity } : cart
             );
         },
+
+        // addProductToCart: (state, action: PayloadAction<ICart>) => {
+        //     const isMatch = [...state.cart].some((cart) => cart.product._id === action.payload.product._id);
+
+        //     if (!isMatch) {
+        //         state.cart = [...state.cart, action.payload];
+        //         state.quantity = state.cart.length;
+        //         return;
+        //     }
+        //     state.cart = [...state.cart].map((cart) =>
+        //         cart.product._id === action.payload.product._id ? { ...cart, quantity: cart.quantity + action.payload.quantity } : cart
+        //     );
+        // },
         removeProductToCart: (state, action: PayloadAction<string>) => {
             state.cart = [...state.cart].filter((item) => item._id !== action.payload);
             state.quantity = state.cart.length;
