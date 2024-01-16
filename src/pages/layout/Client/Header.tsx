@@ -10,6 +10,7 @@ import { useGetInformationsQuery } from "../../../api/information";
 import { IInformation } from "../../../interfaces/information";
 import UserInformation from "../Users/UserInformation/user";
 import { useSearchProductsQuery } from "@/api/product";
+import { useAppSelector } from "@/store/hook";
 
 const Header = () => {
   const listMenu = [
@@ -19,6 +20,8 @@ const Header = () => {
     { name: "Thông Tin", path: "/about" },
     { name: "Liên Hệ", path: "/contact" },
   ];
+  const initialCarts = useAppSelector((state: RootState) => state.cart.cart);
+  const [carts, setCarts] = useState(initialCarts);
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("");
   const [valueSearch, setValueSearch] = useState("");
@@ -26,6 +29,10 @@ const Header = () => {
   const { data: informationData } = useGetInformationsQuery();
   const [searchTerm, setSearchTerm] = useState("");
   const { data: searchResults, error, isLoading, refetch } = useSearchProductsQuery(searchTerm);
+
+  useEffect(() => {
+    setCarts(initialCarts);
+  } , [initialCarts])
 
   useEffect(() => {
     if (searchTerm) {
@@ -160,26 +167,14 @@ const Header = () => {
 
               {error && 'message' in error && <p>Có lỗi xảy ra: {error.message}</p>}
             </div>
-            <div className="action-cart-heart md:flex items-center gap-10 hidden ">
+            <div className="action-cart-heart md:flex items-center hidden ">
               <div className="heart-header mx-5">
                 <Link title="Cart" className="" to={"/cart"}>
                   <i className="relative">
                     <BsFillBagCheckFill className="heart-icon text-black text-3xl" />
                     <div className="quatity-producst -top-2 ml-6 absolute">
                       <span className="bg-red-500 text-white rounded-full text-xs px-1 py-[2px]">
-                        99+
-                      </span>
-                    </div>
-                  </i>
-                </Link>
-              </div>
-              <div className="heart-header">
-                <Link title="Cart" className="" to={"/cart"}>
-                  <i className="relative">
-                    <BsHeart className="heart-icon text-black text-3xl" />
-                    <div className="quatity-producst -top-2 ml-6 absolute">
-                      <span className="bg-red-500 text-white rounded-full text-xs px-1 py-[2px]">
-                        99+
+                        {carts.length}
                       </span>
                     </div>
                   </i>

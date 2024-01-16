@@ -43,7 +43,6 @@ html, body, h1, h2, p, ul {
   /* Action buttons styles */
   .flex {
     display: flex;
-    align-items: center;
   }
   
   .space-x-4 {

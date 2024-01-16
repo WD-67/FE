@@ -3,6 +3,7 @@ import { createBrowserRouter, RouteObject } from "react-router-dom";
 import { AdminLayout, HomePages } from "./pages/layout";
 import Product from "./components/admin/Product/Product";
 import Order from "./components/admin/order/order";
+import Detail from "./components/admin/order/detail";
 import AddProduct from "./components/admin/Product/AddProduct";
 import Size from "./components/admin/size/size";
 import AddSize from "./components/admin/size/AddSize";
@@ -28,6 +29,7 @@ import ContactEdit from "./components/admin/Contact/edit";
 import AdminInformation from "./components/admin/Inpormation";
 import InformationAdd from "./components/admin/Inpormation/add";
 import InformationEdit from "./components/admin/Inpormation/edit";
+
 import AdminUser from "./components/admin/user/user";
 import AdminUserAdd from "./components/admin/user/add";
 import AdminEditUser from "./components/admin/user/edit";
@@ -37,6 +39,7 @@ import AdminCustomerEdit from "./components/admin/customer/edit";
 import AdminRole from "./components/admin/role/role";
 import AdminRoleAdd from "./components/admin/role/add";
 import AdminRoleEdit from "./components/admin/role/edit";
+
 import SaleAdminPage from "./components/SaleAdminPage";
 import PaymentAdmin from "./components/PaymentAdmin";
 import ProductDetail from "./components/admin/Product/ProductDetail";
@@ -49,18 +52,25 @@ import Shop_Products from "./pages/layout/Users/Shop-Products/Shop_Products";
 import Detail_Product from "./pages/layout/Users/Detail-Product/Detail_Product";
 import Cart from "./pages/layout/Users/Cart/cart";
 import Orderr from "./pages/layout/Users/order/Order";
+import Payment from "./pages/layout/Users/Payment/Payment";
 import ListCategory from "./pages/layout/Users/List-Category/ListCategory";
 import Signin from "./pages/layout/Users/Signin/signin";
 import Signup from "./pages/layout/Users/Signup/signup";
+
 import AddColor from "./components/admin/color/add";
 import UpdateColor from "./components/admin/color/update";
 import Color from "./components/admin/color/list";
+
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import ForgotPassword from "./pages/layout/Users/ForgotPassword/forgotPassword";
 import Detailtintuc from "./components/admin/tintuc/detail-tintuc";
 import NotFound from "./pages/layout/Client/NotFound";
 import Detail_category from "./pages/layout/Users/List-Category/detail-category";
 import OrderHistory from "./pages/layout/Users/OrderHistory";
+import OrderDetail from "./pages/layout/Users/OrderHistory/detail";
+
 
 const isAuthenticated = (): boolean => {
   const userString = localStorage.getItem("user");
@@ -117,12 +127,21 @@ export const routers = createBrowserRouter([
         element: <Cart />,
       },
       {
-        path: "/order",
-        element: <Orderr />,
+        path: "/payment",
+        element: <Payment />,
     },
+    {
+      path: "/order",
+      element: <Orderr />,
+  },
     {
         path: "/order-history",
         element: <OrderHistory />,
+    },
+    ,
+    {
+        path: "/order-history/detail/:id",
+        element: <OrderDetail />,
     },
       {
         path: "/category",
@@ -311,6 +330,14 @@ export const routers = createBrowserRouter([
       },
       {
         path: "order",
+        element: <Order />,
+      },
+      {
+        path: "order/:id",
+        element: <Detail />,
+      },
+      {
+        path: "order:id",
         element: <Order />,
       },
       {

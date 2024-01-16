@@ -3,12 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Cascader, Checkbox, Col, ColorPicker, Form, Input, notification, Row, Select, Space } from 'antd';
 import { InputNumber } from 'antd'
 import { useAddProductMutation } from '@/api/product';
+import { useGetSizesQuery } from '@/api/sizes';
+import { useGetImageProductsQuery } from '@/api/imageProduct';
 import { useGetCategorysQuery } from '@/api/category';
+import { ISize } from '@/interfaces/size';
 import { ICategory } from '@/interfaces/category';
+import { ImageProduct } from '@/interfaces/imageProduct';
+import { useGetColorsQuery } from '@/api/color';
+import { ISale } from '@/types';
 import { useGetAllSalesQuery } from '@/api/sale/sale.api';
-import {  PlusOutlined } from '@ant-design/icons';
+import { IColor } from '@/interfaces/color';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import UpLoand from "../../Image/UploadImageTintuc"
 import { css } from '@emotion/react'
+import { AnyAction } from '@reduxjs/toolkit';
   
 
 const { Option } = Select;
@@ -20,6 +28,7 @@ type Props = {
 const AddProduct = ({setIsModalVisible} : Props) => {
     const navigate = useNavigate();
     const [addproduct] = useAddProductMutation();
+    const {data: image} = useGetImageProductsQuery();
     const {data: category} = useGetCategorysQuery();
     const {data: sale} = useGetAllSalesQuery();
     const [img, setImg] = useState<any>([]);

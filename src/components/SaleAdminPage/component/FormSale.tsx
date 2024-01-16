@@ -6,7 +6,6 @@ import { useNewSaleMutation, useUpdateSaleMutation } from "../../../api/sale/sal
 import { toast } from "react-toastify";
 import { Option } from "antd/es/mentions";
 
-
 type FormSaleProps = {
     isModalOpen: boolean;
     setIsModalOpen: React.Dispatch<boolean>;
@@ -19,8 +18,6 @@ const FormSale = ({ isModalOpen, setIsModalOpen, mode, defaultValues }: FormSale
     const [newSale, { isLoading: isLoadingCreate }] = useNewSaleMutation();
     const [updateSale, { isLoading: isLoadingUpdate }] = useUpdateSaleMutation();
 
-
-// abccccc
     useEffect(() => {
         if (defaultValues) {
             form.setFieldsValue(defaultValues);
