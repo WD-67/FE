@@ -46,8 +46,10 @@ const Payment = () => {
         let transformedArray = carts?.map(item => {
             return {
                 "product_id": item.product._id,
-                "color": item.product.listQuantityRemain[0].colorHex,
-                "size": item.product.listQuantityRemain[0].nameSize,
+                // "color": item.product.listQuantityRemain[0].colorHex,
+                // "size": item.product.listQuantityRemain[0].nameSize,4
+                "color": item.nameColor,
+                "size": item.nameSize,
                 "quantity": item.quantity
             };
         });
@@ -60,7 +62,7 @@ const Payment = () => {
             "address": sessionStorage.getItem("address") ?? "Địa chỉ của bạn",
             "sale_id": "6555018adbb1621a26e79a3e",
             "total_amount_paid": searchParams.get("amount"),
-            "payment_type": "bank",
+            "payment_type": "cash",
         };
         return dataCreateCart;
     }

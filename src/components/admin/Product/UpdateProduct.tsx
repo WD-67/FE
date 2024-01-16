@@ -130,44 +130,20 @@ const UpdateProduct = ({setIsModalVisible} : Props) => {
                     </Form.Item>
     
                     <Form.Item
-  label="Giá mới"
-  name="price"
-  dependencies={['hot_sale']}
-  rules={[
-    { required: true, message: 'Vui lòng nhập giá sản phẩm!' },
-    {
-      validator: (_, value) =>
-        !value || !isNaN(Number(value))
-          ? Promise.resolve()
-          : Promise.reject('Giá phải là một số'),
-    },
-    ({ getFieldValue }) => ({
-      validator(_, value) {
-        if (!value || getFieldValue('hot_sale') >= value) {
-          return Promise.resolve();
-        }
-        return Promise.reject('Giá mới không được cao hơn giá cũ!');
-      },
-    }),
-  ]}
->
-  <InputNumber />
-</Form.Item>
-<Form.Item
-  label="Giá cũ"
-  name="hot_sale"
-  rules={[
-    { required: true, message: 'Vui lòng nhập giá sản phẩm!' },
-    {
-      validator: (_, value) =>
-        !value || !isNaN(Number(value))
-          ? Promise.resolve()
-          : Promise.reject('Giá phải là một số'),
-    },
-  ]}
->
-  <InputNumber />
-</Form.Item>
+                        label="Price"
+                        name="price"
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập giá sản phẩm!' },
+                            {
+                                validator: (_, value) =>
+                                    !value || !isNaN(Number(value))
+                                        ? Promise.resolve()
+                                        : Promise.reject('Giá phải là một số'),
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
     
                     <Form.Item
                         label="Category"
@@ -182,7 +158,21 @@ const UpdateProduct = ({setIsModalVisible} : Props) => {
                             ))}
                         </Select>
                     </Form.Item>
-                   
+                        <Form.Item
+                        label="Sale"
+                        name="hot_sale"
+                        rules={[
+                            // { required: true, message: 'Vui lòng nhập khuyến mại sản phẩm!' },
+                            {
+                            validator: (_, value) =>
+                                !value || !isNaN(Number(value))
+                                ? Promise.resolve()
+                                : Promise.reject('Giá phải là một số'),
+                            },
+                        ]}
+                        >
+                        <InputNumber />
+                        </Form.Item>
                  
                 <Form.Item label="IMG" name="image">  
                 <UpLoand onImageUpLoad={handleImage} onImageRemove={handleImageRemove} />

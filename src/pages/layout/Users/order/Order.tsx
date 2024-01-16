@@ -27,8 +27,8 @@ const Orderr = () => {
   );
   const [infoCart, setInfoCart] = useState<any>(JSON.parse(sessionStorage.getItem("infoPayment") || ""));
   const [address, setAddress] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  const [phone, setPhone] = useState<string>(user?.phone || "");
+  const [name, setName] = useState<string>(user.fullname || "");
   const [voucherValue, setVoucherValue] = useState("");
 
   const [searchParams] = useSearchParams();
@@ -130,12 +130,10 @@ const Orderr = () => {
   const handlePayment = () => {
     if (address == "") {
       toast.error("Vui lòng nhập địa chỉ");
-    }
-    else if (name == "") {
+    } else if (name == "") {
       toast.error("Vui lòng nhập họ và tên người nhận");
-    }
-    else if (phone == "") {
-      toast.error("Vui lòng nhập số điẹn thoại người nhận");
+    } else if (!/^0[2-9]\d{8}$/.test(phone)) {
+      toast.error("Vui lòng nhập số điện thoại người nhận hợp lệ");
     } else {
       sessionStorage.setItem('address', JSON.stringify({'name':name,'phone':phone,"address":address}));
       Swal.fire({
@@ -249,22 +247,27 @@ const Orderr = () => {
           <h4 className="text-xl text-[#222]  font-bold tracking-wider my-2">
             Thông tin người đặt
           </h4>
-          <div className="mt-2 ">
+          <div className="mt-2">
             <label className="mb-3" htmlFor="">
-            Họ và tên:
+              Họ và tên:
             </label>
-            <Input placeholder="Họ và tên:.." className=" p-3 w-full"
-                     value={name}
-              onChange={(e) => setName(e.target.value)}/>
+            <Input
+              placeholder="Họ và tên:.."
+              className="p-3 w-full"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
-          <div className="mt-2 ">
+          <div className="mt-2">
             <label className="mb-3" htmlFor="">
-              Số Điện Thoại
+              Số Điện Thoại:
             </label>
-            <Input placeholder="Số điện thoại.."
-            className=" p-3 w-full"
+            <Input
+              placeholder="Số điện thoại:.."
+              className="p-3 w-full"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)} />
+              onChange={(e) => setPhone(e.target.value)}
+            />
           </div>
 
           <div className="mt-2 ">

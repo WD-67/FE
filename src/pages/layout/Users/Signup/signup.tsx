@@ -10,13 +10,14 @@ type FieldType = {
   name: string;
   fullname: string;
   ngaysinh: Date;
+  phone: number;
   email: string;
   password: string;
   confirmPassword: string;
   trang_thai: string;
 };
 const Signup = () => {
-  const { handleSubmit, register, getValues } = useForm<IUser>();
+  const { handleSubmit, register, getValues, formState: { errors } } = useForm<IUser>();
   const [signup, { isLoading }] = useSignupUserMutation();
   const navigate = useNavigate();
   const onFinish = (values: IUser) => {
@@ -129,6 +130,40 @@ const Signup = () => {
                           required
                         />
                       </div>
+                    </div>
+                  </div>
+                  <div className="flex -mx-3">
+                    <div className="w-1/2 px-3 mb-5">
+                      <label
+                        htmlFor="phone"
+                        className="text-xs font-semibold px-1"
+                      >
+                        Số điện thoại
+                      </label>
+                      <div className="flex">
+                        <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                          <i className="mdi mdi-account-outline text-gray-400 text-lg"></i>
+                        </div>
+                        <input
+                          type="text" // Đổi type thành "text" thay vì "number" để lưu trữ số điện thoại dưới dạng chuỗi
+                          className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                          placeholder="Nhập số điện thoại"
+                          id="phone"
+                          {...register("phone", {
+                            required: 'Trường "số điện thoại" là bắt buộc',
+                            pattern: {
+                              value: /^(\+84|0)[3|5|7|8|9]\d{8}$/,
+                              message:
+                                'Trường "số điện thoại" không đúng định dạng',
+                            },
+                          })}
+                        />
+                      </div>
+                      {errors.phone && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.phone.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex -mx-3">

@@ -95,6 +95,38 @@ const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    getDeletedUser: builder.query<any, void>({
+      query: () => "/user-daleted",
+      providesTags: ["User"],
+    }),
+    restoreUser: builder.mutation<IUser, number | string>({
+      query: (id) => ({
+        url: `/user/restore/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["User"],
+    }),
+    PermanentDeleteUser: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/user/hard-delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["User"],
+    }),
+    changeStatusToInactive: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}/inactive`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ["User"],
+    }),
+    changeStatusToActive: builder.mutation({
+      query: (userId) => ({
+        url: `/users/${userId}/active`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -108,7 +140,12 @@ export const {
   useSignupUserMutation,
   useSignoutMutation,
   useUpdateUserRoleMutation,
-  useChangePasswordMutation
+  useChangePasswordMutation,
+  useGetDeletedUserQuery,
+  useRestoreUserMutation,
+  usePermanentDeleteUserMutation,
+  useChangeStatusToInactiveMutation,
+  useChangeStatusToActiveMutation,
 } = userApi;
 export const userReducer = userApi.reducer;
 export default userApi;
