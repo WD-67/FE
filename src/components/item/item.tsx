@@ -36,10 +36,14 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
             </td>
             <div className="prd-sale absolute top-2 left-1 min-w-[60px]">
             {hasDiscount && (
-              <div className="py-[2px] mb-1 bg-pink-600 rounded-xl">
-                <span className="m-1 block rounded-full text-center text-sm font-medium text-white">
-                SALE     {product?.hot_sale} %
-                </span>
+              <div className="">
+               {Math.round(((product?.hot_sale - product?.price)/ product?.hot_sale)*100) !== 0 && (
+  <div className=" py-[2px] bg-pink-600 my-1">
+    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+      {Math.round(((product?.hot_sale - product?.price)/ product?.hot_sale)*100)} %
+    </span>
+  </div>
+)}
                 
               </div>
               )}
@@ -86,10 +90,10 @@ const Item = ({ buttonAdd, product, icon, infoProduct = true }: Props) => {
                 <h2 className="price flex justify-center gap-5 text-center mt-1 cursor-pointer">
                   <div className="flex gap-2">
                     <span className="text-[#110606] text-xs line-through">
-                      {product?.price}.vnđ
+                      {product?.hot_sale.toLocaleString('it-IT')}.vnđ
                     </span>
                     <span className="text-[#d34949] text-xl font-semibold">
-                      {product?.price}.vnđ
+                      {product?.price.toLocaleString('it-IT')}.vnđ
                     </span>
                   </div>
                 </h2>
