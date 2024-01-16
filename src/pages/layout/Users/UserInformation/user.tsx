@@ -41,6 +41,7 @@ const UserInformation: React.FC = () => {
     sessionStorage.clear();
     message.success("Đã đăng xuất thành công");
     navigate("/");
+    window.location.href = window.location.href;
   };
 
   const handleMenuClick = (e: any) => {

@@ -18,6 +18,8 @@ const OrderHistory = () => {
   const { data, isFetching, refetch } = useGetAllOrdersQuery({
     user_id: userId,
   });
+  console.log(data);
+  
 
   const [updateOrder] = useUpdateOrderMutation();
   const handleCancel = (id: string) => {
@@ -135,7 +137,8 @@ const OrderHistory = () => {
                             className="w-7 h-7 rounded-full flex items-center justify-center"
                             style={{ backgroundColor: product?.color }}
                           ></div>
-                          <p>Size: {product?.size}</p>
+                          <p>Kích cỡ: {product?.size}
+                          </p>
                         </div>
                         <div className="mt-1 flex gap-3">
                           <span className="text-red-500 font-medium">

@@ -1,32 +1,115 @@
-import { useGetUserQuery, useRemoveUserMutation } from "../../../api/user";
+import {
+  useGetUserQuery,
+  useRemoveUserMutation,
+  useChangeStatusToInactiveMutation,
+  useChangeStatusToActiveMutation,
+} from "../../../api/user";
 import { IUser } from "@/interfaces/user";
 import { Table, Button, Skeleton, Popconfirm, Alert } from "antd";
 import { Link } from "react-router-dom";
-import { useGetRoleQuery } from "@/api/role";
-import { DeleteTwoTone, EditOutlined } from '@ant-design/icons';
-type Props = {};
+import { useState, useEffect } from "react";
+import { Input, Select, notification, Modal } from "antd";
+import { DeleteTwoTone, EditOutlined, CloseOutlined } from "@ant-design/icons";
+import { Switch } from "antd";
+const { Search } = Input;
+const { Option } = Select;
 
+type Props = {};
+const userString = localStorage.getItem("user");
+const user = userString ? JSON.parse(userString) : {};
 const AdminUser = (props: Props) => {
-  const { data: userData, error, isLoading } = useGetUserQuery();
+  const { data: userData, refetch, isLoading } = useGetUserQuery();
   const [
     removeUser,
     { isLoading: isRemoveLoading, isSuccess: isRemoveSuccess },
   ] = useRemoveUserMutation();
+  const [searchText, setSearchText] = useState("");
+  const [roleFilter, setRoleFilter] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const confirm = (id: number | string) => {
-    removeUser(id);
+  const currentUser = JSON.parse(localStorage.getItem("user") || "{}");
+  const [changeStatusToInactive] = useChangeStatusToInactiveMutation();
+
+  const [changeStatusToActive] = useChangeStatusToActiveMutation();
+
+  const handleToggle = async (checked: boolean, userId: string) => {
+    if (userId === currentUser._id) {
+      // Ngăn người dùng chỉnh sửa trạng thái của chính họ
+      return;
+    }
+  
+    try {
+      if (checked) {
+        await changeStatusToActive(userId);
+      } else {
+        await changeStatusToInactive(userId);
+      }
+      console.log("New trang_thai:", checked ? "Active" : "Inactive");
+      refetch();
+    } catch (error) {
+      // Xử lý lỗi (nếu có)
+    }
   };
-  const dataSource = userData?.users?.map((user: IUser) => ({
+  const handleSearch = (value: string) => {
+    setSearchText(value);
+  };
+
+  const handleRoleFilter = (value: string) => {
+    setRoleFilter(value);
+  };
+
+  const handleClearFilters = () => {
+    setSearchText("");
+    setRoleFilter("");
+  };
+
+  const filteredDataSource = userData?.users?.filter((user: IUser) => {
+    const nameMatch = user.name
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+    const emailMatch = user.email
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+    const roleMatch = roleFilter === "" || user.role?.role_name === roleFilter;
+
+    return (nameMatch || emailMatch) && roleMatch;
+  });
+
+  const handleSoftDelete = (id: number | string) => {
+    Modal.confirm({
+      title: "Bạn có muốn xóa người dùng này?",
+      content: "Hành động này không thể hoàn tác.",
+      onOk: async () => {
+        setLoading(true);
+        try {
+          await removeUser(id);
+          notification.success({
+            message: "Thành công",
+            description: "Người dùng đã được xóa mềm thành công!",
+          });
+          // Gọi lại API để cập nhật danh sách người dùng
+          refetch();
+        } catch (error) {
+          notification.error({
+            message: "Lỗi",
+            description: "Không thể xóa mềm người dùng",
+          });
+        } finally {
+          setLoading(false);
+        }
+      },
+    });
+  };
+  const dataSource = filteredDataSource?.map((user: IUser) => ({
     key: user._id,
     name: user.name,
     fullname: user.fullname,
     ngaysinh: user.ngaysinh,
+    phone: user?.phone,
     email: user.email,
     password: user.password,
-    role: user.role.role_name,
+    role: user.role?.role_name,
     trang_thai: user.trang_thai,
-    // favoriteProducts: user.favoriteProducts,
-    // addressUser: user.addressUser,
   }));
   const columns = [
     {
@@ -43,6 +126,18 @@ const AdminUser = (props: Props) => {
       title: "Ngày sinh",
       dataIndex: "ngaysinh",
       key: "ngaysinh",
+      render: (ngaysinh: string) => {
+        const date = new Date(ngaysinh);
+        const formattedDate = `${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`;
+        return formattedDate;
+      },
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
       title: "email",
@@ -58,6 +153,48 @@ const AdminUser = (props: Props) => {
       title: "Trạng thái",
       dataIndex: "trang_thai",
       key: "trang_thai",
+      render: (trang_thai: string, record: { key: string | number, role_name: string, role: { role_name: string } }) => {
+        if (currentUser?.role?.role_name === "quản lý" && record.key !== currentUser._id) {
+          if (record.role !== "quản lý" && record.role !== "admin") {
+            return (
+              <Switch
+                checked={trang_thai === "Active"}
+                onChange={(checked) => handleToggle(checked, record.key.toString())}
+              />
+            );
+          } else {
+            return (
+              <Switch
+                checked={trang_thai === "Active"}
+                disabled
+              />
+            );
+          }
+        } else if (currentUser?.role?.role_name === "admin" && record.key !== currentUser._id) {
+          if (record.role_name !== "admin") {
+            return (
+              <Switch
+                checked={trang_thai === "Active"}
+                onChange={(checked) => handleToggle(checked, record.key.toString())}
+              />
+            );
+          } else {
+            return (
+              <Switch
+                checked={trang_thai === "Active"}
+                disabled
+              />
+            );
+          }
+        } else {
+          return (
+            <Switch
+              checked={trang_thai === "Active"}
+              disabled
+            />
+          );
+        }
+      },
     },
     // {
     //   title: "favoriteProducts",
@@ -70,24 +207,31 @@ const AdminUser = (props: Props) => {
     //   key: "addressUser",
     // },
     {
-      render: ({ key: id }: { key: string | number }) => {
+      render: ({ key: id, role }: { key: string | number; role: string }) => {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
 
-        if (user && user.role && user.role.role_name === "admin") {
+        if (
+          user &&
+          user.role &&
+          user.role.role_name === "admin" &&
+          role !== "admin"
+        ) {
           return (
             <>
-              <div className="flex space-x-2">              
+              <div className="flex space-x-2">
                 <Button>
-                  <Link to={`/admin/user/edit/${id}`}><EditOutlined /></Link>
+                  <Link to={`/admin/user/edit/${id}`}>
+                    <EditOutlined />
+                  </Link>
                 </Button>
-                <Popconfirm
-                  title="Bạn muốn xóa không?"
-                  onConfirm={() => confirm(id)}
-                  okText="Yes"
-                  cancelText="No"
+                <Button
+                  onClick={() => handleSoftDelete(id.toString())}
+                  type="text"
+                  danger
+                  className="ml-2"
                 >
-                  <Button><DeleteTwoTone /></Button>
-                </Popconfirm>
+                  <DeleteTwoTone />
+                </Button>
               </div>
             </>
           );
@@ -100,6 +244,32 @@ const AdminUser = (props: Props) => {
     <div>
       <header className="flex items-center justify-between mb-4">
         <h2 className="text-2xl">Quản lý user</h2>
+        <div className="flex items-center space-x-4">
+          <Search
+            placeholder="Tìm kiếm theo tên hoặc email"
+            onSearch={handleSearch}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 300 }}
+          />
+          <Select
+            placeholder="Lọc theo role"
+            onChange={handleRoleFilter}
+            value={roleFilter || undefined}
+            style={{ width: 150 }}
+          >
+            <Option value="admin">Admin</Option>
+            <Option value="user">Khách hàng</Option>
+            <Option value="nhân viên">Nhân viên</Option>
+            <Option value="quản lý">Quản lý</Option>
+          </Select>
+          <Button
+            type="primary"
+            shape="circle"
+            icon={<DeleteTwoTone />}
+            onClick={handleClearFilters}
+          />
+        </div>
       </header>
       {isRemoveSuccess && <Alert message="Success Text" type="success" />}
       {isLoading ? (

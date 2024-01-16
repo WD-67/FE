@@ -138,13 +138,18 @@ const Cart = () => {
 
   const handlePayment = () => {
     if (!isLoggedIn) {
-        // Hiển thị thông báo yêu cầu đăng nhập trước khi thanh toán
-        Swal.fire({
-          icon: "error",
-          title: "Yêu cầu đăng nhập trước khi thanh toán",
-        });
-        return;
-      }
+      // Hiển thị thông báo yêu cầu đăng nhập trước khi thanh toán
+      Swal.fire({
+        icon: "error",
+        title: "Yêu cầu đăng nhập trước khi thanh toán",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Chuyển hướng đến trang đăng nhập khi người dùng nhấp vào nút "OK"
+          navigate("/signin");
+        }
+      });
+      return;
+    }
       if (
         Object.keys(checkedItems).length === 0 ||
         Object.values(checkedItems).every((value) => value === false)
@@ -168,9 +173,9 @@ const Cart = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             const infoPayment = handleToTalCart();
-
-            sessionStorage.setItem("infoPayment", JSON.stringify(infoPayment));
+            sessionStorage.setItem("infoPayment", JSON.stringify(infoPayment));          
             navigate("/order");
+            window.location.href = window.location.href;
           }
         });
       }

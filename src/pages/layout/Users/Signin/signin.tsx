@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import LoadingOutlined from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
@@ -12,34 +12,41 @@ const Signin: React.FC = () => {
   const { handleSubmit, register } = useForm<ISignin>();
   const [signin, { isLoading }] = useSigninUserMutation();
   const navigate = useNavigate();
-
+  const [loginError, setLoginError] = useState<string | null>(null); // Thêm state để lưu thông báo lỗi
   const onFinish = (data: ISignin) => {
     signin(data)
       .unwrap()
       .then((res) => {
         if (res && res.user && res.user.role.role_name) {
           const user = res.user;
-          localStorage.setItem("user", JSON.stringify(user));
-          if (res.user?.role?.role_name === "user") {
-            message.success("Đăng nhập thành công");
-            navigate("/");
-          } else if (res.user?.role?.role_name === "admin") {
-            message.success("Đăng nhập thành công với vai trò " + res.user.role.role_name);
-            navigate("/admin");
-          } else if (res.user?.role?.role_name === "nhân viên") {
-            message.success("Đăng nhập thành công với vai trò " + res.user.role.role_name);
-            navigate("/admin");
-          } else if (res.user?.role?.role_name === "quản lý") {
-            message.success("Đăng nhập thành công với vai trò " + res.user.role.role_name);
-            navigate("/admin");
+  
+          if (user.trang_thai === "Active") {
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("isLoggedIn", "true");
+  
+            if (res.user.role.role_name === "user") {
+              message.success("Đăng nhập thành công");
+              navigate("/");
+            } else if (
+              res.user.role.role_name === "admin" ||
+              res.user.role.role_name === "nhân viên" ||
+              res.user.role.role_name === "quản lý"
+            ) {
+              message.success(
+                "Đăng nhập thành công với vai trò " + res.user.role.role_name
+              );
+              navigate("/admin");
+            } else {
+              message.error("Bạn không có quyền truy cập trang này");
+              console.log(res.user.role.role_name);
+            }
+          } else if (user.trang_thai === "Inactive") {
+            message.error("Tài khoản của bạn đã bị khóa");
           } else {
-            message.error("Bạn không có quyền truy cập trang này");
-            console.log(res.user.role.role_name);
+            message.error("Trạng thái tài khoản không hợp lệ");
           }
         } else {
-          message.error(
-            "Đăng nhập không thành công, tài khoản hoặc mật khẩu không chính xác"
-          );
+          message.error("Đăng nhập không thành công, tài khoản hoặc mật khẩu không chính xác");
         }
       });
   };

@@ -70,6 +70,7 @@ import NotFound from "./pages/layout/Client/NotFound";
 import Detail_category from "./pages/layout/Users/List-Category/detail-category";
 import OrderHistory from "./pages/layout/Users/OrderHistory";
 import OrderDetail from "./pages/layout/Users/OrderHistory/detail";
+import RecycleBinUser from "./components/admin/user/recycle-bin";
 
 
 const isAuthenticated = (): boolean => {
@@ -291,6 +292,10 @@ export const routers = createBrowserRouter([
       {
         path: "user/edit/:id",
         element: <AdminEditUser />,
+      },
+      {
+        path: "user/recycle",
+        element: <RecycleBinUser />,
       },
       {
         path: "customer",

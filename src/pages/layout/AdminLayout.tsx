@@ -42,6 +42,7 @@ const items: MenuItem[] = [
   getItem('Người dùng', 'sub1', <UserOutlined />, [
     getItem(<Link to="/admin/user">Danh sách</Link>, '3',),
     // getItem(<Link to="/admin/user/add">Add</Link>, '4'),
+    getItem(<Link to="/admin/user/recycle"><DeleteOutlined /></Link>, '4'),
   ]),
   getItem(<Link to="/admin/product">Sản phẩm</Link>, '10', <UnorderedListOutlined />,
     [
@@ -60,8 +61,8 @@ const items: MenuItem[] = [
     [
       getItem(<Link to="/admin/tintuc/add">Thêm tin tức</Link>, '27'),
     ]),
-  getItem(<Link to="/admin/comments">Bình luận</Link>, '28', <CommentOutlined />,
-  ),
+  // getItem(<Link to="/admin/comments">Bình luận</Link>, '28', <CommentOutlined />,
+  // ),
   getItem('Danh mục', 'sub20', <UnorderedListOutlined />, [
     getItem(<Link to="/admin/category">Danh sách</Link>, '37',),
     getItem(<Link to="/admin/category/add">Thêm</Link>, '4'),

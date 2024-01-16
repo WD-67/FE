@@ -65,16 +65,18 @@ function App() {
     handleFilterStatus(status);
     // Thêm các xử lý khác tùy vào nhu cầu của bạn
   };
-  
+
   let dataSource = [];
   dataSource = orderClient?.data.map((order: ISOrder) => ({
     code: order._id._id,
-    name: order.user.name,
+    name: order?.address,
     status: order.status,
     address: order.address,
     product: order.products,
     moneny: order.total_price,
   }));
+  console.log(dataSource);
+
   if (status) {
     dataSource = dataSource.filter((order: ISOrder) => order.status == status);
   }
@@ -92,9 +94,9 @@ function App() {
     },
     {
       title: "Người mua",
-      dataIndex: "name",
+      dataIndex: "address",
       render: (data: any) => {
-        return <p>{data}</p>;
+        return <p>{handelChangeObject(data).name}</p>;
       },
     },
     {
@@ -133,28 +135,99 @@ function App() {
         return <p>{data.length}</p>;
       },
     },
+    // {
+    //   title: "Trạng thái",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   render: (status: string) => {
+    //     const statusLabel = arrStatus.find((item) => item.value === status);
+    //     return statusLabel ? statusLabel.label : "";
+    //   },
+    // },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      render: (status: string) => {
-        const statusLabel = arrStatus.find((item) => item.value === status);
-        return statusLabel ? statusLabel.label : "";
-      },
+      render: (status: string) => (
+        <span
+          className={
+            status === "cancel"
+              ? "text-red-500"
+              : status === "waiting"
+              ? "text-yellow-500"
+              : status === "delivering"
+              ? "text-blue-500"
+              : status === "done"
+              ? "text-green-500"
+              : ""
+          }
+        >
+          {status === "cancel"
+            ? "Đã hủy"
+            : status === "waiting"
+            ? "Chờ vận chuyển"
+            : status === "delivering"
+            ? "Đang vận chuyển"
+            : status === "done"
+            ? "Giao hàng thành công"
+            : "Chờ xác nhận"}
+        </span>
+      ),
     },
     {
       title: "Action",
       key: "action",
       render: ({ code: id }: { code: number | string }) => {
         return (
-          <div className="flex items-center">
-            <Link
-            to={`/admin/order/${id}` }
-            className="px-3  text-xl rounded-md border border-gray-300">
-            <Link />
+          <>
+            <div className="flex items-center">
+              <Link
+                to={`/admin/order/${id}`}
+                className="px-3  text-xl rounded-md border border-gray-300"
+              >
                 <FolderViewOutlined className="flex items-center py-[5px]" />
-            </Link>
-          </div>
+              </Link>
+            </div>
+          </>
+        );
+      },
+    },
+    {
+      key: "action",
+      render: (record: any) => {
+        return (
+          <>
+            <div className="flex items-center">
+              {filterStatus === "pending" && record.status === "pending" && (
+                <Button
+                  onClick={() =>
+                    handleStatusChange(record.key, "waiting", record)
+                  }
+                >
+                  Chờ vận chuyển
+                </Button>
+              )}
+              {filterStatus === "waiting" && record.status === "waiting" && (
+                <Button
+                  onClick={() =>
+                    handleStatusChange(record.key, "delivering", record)
+                  }
+                >
+                  Đang vận chuyển
+                </Button>
+              )}
+              {filterStatus === "delivering" &&
+                record.status === "delivering" && (
+                  <Button
+                    onClick={() =>
+                      handleStatusChange(record.key, "done", record)
+                    }
+                  >
+                    Thành công
+                  </Button>
+                )}
+            </div>
+          </>
         );
       },
     },
@@ -196,19 +269,19 @@ function App() {
           {/*<RangePicker className='ml-3' value={orderDate}  onChange={onChangeSearchOrderDate}/>*/}
         </div>
         <div className="mt-2 flex">
-            {arrStatusFillter.map((option) => (
-              <Button
-                key={option.value}
-                type={filterStatus === option.value ? "default" : "link"}
-                onClick={() => handleFilterStatus(option.value)}
-              >
-                {option.label}
-              </Button>
-            ))}
-          </div>
+          {arrStatusFillter.map((option) => (
+            <Button
+              key={option.value}
+              type={filterStatus === option.value ? "default" : "link"}
+              onClick={() => handleFilterStatus(option.value)}
+            >
+              {option.label}
+            </Button>
+          ))}
+        </div>
       </header>
       <>
-        <Table className="mt-4" dataSource={dataSource} columns={columns} />;
+        <Table className="mt-4" dataSource={dataSource} columns={columns} />
       </>
     </>
   );
