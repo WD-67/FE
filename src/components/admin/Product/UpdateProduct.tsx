@@ -240,9 +240,9 @@ const UpdateProduct = ({setIsModalVisible} : Props) => {
               initialValue={[]}
             >
               {(fields, { add, remove }, { errors }) => (
-                <div css={formcss} style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
+                <div css={formcss} style={{ display: 'flex', rowGap: 16, flexDirection: 'column', marginLeft: 100 }}>
                   {fields.map(({ key, name, ...restField }) => (
-                    <Space className='space' key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
+                    <Space className='space' key={key} style={{ display: 'flex', marginBottom: 8 , marginLeft: 300}} align='baseline'>
                       <Form.Item className='colorFormItem' {...restField} name={[name, 'colorHex']}>
                         <ColorPicker defaultValue={'fff'} showText={(color) => color.toHexString()} format='hex' />
                       </Form.Item>
@@ -272,7 +272,7 @@ const UpdateProduct = ({setIsModalVisible} : Props) => {
             </Form.List>
             </Col>
                         <br />
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <Form.Item wrapperCol={{ offset: 8, span: 16  }}  style={{marginLeft: 200}}>
                 <Button  htmlType="submit">
                     Sửa sản phẩm mới
                 </Button>

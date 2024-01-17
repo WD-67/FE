@@ -298,6 +298,19 @@ const Detail_Product = () => {
                       ))}
                   </ul>
                 </div>
+                {/*quantity*/}
+                {selectedSize && (
+                  <div className="quantity-remain flex items-center gap-10 mt-5">
+                    <ul className="flex flex-row items-start gap-2">
+                      <h2 className="text-lg font-medium">Số lượng có sẵn :</h2>
+                      <li className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full">
+                          {selectedSize.quantity}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
 
                 {/* quantity by size */}
                 <div className="size flex items-center gap-10 mt-5">
@@ -328,9 +341,9 @@ const Detail_Product = () => {
                           {countQuanytity > 0 ? (
                             <div className="available-quantity flex items-center gap-5">
                               <h2 className="text-lg font-medium">
-                                Số lượng có sẵn:
+                                {/* Số lượng có sẵn: */}
                               </h2>
-                              <div>{countQuanytity}</div>
+                              {/* <div>{countQuanytity}</div> */}
                             </div>
                           ) : (
                             <h2 className="text-lg text-red-800 font-medium">
