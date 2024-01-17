@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 let paymentOrderOne = true;
 const userString = localStorage.getItem("user");
 const user = userString ? JSON.parse(userString) : {};
-
+const userEmail = user.email;
 const Payment = () => {
     const carts = useAppSelector((state) => state.cart.cart);
     const [checkedItems, setCheckedItems] = useState<any>({});
@@ -60,6 +60,7 @@ const Payment = () => {
             "products": transformedArray,
             "total_price": searchParams.get("amount"),
             "address": sessionStorage.getItem("address") ?? "Địa chỉ của bạn",
+            "email": userEmail,
             "sale_id": "6555018adbb1621a26e79a3e",
             "total_amount_paid": searchParams.get("amount"),
             "payment_type": "cash",

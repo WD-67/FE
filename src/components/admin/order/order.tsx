@@ -199,6 +199,7 @@ function App() {
           <>
             <div className="flex items-center">
               {filterStatus === "pending" && record.status === "pending" && (
+                <>
                 <Button
                   onClick={() =>
                     handleStatusChange(record.key, "waiting", record)
@@ -206,6 +207,14 @@ function App() {
                 >
                   Chờ vận chuyển
                 </Button>
+                <Button
+                onClick={() =>
+                  handleStatusChange(record.key, "cancel", record)
+                }
+              >
+                Hủy đơn
+              </Button>
+              </>
               )}
               {filterStatus === "waiting" && record.status === "waiting" && (
                 <Button

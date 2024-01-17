@@ -109,9 +109,9 @@ console.log(order?.data);
         return (
           <p>
             {new Intl.NumberFormat("vi-VN", {
-              style: "currency",
-              currency: "VND",
-            }).format(price * quantity)}
+                style: "currency",
+                currency: "VND",
+              }).format(order?.data.total_price)}
           </p>
         );
       },
