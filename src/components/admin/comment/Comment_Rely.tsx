@@ -121,8 +121,9 @@ const Comment_Rely = () => {
                       okText="Yes"
                       cancelText="No"
                       okButtonProps={{ style: { background: 'red' } }}
+                      className='mx-2 my-6'
                     >
-                      <Button>
+                      <Button >
                         <BsFillTrash3Fill />
                       </Button>
                     </Popconfirm>

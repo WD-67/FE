@@ -18,7 +18,7 @@ import { useGetSizesQuery } from '@/api/sizes';
 import axios from "axios";
 const userString = localStorage.getItem("user");
 const user = userString ? JSON.parse(userString) : {};
-
+const userEmail = user.email;
 const Orderr = () => {
   const { data: sizeData ,refetch} = useGetSizesQuery();
   const [selectedSale, setSelectedSale] = useState<ISale>({} as any);
@@ -115,6 +115,7 @@ const Orderr = () => {
       products: transformedArray,
       total_price: Number(infoCart?.totalPrice - saleMoney),
       address: JSON.stringify({'name':name,'phone':phone,"address":address}),
+      email: userEmail,
       total_amount_paid: 0,
       payment_type: "bank",
     };

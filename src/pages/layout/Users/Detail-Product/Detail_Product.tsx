@@ -187,15 +187,23 @@ const Detail_Product = () => {
               <img src={product?.product.image[0]} alt="" />
               {/* sale */}
               <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
-                
-              {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100) !== 0 && (
-  <div className=" py-[2px] bg-pink-600 my-1">
-    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
-      {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)} %
-    </span>
-  </div>
-)}
-                
+                {Math.round(
+                  ((product?.product.hot_sale - product?.product.price) /
+                    product?.product.hot_sale) *
+                    100
+                ) !== 0 && (
+                  <div className=" py-[2px] bg-pink-600 my-1">
+                    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+                      {Math.round(
+                        ((product?.product.hot_sale - product?.product.price) /
+                          product?.product.hot_sale) *
+                          100
+                      )}{" "}
+                      %
+                    </span>
+                  </div>
+                )}
+
                 <div className="prd-sale py-[2px] bg-blue-300">
                   <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
                     NEW
@@ -208,18 +216,25 @@ const Detail_Product = () => {
               <div className="info-price flex flex-col md:flex-row gap-5 items-center">
                 <>
                   <h1 className="text-3xl font-normal">
-                  {product?.product.price.toLocaleString('it-IT')} vnđ
+                    {product?.product.price.toLocaleString("it-IT")} vnđ
                   </h1>
-                            {product?.product.price !== product?.product.hot_sale && (
-            <div className="price-old">
-              <h2 className="text-lg line-through">
-                {product?.product.hot_sale.toLocaleString('it-IT')}.vnđ
-              </h2>
-              <p className="text-sm font-medium text-[#fb317d]">
-                You Save:{Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)}  %
-              </p>
-            </div>
-)}
+                  {product?.product.price !== product?.product.hot_sale && (
+                    <div className="price-old">
+                      <h2 className="text-lg line-through">
+                        {product?.product.hot_sale.toLocaleString("it-IT")}.vnđ
+                      </h2>
+                      <p className="text-sm font-medium text-[#fb317d]">
+                        You Save:
+                        {Math.round(
+                          ((product?.product.hot_sale -
+                            product?.product.price) /
+                            product?.product.hot_sale) *
+                            100
+                        )}{" "}
+                        %
+                      </p>
+                    </div>
+                  )}
                 </>
               </div>
               <div className="info-desc mt-5">
@@ -479,8 +494,7 @@ const Detail_Product = () => {
             <h1 className="text-center text-3xl font-medium my-5">
               Sản Phẩm Cùng Loại
             </h1>
-
-            <div className="w-9/10 mx-auto">
+            <div className="">
               <Slider
                 dots={true}
                 infinite={true}
@@ -490,23 +504,30 @@ const Detail_Product = () => {
                 autoplay={true}
                 autoplaySpeed={2000}
               >
-                {sliderInitialized &&
-                  dataSourceToRender?.map((item) => {
-                    // console.log("id",product?.product.categoryId);
+                {dataSourceToRender?.map((item) => {
+                  // console.log("cateId Detail",product?.product.categoryId);
+                  // console.log("cateId All", item.categoryId);
 
-                    if (
-                      String(item.categoryId) ==
-                      String(product?.product?.categoryId)
-                    ) {
-                      return (
-                        <div key={item._id}>
-                          <Item product={item} />
-                        </div>
-                      );
-                    }
-                  })}
+                  if (
+                    String(item.categoryId) ==
+                    String(product?.product?.categoryId)
+                  ) {
+                    // const nameCate = cateData?.data?.find(
+                    //     (category: any) => category._id === item.categoryId
+                    // )?.name;
+                    // console.log(category._id);
+
+                    return (
+                      <div key={item._id}>
+                        <Item product={item} />
+                      </div>
+                    );
+                  }
+                })}
               </Slider>
             </div>
+            {/* <Item /> */}
+            {/* <RelatedProducts /> */}
           </div>
         </div>
       </div>
