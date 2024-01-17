@@ -232,7 +232,7 @@ const AdminLayout: React.FC = () => {
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>Quản lý admin</Footer>
       </Layout>
     </Layout>
   );

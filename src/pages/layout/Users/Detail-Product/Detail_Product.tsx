@@ -17,14 +17,6 @@ import { IProduct } from "@/interfaces/product";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-function formatPrice(price: number): string {
-  const formattedPrice = price.toLocaleString("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  });
-  return formattedPrice;
-}
 const Detail_Product = () => {
   const initialCarts = useAppSelector((state: RootState) => state.cart.cart);
   const [carts, setCarts] = useState(initialCarts);
@@ -193,14 +185,17 @@ const Detail_Product = () => {
             {/* slider */}
             <div className="slider w-full md:w-2/5 relative overflow-hidden ">
               <img src={product?.product.image[0]} alt="" />
-               {/* sale */}
-               <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
-                {product?.product.hot_sale > 10 && (
-                  <div className=" py-[2px] bg-pink-600 my-1">
-                    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
-                    {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)} %                   </span>
-                  </div>
-                )}
+              {/* sale */}
+              <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
+                
+              {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100) !== 0 && (
+  <div className=" py-[2px] bg-pink-600 my-1">
+    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+      {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)} %
+    </span>
+  </div>
+)}
+                
                 <div className="prd-sale py-[2px] bg-blue-300">
                   <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
                     NEW
@@ -213,16 +208,18 @@ const Detail_Product = () => {
               <div className="info-price flex flex-col md:flex-row gap-5 items-center">
                 <>
                   <h1 className="text-3xl font-normal">
-                    {product?.product.price.toLocaleString('it-IT')}
+                  {product?.product.price.toLocaleString('it-IT')} vnđ
                   </h1>
-                  <div className="price-old">
-                    <h2 className="text-lg line-through">
-                      {product?.product.hot_sale}.vnđ
-                    </h2>
-                    <p className="text-sm font-medium text-[#fb317d]">
-                      You Save:{Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)}  %
-                    </p>
-                  </div>
+                            {product?.product.price !== product?.product.hot_sale && (
+            <div className="price-old">
+              <h2 className="text-lg line-through">
+                {product?.product.hot_sale.toLocaleString('it-IT')}.vnđ
+              </h2>
+              <p className="text-sm font-medium text-[#fb317d]">
+                You Save:{Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)}  %
+              </p>
+            </div>
+)}
                 </>
               </div>
               <div className="info-desc mt-5">
@@ -301,6 +298,19 @@ const Detail_Product = () => {
                       ))}
                   </ul>
                 </div>
+                {/*quantity*/}
+                {selectedSize && (
+                  <div className="quantity-remain flex items-center gap-10 mt-5">
+                    <ul className="flex flex-row items-start gap-2">
+                      <h2 className="text-lg font-medium">Số lượng có sẵn :</h2>
+                      <li className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full">
+                          {selectedSize.quantity}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
 
                 {/* quantity by size */}
                 <div className="size flex items-center gap-10 mt-5">
@@ -331,9 +341,9 @@ const Detail_Product = () => {
                           {countQuanytity > 0 ? (
                             <div className="available-quantity flex items-center gap-5">
                               <h2 className="text-lg font-medium">
-                                Số lượng có sẵn:
+                                {/* Số lượng có sẵn: */}
                               </h2>
-                              <div>{countQuanytity}</div>
+                              {/* <div>{countQuanytity}</div> */}
                             </div>
                           ) : (
                             <h2 className="text-lg text-red-800 font-medium">

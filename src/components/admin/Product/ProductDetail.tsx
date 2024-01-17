@@ -58,11 +58,13 @@ const ProductDetail = () => {
 
                     {/* sale */}
                     <div className="prd-sale absolute top-2 left-1 min-w-[75px]">
-                        <div className=" py-[2px] bg-pink-600 my-1">
-                            <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
-                                {product?.product.hot_sale} %
-                            </span>
-                        </div>
+                    {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100) !== 0 && (
+  <div className=" py-[2px] bg-pink-600 my-1">
+    <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
+      {Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)} %
+    </span>
+  </div>
+)}
                         <div className="prd-sale py-[2px] bg-blue-300">
                             <span className=" m-2 block  rounded-full text-center text-sm font-medium text-white">
                                 Mới
@@ -74,12 +76,12 @@ const ProductDetail = () => {
                 <div className="text-content flex-1">
                     <div className="info-price flex flex-col md:flex-row gap-5 items-center">
                         <>
-                            <h1 className="text-4xl font-normal">{product?.product.price - (product?.product.price * (product?.product.hot_sale / 100))}.vnđ</h1>
+                            <h1 className="text-4xl font-normal">{product?.product.price.toLocaleString('it-IT')}.vnđ</h1>
                             <div className="price-old">
-                                <h2 className="text-lg line-through">{product?.product.price}.vnđ</h2>
+                                <h2 className="text-lg line-through">{product?.product.hot_sale.toLocaleString('it-IT')}.vnđ</h2>
                                 <p className="text-sm font-medium text-[#fb317d]">
-                                    You Save: {product?.product.hot_sale} %
-                                </p>
+                You Save:{Math.round(((product?.product.hot_sale - product?.product.price)/ product?.product.hot_sale)*100)}  %
+              </p>
                             </div>
                         </>
                     </div>
