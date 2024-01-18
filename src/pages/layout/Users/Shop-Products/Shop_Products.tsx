@@ -17,6 +17,8 @@ import { useGetProductsQuery } from '@/api/product';
 import { IProduct } from '@/interfaces/product';
 import { useGetCategorysQuery } from '../../../../api/category';
 import { ICategory } from '../../../../interfaces/category';
+import { Checkbox } from 'antd';
+
 const Shop_Products = () => {
     const { data: productData } = useGetProductsQuery();
     const { data: categoryData } = useGetCategorysQuery();
@@ -88,6 +90,32 @@ const Shop_Products = () => {
             setDataSourceToRender([...searchResult]);
         }
     };
+    const [selectedSizes, setSelectedSizes] = useState([]);
+
+    const handleSizeChange = (checkedValues) => {
+      setSelectedSizes(checkedValues);
+    
+      // Filter products by selected sizes
+      const filteredProducts = searchResult.filter(
+        (product) => product.listQuantityRemain.some(item => checkedValues.includes(item.nameSize))
+      );
+    
+      setDataSourceToRender(filteredProducts);
+    };
+    
+      const [currentPage, setCurrentPage] = useState(1);
+const [productsPerPage] = useState(9);
+
+// Tính chỉ số của sản phẩm đầu tiên và cuối cùng trên trang hiện tại
+const indexOfLastProduct = currentPage * productsPerPage;
+const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+
+// Lấy ra các sản phẩm trên trang hiện tại
+const currentProducts = dataSourceToRender.slice(indexOfFirstProduct, indexOfLastProduct);
+
+// Tính tổng số trang
+const totalPages = Math.ceil(dataSourceToRender.length / productsPerPage);
+const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <>
@@ -130,14 +158,16 @@ const Shop_Products = () => {
                                 <div className="px-4 py-10 "><p className="px-4 font-mono text-xl " >
                                     Lọc sản phẩm theo
                                 </p>
+                                
                                     <ul className="mt-6 space-y-1 text-left">
-
-                                        <li className="mt-6 "  >
-                                            <div className={`btn-sort-option border cursor-pointer flex items-center gap-1 px-3 py-2 rounded-lg`}>
-                                                <button className="font-light text-sm" >Size</button>
-                                                <i><IoIosArrowDropdown /></i>
-                                            </div>
-                                        </li>
+                                       <p>Size</p>
+                                    <Checkbox.Group
+                                    options={["35", "36", "37", "38", "39", "40"
+                                    ,"41","42"]}
+                                     // Add more sizes if needed
+                                    value={selectedSizes}
+                                    onChange={handleSizeChange}
+                                    />
                                         <li className="pt-2 " >
                                             <div className={`btn-sort-option cursor-pointer flex items-center gap-1  px-3 py-2 rounded-lg border `}>
                                                 <button className="font-light text-sm">Color</button>
@@ -184,25 +214,30 @@ const Shop_Products = () => {
                                 </div>
                             </div>
                             <div className="pt-4 rounded-lg  lg:col-span-2">
-                                <div className=" mt-15">
-                                    <div className=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                                        {dataSourceToRender
-                                            .slice()
-                                            .sort((a, b) => (sortBy === 'asc' ? a.price - b.price : b.price - a.price))
-                                            .sort((a, b) => (sortBy === 'asc' ? b.price - a.price : a.price - b.price))
-                                            ?.map((product) => {
-                                                const cateName = categoryData?.data.find(
-                                                    (cate: any) => cate._id == product.categoryId
-                                                )?.name;
-                                                return (
-                                                    <div key={product._id}>
-                                                        <Item product={product} />
-                                                    </div>
-                                                )
-                                            })}
-                                    </div>
-                                </div>
-                            </div>
+  <div className="mt-15">
+    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      {currentProducts
+        .sort((a, b) => (sortBy === 'asc' ? a.price - b.price : b.price - a.price))
+        .map((product) => {
+          const cateName = categoryData?.data.find(
+            (cate: any) => cate._id == product.categoryId
+          )?.name;
+          return (
+            <div key={product._id}>
+              <Item product={product} />
+            </div>
+          )
+        })}
+    </div>
+    <div className="pagination">
+    {[...Array(totalPages)].map((_, i) => 
+      <button key={i} onClick={() => handlePageChange(i + 1)} style={{marginLeft: 20, borderBottomLeftRadius: 10 , fontSize: 17}}>
+        {i + 1}
+      </button>
+    )}
+  </div>
+  </div>
+</div>
 
                         </div>
                     </div>

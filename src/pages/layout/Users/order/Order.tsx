@@ -396,9 +396,9 @@ const Orderr = () => {
                           src={cart?.product?.image[0]}
                           alt=""
                         />
-                        <span className="text-xs absolute top-0 right-0 bg-green-400 p-1 text-white rounded-full hidden sm:block">
+                        {/* <span className="text-xs absolute top-0 right-0 bg-green-400 p-1 text-white rounded-full hidden sm:block">
                           50% OFF
-                        </span>
+                        </span> */}
                       </div>
                     </td>
                     <td className="whitespace-nowrap  text-gray-700 py-4 ">
